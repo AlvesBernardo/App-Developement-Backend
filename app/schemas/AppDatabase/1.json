@@ -1,0 +1,131 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "038b0273a85e446fd03f40abea35743d",
+    "entities": [
+      {
+        "tableName": "tblTeacher",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTeacher` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtEmail` TEXT NOT NULL, `dtPassword` TEXT NOT NULL, `dtName` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idTeacher",
+            "columnName": "idTeacher",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dtEmail",
+            "columnName": "dtEmail",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dtPassword",
+            "columnName": "dtPassword",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dtName",
+            "columnName": "dtName",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idTeacher"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tblCourse",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCourse` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtTitle` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idCourse",
+            "columnName": "idCourse",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dtTitle",
+            "columnName": "dtTitle",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idCourse"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TeacherCourseCrossRef",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTeacher` INTEGER NOT NULL, `idCourse` INTEGER NOT NULL, PRIMARY KEY(`idTeacher`, `idCourse`))",
+        "fields": [
+          {
+            "fieldPath": "idTeacher",
+            "columnName": "idTeacher",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idCourse",
+            "columnName": "idCourse",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "idTeacher",
+            "idCourse"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tblExam",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`examId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `courseId` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "examId",
+            "columnName": "examId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "courseId",
+            "columnName": "courseId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "examId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '038b0273a85e446fd03f40abea35743d')"
+    ]
+  }
+}

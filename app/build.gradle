@@ -55,6 +55,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'io.github.cdimascio:java-dotenv:5.2.0'
+    implementation group: 'org.ktorm', name: 'ktorm-core', version: '3.6.0'
+
 
     // Add these lines
     implementation 'androidx.room:room-runtime:2.4.0'

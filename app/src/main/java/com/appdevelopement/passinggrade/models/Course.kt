@@ -1,10 +1,9 @@
-import android.icu.text.CaseMap.Title
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import org.ktorm.schema.Table
+import org.ktorm.schema.int
+import org.ktorm.schema.varchar
 
-@Entity(tableName = "tblCourse")
-data class Course(
-    @PrimaryKey(autoGenerate = true)
-    val idCourse: Int,
-    val dtTitle: String
-)
+object Course : Table<Nothing>
+    ("tblCourse"){
+        val idCourse = int("idCourse").primaryKey()
+        val dtDescription = varchar("dtDescription")
+    }

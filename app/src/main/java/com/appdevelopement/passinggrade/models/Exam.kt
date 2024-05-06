@@ -1,10 +1,9 @@
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import java.sql.Date
+import org.ktorm.schema.Table
+import org.ktorm.schema.int
+import org.ktorm.schema.varchar
 
-@Entity(tableName = "tblExam")
-data class Exam(
-    @PrimaryKey(autoGenerate = true)
-    val examId: Int,
-    val courseId: Int,
-)
+object Exam : Table<Nothing>
+    ("tblExam"){
+    val idExam = int("idExam").primaryKey()
+    val idCourse = varchar("idCourse").primaryKey()
+}

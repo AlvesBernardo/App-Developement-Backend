@@ -1,11 +1,6 @@
-import androidx.room.Dao
-import androidx.room.Query
+import android.app.Application
+import androidx.room.Room
 
-@Dao
-interface TeacherDao {
-
-    @Query("SELECT * FROM tblTeacher")
-    abstract fun getAllTeachers(): List<Teacher>
-
-    // Rest of your TeacherDao methods...
-}
+//could be defined later ask jan
+//TODO provides abstract interface to database
+//hide information like image image hidding a grade

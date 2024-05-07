@@ -1,12 +1,22 @@
+import android.content.Context
+import com.appdevelopement.passinggrade.R
+import java.io.InputStreamReader
 import java.util.*
-object Config{
-    private val inputStream = this::class.java.classLoader.getResourceAsStream("config.properties")
-    private val properties: Properties = Properties().apply {
-        load(inputStream)
-    }
 
-    val dbUrl = properties.getProperty("db.url")
-    val dbDriver = properties.getProperty("db.driver")
-    val dbUser = properties.getProperty("db.user")
-    val dbPassword = properties.getProperty("db.password")
+object Config {
+    lateinit var dbUrl: String
+    lateinit var dbDriver: String
+    lateinit var dbUser: String
+    lateinit var dbPassword: String
+
+    fun load(context: Context) {
+        val properties = Properties()
+        val inputStream = context.resources.openRawResource(R.raw.config)
+        properties.load(InputStreamReader(inputStream, "UTF-8"))
+
+        dbUrl = properties.getProperty("db.url")
+        dbDriver = properties.getProperty("db.driver")
+        dbUser = properties.getProperty("db.user")
+        dbPassword = properties.getProperty("db.password")
+    }
 }

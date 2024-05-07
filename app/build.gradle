@@ -56,15 +56,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation 'io.github.cdimascio:java-dotenv:5.2.0'
     implementation group: 'org.ktorm', name: 'ktorm-core', version: '3.6.0'
-
-
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     // Add these lines
     implementation 'androidx.room:room-runtime:2.4.0'
     kapt 'androidx.room:room-compiler:2.4.0' // Only for Kotlin
-
+    implementation 'org.sqldroid:sqldroid:1.0.3'
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation 'androidx.room:room-ktx:2.4.0'
-
-    // optional - Test helpers
+    implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.3'    // optional - Test helpers
     testImplementation 'androidx.room:room-testing:2.4.0'
 }

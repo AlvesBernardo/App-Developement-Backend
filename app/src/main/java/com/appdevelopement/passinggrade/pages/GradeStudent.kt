@@ -19,7 +19,7 @@ class GradeStudent : AppCompatActivity() {
             "Functions", "Idk I dont know compenetenes", "More", "Even more"
         )
         val gradingAreaLayout = findViewById<LinearLayout>(R.id.competencyContainer)
-        studentNameBox.text = "Bernardo Josué Correia Alves"    
+        studentNameBox.text = "Bernardo Josué Correia Alves"
 
         // Create a horizontal LinearLayout for the header
         val headerLayout = LinearLayout(this)

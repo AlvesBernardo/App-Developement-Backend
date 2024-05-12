@@ -14,7 +14,8 @@
             android:supportsRtl="true"
             tools:targetApi="33">
         <activity
-                android:name=".MainActivity"
+                android:name="com.appdevelopement.passinggrade.pages.StudentPageActivity"
+                android:label="Student Activity"
                 android:theme="@style/AppTheme"
                 android:exported="true">
             <intent-filter>

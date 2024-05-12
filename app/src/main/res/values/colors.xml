@@ -5,4 +5,6 @@
     <color name="WhiteSolid">#F4F5FA</color>
     <color name="Gainsboro">#F0F0F0	</color>
     <color name="Platimnum">#E5E4E2</color>
+    <color name="blue">#000FFF</color>
+    <color name="button_background_color">#16AAE4</color>
 </resources>

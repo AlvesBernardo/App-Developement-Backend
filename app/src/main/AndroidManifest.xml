@@ -28,7 +28,14 @@
         </activity>
 
         <activity android:name=".pages.GradeStudent"
-                  android:theme="@style/AppTheme"
+                android:theme="@style/AppTheme"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".pages.StudentPageActivity"
+                android:theme="@style/AppTheme"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

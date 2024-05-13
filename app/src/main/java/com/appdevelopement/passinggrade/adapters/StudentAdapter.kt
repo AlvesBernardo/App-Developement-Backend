@@ -22,10 +22,10 @@ class StudentAdapter(private var studentArrayList: ArrayList<StudentDto>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.tvStudentName.text = studentArrayList[position].studentName
-        viewHolder.tvStudentNumber.text = studentArrayList[position].toString()
+        viewHolder.tvStudentNumber.text = studentArrayList[position].studentNumber.toString()
         viewHolder.tvGraded.text = studentArrayList[position].isGraded.toString()
 
-        Log.d(TAG, "onBindViewHolder")
+//        Log.d(TAG, "onBindViewHolder")
     }
 
     override fun getItemCount(): Int {

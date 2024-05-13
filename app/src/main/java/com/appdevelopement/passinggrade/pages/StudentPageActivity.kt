@@ -12,7 +12,6 @@ import com.appdevelopement.passinggrade.dto.StudentDto
 
 class StudentPageActivity : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_page)
@@ -22,14 +21,14 @@ class StudentPageActivity : AppCompatActivity() {
 
         val studentList = arrayListOf(
             StudentDto("John Doe", 126345, true),
-            StudentDto("Jane Smith", 678890, false),
+            StudentDto("Jane Smith",678890, false),
             StudentDto("Alice Johnson", 547321, true)
         )
 
         val studentAdapter = StudentAdapter(studentList)
         recyclerView.adapter = studentAdapter
 
-        val filterItems = arrayOf("All", "Graded", "UnGraded");
+        val filterItems = arrayOf("All", "Graded", "UnGraded")
 
         val filterAdapter = ArrayAdapter(
             this, R.layout.spinner_item, filterItems

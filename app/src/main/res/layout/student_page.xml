@@ -81,13 +81,13 @@
 
     <!--  Student Number Field  -->
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="165dp"
             android:layout_height="48dp"
             android:inputType="text"
             android:ems="10"
             android:id="@+id/etStudentNumberField"
             android:hint="Search by student number"
-            android:textSize="15sp"
+            android:textSize="@dimen/_10ssp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/tvCourseName"
             android:layout_marginTop="20dp" />
@@ -95,10 +95,11 @@
     <!-- FilterBy Spinner  -->
     <Spinner
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:id="@+id/spnrFilterBy"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintBaseline_toBaselineOf="@+id/etStudentNumberField" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/etStudentNumberField"
+            android:textAlignment="textEnd" />
 
     <!-- Export Grades Button -->
     <Button
@@ -172,7 +173,8 @@
                 android:text="Graded"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tvTitleTwo"
-                app:layout_constraintStart_toEndOf="@+id/tvTitleTwo" />
+                app:layout_constraintStart_toEndOf="@+id/tvTitleTwo"
+                android:layout_height="wrap_content" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

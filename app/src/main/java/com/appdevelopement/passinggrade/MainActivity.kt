@@ -1,5 +1,7 @@
 package com.appdevelopement.passinggrad
 
+import android.app.Application
+import android.health.connect.datatypes.SleepSessionRecord
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.scene.control.ComboBox
@@ -11,7 +13,7 @@ class CourseDropdownApp : Application() {
 
     private val comboBox by lazy { ComboBox<String>() }
 
-    override fun start(primaryStage: Stage) {
+    override fun start(primaryStage: SleepSessionRecord.Stage) {
         val root = VBox()
         root.children.add(comboBox)
 

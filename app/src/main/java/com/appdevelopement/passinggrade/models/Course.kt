@@ -1,9 +1,10 @@
-import org.ktorm.schema.Table
-import org.ktorm.schema.int
-import org.ktorm.schema.varchar
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
+import androidx.room.Entity
 
-object Course : Table<Nothing>
-    ("tblCourse"){
-        val idCourse = int("idCourse").primaryKey()
-        val dtDescription = varchar("dtDescription")
-    }
+
+@Entity
+data class Course(
+    @PrimaryKey(autoGenerate = true) val idCourse : Int,
+    @ColumnInfo(name = "dtDescription") val dtDescription: String?
+)

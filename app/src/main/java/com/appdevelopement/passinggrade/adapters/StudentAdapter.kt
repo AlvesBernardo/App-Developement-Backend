@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.dto.StudentDto
+import com.appdevelopement.passinggrade.dto.Student
 
-class StudentAdapter(private var studentArrayList: ArrayList<StudentDto>) :
+class StudentAdapter(private var studentArrayList: ArrayList<Student>) :
     RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {

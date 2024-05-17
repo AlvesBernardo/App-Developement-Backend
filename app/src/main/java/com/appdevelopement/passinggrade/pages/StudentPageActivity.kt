@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.StudentAdapter
-import com.appdevelopement.passinggrade.dto.StudentDto
+import com.appdevelopement.passinggrade.dto.Student
 
 class StudentPageActivity : AppCompatActivity() {
 
@@ -21,9 +21,9 @@ class StudentPageActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val studentList = arrayListOf(
-            StudentDto("John Doe", 126345, true),
-            StudentDto("Jane Smith", 678890, false),
-            StudentDto("Alice Johnson", 547321, true)
+            Student("John Doe", 126345, true),
+            Student("Jane Smith", 678890, false),
+            Student("Alice Johnson", 547321, true)
         )
 
         val studentAdapter = StudentAdapter(studentList)

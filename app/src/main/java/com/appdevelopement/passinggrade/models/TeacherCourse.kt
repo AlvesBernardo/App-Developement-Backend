@@ -1,9 +1,24 @@
-package com.appdevelopement.passinggrade.models
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
 
-import org.ktorm.schema.Table
-import org.ktorm.schema.int
-
-object TeacherCourse : Table<Nothing>("tblTeacherCourse") {
-    val idTeacher = int("idTeacher")
-    val idCourse = int("idCourse")
-}
+@Entity(primaryKeys = ["idTeacher", "idCourse"],
+    foreignKeys = [
+        ForeignKey(entity = Teacher::class,
+            parentColumns = ["idTeacher"],
+            childColumns = ["idTeacher"],
+            onDelete = ForeignKey.CASCADE),
+        ForeignKey(entity = Course::class,
+            parentColumns = ["idCourse"],
+            childColumns = ["idCourse"],
+            onDelete = ForeignKey.CASCADE)
+    ],
+    indices = [
+        Index(value = ["idTeacher"]),
+        Index(value = ["idCourse"])
+    ]
+)
+data class TeacherCourse(
+    val idTeacher: Int,
+    val idCourse: Int
+)

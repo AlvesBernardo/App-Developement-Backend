@@ -1,13 +1,13 @@
 package com.appdevelopement.passinggrade
 
 
-import AppDatabase
 import GradeStudentFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
+import com.appdevelopement.passinggrade.database.AppDatabase // Ensure proper import
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,19 +21,10 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                // Uncommented for future use
-                // R.id.home -> {
-                //     replaceFragment(StudentPageActivity())
-                //     true
-                // }
                 R.id.grade -> {
                     replaceFragment(GradeStudentFragment())
                     true
                 }
-                // R.id.profile -> {
-                //     replaceFragment(ProfileFragment())
-                //     true
-                // }
                 else -> false
             }
         }
@@ -45,17 +36,13 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize the database
         CoroutineScope(Dispatchers.IO).launch {
-            db = AppDatabase.getDatabase(applicationContext)
-
-            // Example of interaction with the database to ensure it's not null
             try {
-                val exams = db.examDao().getAll()  // Make sure the method call is safe
+                db = AppDatabase.getDatabase(applicationContext)
+                val exams = db.examDao().getAll() // Interact with the database safely
                 withContext(Dispatchers.Main) {
                     // Use exams in UI thread if needed
-                    // Or, perform any UI task after ensuring db initialization
                 }
             } catch (e: Exception) {
-                // Handle exceptions, e.g., log to console
                 e.printStackTrace()
             }
         }

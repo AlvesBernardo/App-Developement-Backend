@@ -1,10 +1,9 @@
 package com.appdevelopement.passinggrade.dto
 
-//
-//Sure, happy to explain!
-//A Data Transfer Object (DTO) is a simple object that carries data between processes. It's typically used when you want to transfer more complex data structures across network boundaries or across layers in an application, and particularly when that transfer involves expensive operations such as database calls, API requests, serialization, etc.
+import androidx.room.ColumnInfo
+
 data class Student(
-    val studentName: String,
-    val StudentNumber: Int,
-    val isGraded: Boolean
+    @ColumnInfo(name = "dtStudentName") val studentName: String,
+    @ColumnInfo(name = "dtStudentNumber") val studentNumber: Int,
+    @ColumnInfo(name = "dtIsGrades") val isGraded: Boolean
 )

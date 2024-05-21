@@ -1,3 +1,5 @@
+package com.appdevelopement.passinggrade.models
+
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -27,3 +29,4 @@ data class TeacherCourse(
     val idTeacher: Int,
     val idCourse: Int
 )
+

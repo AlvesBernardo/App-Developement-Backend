@@ -1,5 +1,8 @@
+package com.appdevelopement.passinggrade.dao
+
 import androidx.room.Dao
 import androidx.room.Query
+import com.appdevelopement.passinggrade.models.Teacher
 
 
 //could be defined later ask jan

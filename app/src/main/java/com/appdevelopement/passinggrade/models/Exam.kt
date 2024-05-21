@@ -1,3 +1,4 @@
+package com.appdevelopement.passinggrade.models
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
@@ -21,6 +22,7 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Exam(
+
     @PrimaryKey(autoGenerate = true) val examId: Int,
     val idTeacher: Int,
     val idStudent: Int,

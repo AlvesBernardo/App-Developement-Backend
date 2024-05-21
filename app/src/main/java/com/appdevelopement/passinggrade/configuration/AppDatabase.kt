@@ -1,12 +1,15 @@
+package com.appdevelopement.passinggrade.database
+
+
+
+import com.appdevelopement.passinggrade.models.*
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import android.content.Context
+import com.appdevelopement.passinggrade.dao.*
 
-@Database(
-    entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class],
-    version = 1
-)
+@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun teacherDao(): TeacherDao
     abstract fun studentDao(): StudentDao

@@ -1,5 +1,8 @@
+package com.appdevelopement.passinggrade.dao
+
 import androidx.room.Dao
 import androidx.room.Query
+import com.appdevelopement.passinggrade.models.Exam
 
 
 @Dao

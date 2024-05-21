@@ -1,45 +1,69 @@
 package com.appdevelopement.passinggrade
 
-import AppDatabase
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
-import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.pages.GradeStudent
-import com.appdevelopement.passinggrade.pages.StudentPageActivity
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import AppDatabase
+import GradeStudentFragment
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var db: AppDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val studnetPageButton = findViewById<Button>(R.id.studentPage)
-        val gradingStudentButton =findViewById<Button>(R.id.graddingStudent)
+        val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-
-        studnetPageButton.setOnClickListener{
-            val intent = Intent(this, StudentPageActivity::class.java)
-            startActivity(intent)
+        bottomNavigationItemView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                // Uncommented for future use
+                // R.id.home -> {
+                //     replaceFragment(StudentPageActivity())
+                //     true
+                // }
+                R.id.grade -> {
+                    replaceFragment(GradeStudentFragment())
+                    true
+                }
+                // R.id.profile -> {
+                //     replaceFragment(ProfileFragment())
+                //     true
+                // }
+                else -> false
+            }
         }
 
-        gradingStudentButton.setOnClickListener{
-            val intent = Intent(this, GradeStudent::class.java)
-            startActivity(intent)
+        // Load the default fragment
+        if (savedInstanceState == null) {
+            bottomNavigationItemView.selectedItemId = R.id.grade  // Default to grade fragment
         }
 
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "appDevDb"
-        ).build()
+        // Initialize the database
+        CoroutineScope(Dispatchers.IO).launch {
+            db = AppDatabase.getDatabase(applicationContext)
 
-//        val intend = Intent(this, GradeStudent::class.java)
-//        startActivity(intend)
-//        finish()
+            // Example of interaction with the database to ensure it's not null
+            try {
+                val exams = db.examDao().getAll()  // Make sure the method call is safe
+                withContext(Dispatchers.Main) {
+                    // Use exams in UI thread if needed
+                    // Or, perform any UI task after ensuring db initialization
+                }
+            } catch (e: Exception) {
+                // Handle exceptions, e.g., log to console
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

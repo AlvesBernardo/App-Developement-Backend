@@ -2,16 +2,21 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 
-@Entity(primaryKeys = ["idTeacher", "idCourse"],
+@Entity(
+    primaryKeys = ["idTeacher", "idCourse"],
     foreignKeys = [
-        ForeignKey(entity = Teacher::class,
+        ForeignKey(
+            entity = Teacher::class,
             parentColumns = ["idTeacher"],
             childColumns = ["idTeacher"],
-            onDelete = ForeignKey.CASCADE),
-        ForeignKey(entity = Course::class,
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = Course::class,
             parentColumns = ["idCourse"],
             childColumns = ["idCourse"],
-            onDelete = ForeignKey.CASCADE)
+            onDelete = ForeignKey.CASCADE
+        )
     ],
     indices = [
         Index(value = ["idTeacher"]),

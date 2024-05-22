@@ -38,7 +38,7 @@
                 android:text="Student Number"
                 android:layout_height="wrap_content" />
 
-        <TextView
+        <ImageView
                 android:id="@+id/tvGraded"
                 style="@style/TableRowStyle"
                 android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                 android:background="@color/white"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/_10ssp"
-                android:text="Graded"/>
+                android:src="@drawable/baseline_check_box_outline_blank_24"/>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

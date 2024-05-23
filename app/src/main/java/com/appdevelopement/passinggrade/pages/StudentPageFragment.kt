@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.appcompat.widget.SearchView
 import android.widget.Spinner
 import android.widget.Toast
@@ -36,6 +37,11 @@ class StudentPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.student_page, container, false)
         //super.onCreate(savedInstanceState)
+        val scanExcelButtom = view.findViewById<Button>(R.id.btnCreateSheet)
+
+        scanExcelButtom.setOnClickListener{
+
+        }
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

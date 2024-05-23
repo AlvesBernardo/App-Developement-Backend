@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<<<<<<< HEAD
     <dimen name="_1sdp">1dp</dimen>
     <dimen name="_5sdp">5dp</dimen>
     <dimen name="_8sdp">8dp</dimen>
     <dimen name="_10sdp">10dp</dimen>
     <dimen name="_30sdp">30dp</dimen>
     <dimen name="_14ssp">14sp</dimen>
+=======
+
+    <dimen name="dimen_0">0dp</dimen>
+    <dimen name="dimen_05">0.5dp</dimen>
+    <dimen name="dimen_1">1dp</dimen>
+    <dimen name="dimen_2">2dp</dimen>
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_48">48dp</dimen>
+
+    <!--Army!!! Don't use static 5dp and 10dp, Always try to use the margin_8  and margin_16 -->
+
+    <dimen name="text_header_regular">24sp</dimen>
+    <dimen name="text_header_medium">20sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_body2">14sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+    <dimen name="text_overline">10sp</dimen>
+
+    <!--Army!!! Please add more dimens below-->
+
+>>>>>>> 6de0a74da6fd43edf39f121b1dd31d76142c3cab
 </resources>

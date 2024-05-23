@@ -9,9 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.dto.StudentDto
+import com.appdevelopement.passinggrade.dto.StudentDTO
 
-class StudentAdapter(private var studentArrayList: ArrayList<StudentDto>) :
+class StudentAdapter(private var studentArrayList: ArrayList<StudentDTO>) :
     RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -39,7 +39,7 @@ class StudentAdapter(private var studentArrayList: ArrayList<StudentDto>) :
         return studentArrayList.size
     }
 
-    fun updateData(filteredItems: ArrayList<StudentDto>){
+    fun updateData(filteredItems: ArrayList<StudentDTO>){
         studentArrayList = filteredItems
         notifyDataSetChanged() // Notify RecyclerView that the dataset has changed
     }

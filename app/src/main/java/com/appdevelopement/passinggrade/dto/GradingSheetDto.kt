@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade.dto
 
+import androidx.room.ColumnInfo
+
 data class GradingSheetDto(
-    val dtIdGradingSheetItem: Int,
-    val dtDescription: String
+    @ColumnInfo(name = "dtDescription") val dtDescription: String
 )

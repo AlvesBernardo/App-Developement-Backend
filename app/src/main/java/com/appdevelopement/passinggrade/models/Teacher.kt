@@ -1,11 +1,12 @@
-import org.ktorm.schema.Table
-import org.ktorm.schema.int
-import org.ktorm.schema.varchar
+package com.appdevelopement.passinggrade.models
 
-object Teacher : Table<Nothing>
-    ("tblTeacher"){
-    val idTeacher = int("idTeacher").primaryKey()
-    val dtEmail = varchar("dtEmail")
-    val dtPassword = varchar("dtPassword")
-    val dtName = varchar("dtName")
-}
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+@Entity
+data class Teacher(
+    @PrimaryKey(autoGenerate = true) val idTeacher: Int,
+    @ColumnInfo(name = "dtEmail") val dtEmail: String?,
+    @ColumnInfo(name = "dtPassword") val dtPassword: String?,
+    @ColumnInfo(name = "dtName") val dtName: String?
+)

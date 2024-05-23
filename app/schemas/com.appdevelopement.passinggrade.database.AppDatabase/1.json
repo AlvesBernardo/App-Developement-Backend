@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3e73138ed47a86d15d879c654e52d13e",
+    "identityHash": "5d59ffd3e9ed7d1f030d599a14005a7e",
     "entities": [
       {
         "tableName": "Teacher",
@@ -44,7 +44,7 @@
       },
       {
         "tableName": "Student",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idStudent` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `studentName` TEXT NOT NULL, `studentNumber` INTEGER NOT NULL, `isGraded` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idStudent` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtStudentName` TEXT NOT NULL, `dtStudentNumber` INTEGER NOT NULL, `dtIsGrades` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "idStudent",
@@ -54,19 +54,19 @@
           },
           {
             "fieldPath": "studentName",
-            "columnName": "studentName",
+            "columnName": "dtStudentName",
             "affinity": "TEXT",
             "notNull": true
           },
           {
             "fieldPath": "studentNumber",
-            "columnName": "studentNumber",
+            "columnName": "dtStudentNumber",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "isGraded",
-            "columnName": "isGraded",
+            "columnName": "dtIsGrades",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -82,13 +82,19 @@
       },
       {
         "tableName": "Course",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCourse` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtDescription` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCourse` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtTitle` TEXT, `dtDescription` TEXT)",
         "fields": [
           {
             "fieldPath": "idCourse",
             "columnName": "idCourse",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "dtTitle",
+            "columnName": "dtTitle",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "dtDescription",
@@ -259,7 +265,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e73138ed47a86d15d879c654e52d13e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d59ffd3e9ed7d1f030d599a14005a7e')"
     ]
   }
 }

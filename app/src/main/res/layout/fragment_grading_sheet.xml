@@ -9,26 +9,8 @@
         tools:context=".pages.PracticeMainActivity">
 
     <!-- Profile Image -->
-    <ImageButton
-            android:id="@+id/ibProfileImg"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/baseline_catching_pokemon_24"
-            android:contentDescription="@string/profile_img"
-            android:onClick="onImageButtonClick"
-            android:background="@drawable/circle_background"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <!-- Floating Action Button Menu -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:clickable="true"
-            app:srcCompat="@drawable/baseline_menu_24"
-            android:id="@+id/fabMenu"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3" />
 
     <!--  Guidelines  -->
     <androidx.constraintlayout.widget.Guideline
@@ -67,6 +49,7 @@
             app:layout_constraintGuide_percent="0.50364965" />
 
     <!-- CourseName -->
+
     <TextView
             android:text="Make GradeSheet"
             android:layout_width="wrap_content"
@@ -75,9 +58,8 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:id="@+id/tvCourseName"
-            app:layout_constraintTop_toBottomOf="@+id/ibProfileImg"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            android:layout_marginTop="30dp" />
+            tools:layout_editor_absoluteY="39dp" />
 
     <Spinner
             android:layout_width="wrap_content"
@@ -105,7 +87,8 @@
             app:layout_constraintTop_toBottomOf="@+id/btnCreateSheet"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline2" />
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.0" />
 
     <EditText
             android:layout_width="0dp"

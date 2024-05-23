@@ -24,13 +24,13 @@ class GradingSheetPageActivity : AppCompatActivity(){
     private lateinit var gradingSheetAdapter: GradingSheetAdapter
 
     private val courseList = arrayListOf(
-        CourseDto(1, "OOP 1"),
-        CourseDto(2, "OOP 2"),
-        CourseDto(3, "Software Quality")
+        CourseDto("as", "OOP 1"),
+        CourseDto("sd", "OOP 2"),
+        CourseDto("sds", "Software Quality")
     )
 
     private val gradingSheetItemList = arrayListOf(
-        GradingSheetDto(1, "Grading Sheet criteria")
+        GradingSheetDto( "Grading Sheet criteria")
 
     )
 
@@ -53,7 +53,7 @@ class GradingSheetPageActivity : AppCompatActivity(){
             val text = gradingSheetItem.text.toString()
             if (text.isNotEmpty()) {
                 val newGradingSheetItemsId = gradingSheetItemList.size + 1
-                gradingSheetItemList.add(GradingSheetDto(newGradingSheetItemsId, text))
+                gradingSheetItemList.add(GradingSheetDto(newGradingSheetItemsId.toString()))
                 gradingSheetAdapter.notifyItemInserted(gradingSheetItemList.size - 1)
                 gradingSheetItem.text.clear()
             }

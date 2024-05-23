@@ -24,13 +24,13 @@ class GradingSheetFragment : Fragment() {
     private lateinit var gradingSheetAdapter: GradingSheetAdapter
 
     private val courseList = arrayListOf(
-        CourseDto(1, "OOP 1"),
-        CourseDto(2, "OOP 2"),
-        CourseDto(3, "Software Quality")
+        CourseDto("Test", "OOP 1"),
+        CourseDto("test", "OOP 2"),
+        CourseDto("test", "Software Quality")
     )
 
     private val gradingSheetItemList = arrayListOf(
-        GradingSheetDto(1, "Grading Sheet criteria")
+        GradingSheetDto( "Grading Sheet criteria")
     )
 
     override fun onCreateView(
@@ -57,7 +57,7 @@ class GradingSheetFragment : Fragment() {
             val text = gradingSheetItem.text.toString()
             if (text.isNotEmpty()) {
                 val newGradingSheetItemsId = gradingSheetItemList.size + 1
-                gradingSheetItemList.add(GradingSheetDto(newGradingSheetItemsId, text))
+                gradingSheetItemList.add(GradingSheetDto(newGradingSheetItemsId.toString()))
                 gradingSheetAdapter.notifyItemInserted(gradingSheetItemList.size - 1)
                 gradingSheetItem.text.clear()
             }

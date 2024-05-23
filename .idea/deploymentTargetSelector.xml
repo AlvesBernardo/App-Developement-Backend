@@ -4,32 +4,15 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 294f1d92ca1e93adae69724ed955a80bc7d26353
-      <SelectionState runConfigName="MainActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="MainActivity (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-10T13:45:51.070930400Z">
+        <DropdownSelection timestamp="2024-05-23T21:09:34.422922500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=R58NA4QCH3T" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\Pixel_8_Pro_API_34.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-<<<<<<< HEAD
-=======
->>>>>>> 80a100ea82784dca9e05244cd870e526371af706
-=======
-
->>>>>>> 294f1d92ca1e93adae69724ed955a80bc7d26353
     </selectionStates>
   </component>
 </project>

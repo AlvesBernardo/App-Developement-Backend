@@ -9,6 +9,7 @@ import kotlinx.coroutines.*
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Student
 import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.pages.SheetManagementFragment
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
@@ -34,6 +35,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.profile -> {
                     replaceFragment(StudentPageFragment()) // You need to create this fragment
+                    true
+                }
+                R.id.sheets -> {
+                    replaceFragment(SheetManagementFragment()) // You need to create this fragment
                     true
                 }
                 else -> false

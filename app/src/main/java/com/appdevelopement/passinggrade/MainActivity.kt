@@ -1,4 +1,4 @@
-package com.appdevelopement.passinggrad
+package com.appdevelopement.passinggrade.pages
 
 import android.app.Application
 import android.health.connect.datatypes.SleepSessionRecord

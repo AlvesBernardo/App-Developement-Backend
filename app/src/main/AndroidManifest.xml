@@ -34,13 +34,15 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".pages.StudentPageFragment"
-                android:theme="@style/AppTheme"
-                android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
+<!--        <activity android:name=".pages.StudentPageFragment"-->
+<!--                android:theme="@style/AppTheme"-->
+<!--                android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+
 
     </application>
 

@@ -9,6 +9,7 @@ import kotlinx.coroutines.*
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Student
 import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
@@ -25,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(UserDashboardFragment())
+                    replaceFragment(GradingSheetFragment())
                     true
                 }
                 R.id.grade -> {

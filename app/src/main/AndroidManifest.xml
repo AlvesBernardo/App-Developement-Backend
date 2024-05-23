@@ -13,8 +13,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             tools:targetApi="33">
+
         <activity
-                android:name="com.appdevelopement.passinggrade.pages.StudentPageActivity"
+                android:name="com.appdevelopement.passinggrade.pages.GradingSheetPageActivity"
                 android:label="Student Activity"
                 android:theme="@style/AppTheme"
                 android:exported="true">
@@ -27,3 +28,5 @@
     </application>
 
 </manifest>
+
+<!--        android:name="com.appdevelopement.passinggrade.pages.StudentPageActivity"-->

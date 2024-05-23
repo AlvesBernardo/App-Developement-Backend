@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content" />
 
         <ImageView
-                android:id="@+id/tvRemoveCriteria"
+                android:id="@+id/ivRemoveCriteria"
                 style="@style/TableRowStyle"
                 android:layout_width="1dp"
                 android:layout_column="2"

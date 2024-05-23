@@ -3,14 +3,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.database.AppDatabase
+import com.appdevelopement.passinggrade.models.Exam
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.lifecycleScope
+
 
 class GradeStudentFragment : Fragment() {
+
+    private lateinit var db : AppDatabase
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,6 +32,8 @@ class GradeStudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        db = AppDatabase.getDatabase(requireContext())
 
         val studentNameBox = view.findViewById<TextView>(R.id.StudentName)
         val gradingCriteria = arrayOf(
@@ -99,5 +112,54 @@ class GradeStudentFragment : Fragment() {
             // Add the criterion layout to the grading area layout
             gradingAreaLayout.addView(criterionLayout)
         }
+
+        val submitButton = view.findViewById<Button>(R.id.button)
+        submitButton.setOnClickListener{
+            val grade = calculateGrade(gradingAreaLayout)
+
+            val exam = Exam(
+                examId = 0,
+                idTeacher = 1,
+                idStudent =1,
+                grade = grade
+            )
+
+            viewLifecycleOwner.lifecycleScope.launch{
+            withContext(Dispatchers.IO) {
+                    db.examDao().insertExam(exam)
+                }
+            }
+        }
+
+    }
+
+    private fun calculateGrade(gradingAreaLayout: LinearLayout): Int {
+        var totalPercentage = 0
+        var criteriaCount = 0
+
+        for (i in 1 until gradingAreaLayout.childCount) {
+            val criterionLayout = gradingAreaLayout.getChildAt(i) as LinearLayout
+            var criterionPercentage = 0
+
+            for (j in 1 until criterionLayout.childCount - 1) {
+                val checkBox = criterionLayout.getChildAt(j) as CheckBox
+                if (checkBox.isChecked) {
+                    criterionPercentage = when (checkBox.text.toString()) {
+                        "20%" -> 20
+                        "50%" -> 50
+                        "70%" -> 70
+                        "100%" -> 100
+                        else -> 0
+                    }
+                }
+            }
+
+            if (criterionPercentage > 0) {
+                totalPercentage += criterionPercentage
+                criteriaCount++
+            }
+        }
+
+        return if (criteriaCount > 0) totalPercentage / criteriaCount else 0
     }
 }

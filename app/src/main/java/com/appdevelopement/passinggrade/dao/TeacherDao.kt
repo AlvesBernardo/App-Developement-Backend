@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade.dao
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.appdevelopement.passinggrade.models.Teacher
 
@@ -12,6 +13,9 @@ import com.appdevelopement.passinggrade.models.Teacher
 interface TeacherDao{
     @Query("Select * From Teacher")
     fun getAll() : List<Teacher>
+
+    @Insert
+    suspend fun insertTeacher(teacher: Teacher): Long
 
 
 

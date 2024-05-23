@@ -1,13 +1,15 @@
 package com.appdevelopement.passinggrade
 
-
 import GradeStudentFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
-import com.appdevelopement.passinggrade.database.AppDatabase // Ensure proper import
+import com.appdevelopement.passinggrade.database.AppDatabase
+import com.appdevelopement.passinggrade.models.Student
+import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.pages.StudentPageFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,8 +23,16 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.home -> {
+                    replaceFragment(HomeFragment())
+                    true
+                }
                 R.id.grade -> {
                     replaceFragment(GradeStudentFragment())
+                    true
+                }
+                R.id.profile -> {
+                    replaceFragment(StudentPageFragment()) // You need to create this fragment
                     true
                 }
                 else -> false
@@ -31,13 +41,41 @@ class MainActivity : AppCompatActivity() {
 
         // Load the default fragment
         if (savedInstanceState == null) {
-            bottomNavigationItemView.selectedItemId = R.id.grade  // Default to grade fragment
+            bottomNavigationItemView.selectedItemId = R.id.home  // Default to home fragment
         }
 
         // Initialize the database
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 db = AppDatabase.getDatabase(applicationContext)
+
+                // Check if there are any teachers in the database
+                val teachers = db.teacherDao().getAll()
+                if (teachers.isEmpty()) {
+                    db.teacherDao().insertTeacher(
+                        Teacher(
+                            idTeacher = 0,
+                            dtEmail = "teacher@example.com",
+                            dtPassword = "password",
+                            dtName = "John Doe"
+                        )
+                    )
+                }
+
+                // Check if there are any students in the database
+                val students = db.studentDao().getAll()
+                if (students.isEmpty()) {
+                    db.studentDao().insertStudent(
+                        Student(
+                            idStudent = 0,
+                            studentName = "Jane Doe",
+                            studentNumber = 12345,
+                            isGraded = false
+                        )
+                    )
+                }
+
+                // Optionally interact with the database and update UI
                 val exams = db.examDao().getAll() // Interact with the database safely
                 withContext(Dispatchers.Main) {
                     // Use exams in UI thread if needed
@@ -47,6 +85,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()

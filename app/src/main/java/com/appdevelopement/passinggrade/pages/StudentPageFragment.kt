@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.StudentAdapter
-import com.appdevelopement.passinggrade.dto.Student
+import com.appdevelopement.passinggrade.dto.StudentDTO
 
 class StudentPageFragment : Fragment() {
 
@@ -25,9 +25,9 @@ class StudentPageFragment : Fragment() {
     //    private lateinit var etStudentNumberField: EditText
     private lateinit var searchView: SearchView
     private val studentList = arrayListOf(
-        Student("John Doe", 126345, true),
-        Student("Jane Smith", 678890, false),
-        Student("Alice Johnson", 547321, true)
+        StudentDTO("John Doe", 126345, true),
+        StudentDTO("Jane Smith", 678890, false),
+        StudentDTO("Alice Johnson", 547321, true)
     )
 
     override fun onCreateView(
@@ -42,9 +42,9 @@ class StudentPageFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
 
         val studentList = arrayListOf(
-            Student("John Doe", 126345, true),
-            Student("Jane Smith", 678890, false),
-            Student("Alice Johnson", 547321, true)
+            StudentDTO("John Doe", 126345, true),
+            StudentDTO("Jane Smith", 678890, false),
+            StudentDTO("Alice Johnson", 547321, true)
         )
 
         studentAdapter = StudentAdapter(studentList)
@@ -93,7 +93,7 @@ class StudentPageFragment : Fragment() {
     }
 
         private fun filterStudentByNumber(query: String?) {
-        val filteredList: ArrayList<Student> = if (query.isNullOrEmpty()) {
+        val filteredList: ArrayList<StudentDTO> = if (query.isNullOrEmpty()) {
             studentList
         } else {
             ArrayList( studentList.filter {
@@ -108,7 +108,7 @@ class StudentPageFragment : Fragment() {
 
 
     private fun filterStudentsByGradeStatus(filter: String) {
-        val filteredList: ArrayList<Student> = when (filter) {
+        val filteredList: ArrayList<StudentDTO> = when (filter) {
             "Graded" -> ArrayList(studentList.filter { it.isGraded })
             "UnGraded" -> ArrayList(studentList.filter { !it.isGraded })
             else -> ArrayList(studentList) // Again, a copy of the original list

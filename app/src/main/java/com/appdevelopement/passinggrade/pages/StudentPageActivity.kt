@@ -59,7 +59,7 @@ class StudentPageActivity : AppCompatActivity() {
             this, R.layout.spinner_item, filterItems
         )
 
-        val spinner: Spinner = findViewById(R.id.spnrFilterByCourse)
+        val spinner: Spinner = findViewById(R.id.spnrFilterBy)
         spinner.adapter = filterAdapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

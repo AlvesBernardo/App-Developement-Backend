@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
@@ -22,19 +23,30 @@ class StudentAdapter(private var studentArrayList: ArrayList<Student>) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         viewHolder.tvStudentName.text = studentArrayList[position].studentName
-        viewHolder.tvStudentNumber.text = studentArrayList[position].toString()
-        viewHolder.tvGraded.text = studentArrayList[position].isGraded.toString()
+        viewHolder.tvStudentNumber.text = studentArrayList[position].studentNumber.toString()
+//        viewHolder.tvGraded.text = studentArrayList[position].isGraded.toString()
 
-        Log.d(TAG, "onBindViewHolder")
+        // Set the image drawable based on the isGraded value
+        val imageDrawableResId = if (studentArrayList[position].isGraded) {
+            R.drawable.baseline_check_box_24 // Assuming this is your checkmark drawable
+        } else {
+            R.drawable.baseline_check_box_outline_blank_24 // Assuming this is your cross drawable
+        }
+        viewHolder.tvGraded.setImageResource(imageDrawableResId)
     }
 
     override fun getItemCount(): Int {
         return studentArrayList.size
     }
 
+    fun updateData(filteredItems: ArrayList<Student>){
+        studentArrayList = filteredItems
+        notifyDataSetChanged() // Notify RecyclerView that the dataset has changed
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvStudentName: TextView = itemView.findViewById(R.id.tvStudentName)
         val tvStudentNumber: TextView = itemView.findViewById(R.id.tvStudentNumber)
-        val tvGraded: TextView = itemView.findViewById(R.id.tvGraded)
+        val tvGraded: ImageView = itemView.findViewById(R.id.tvGraded)
     }
 }

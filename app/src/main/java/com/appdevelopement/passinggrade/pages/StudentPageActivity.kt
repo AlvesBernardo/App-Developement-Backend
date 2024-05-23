@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.StudentAdapter
 import com.appdevelopement.passinggrade.dto.StudentDto
-import java.util.Locale
 
 class StudentPageActivity : AppCompatActivity() {
 
@@ -60,7 +59,7 @@ class StudentPageActivity : AppCompatActivity() {
             this, R.layout.spinner_item, filterItems
         )
 
-        val spinner: Spinner = findViewById(R.id.spnrFilterBy)
+        val spinner: Spinner = findViewById(R.id.spnrFilterByCourse)
         spinner.adapter = filterAdapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {

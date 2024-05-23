@@ -10,6 +10,7 @@ import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Student
 import com.appdevelopement.passinggrade.models.Teacher
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
+import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(HomeFragment())
+                    replaceFragment(UserDashboardFragment())
                     true
                 }
                 R.id.grade -> {

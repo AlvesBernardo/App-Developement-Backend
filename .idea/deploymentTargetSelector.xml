@@ -6,6 +6,10 @@
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 294f1d92ca1e93adae69724ed955a80bc7d26353
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -20,8 +24,12 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+<<<<<<< HEAD
 =======
 >>>>>>> 80a100ea82784dca9e05244cd870e526371af706
+=======
+
+>>>>>>> 294f1d92ca1e93adae69724ed955a80bc7d26353
     </selectionStates>
   </component>
 </project>

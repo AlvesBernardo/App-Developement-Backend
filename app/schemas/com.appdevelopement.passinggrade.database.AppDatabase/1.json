@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "58ee64a9984415778a3d197de76d33f2",
+    "identityHash": "5d59ffd3e9ed7d1f030d599a14005a7e",
     "entities": [
       {
         "tableName": "Teacher",
@@ -82,13 +82,19 @@
       },
       {
         "tableName": "Course",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCourse` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtDescription` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCourse` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `dtTitle` TEXT, `dtDescription` TEXT)",
         "fields": [
           {
             "fieldPath": "idCourse",
             "columnName": "idCourse",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "dtTitle",
+            "columnName": "dtTitle",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "dtDescription",
@@ -259,7 +265,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '58ee64a9984415778a3d197de76d33f2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5d59ffd3e9ed7d1f030d599a14005a7e')"
     ]
   }
 }

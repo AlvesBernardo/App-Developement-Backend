@@ -1,13 +1,9 @@
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import androidx.compose.material.AlertDialog
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.database.AppDatabase
@@ -16,11 +12,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import androidx.lifecycle.lifecycleScope
+import com.appdevelopement.passinggrade.utils.popups.CommentPopUpHandler
 
 
 class GradeStudentFragment : Fragment() {
 
-    private lateinit var db : AppDatabase
+    private lateinit var db: AppDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,32 +83,53 @@ class GradeStudentFragment : Fragment() {
             // Add the TextView to the criterion layout
             criterionLayout.addView(criterionTextView)
 
-            // Add CheckBoxes for each percentage
-            val percentages = arrayOf("20%", "50%", "70%", "100%")
-            for (percentage in percentages) {
-                val checkBox = CheckBox(context)
-                checkBox.text = percentage
-                checkBox.layoutParams = LinearLayout.LayoutParams(
-                    0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1f
-                )
-                criterionLayout.addView(checkBox)
+            // Add SeekBar for each percentage
+            val seekBar = SeekBar(context).apply {
+                max = 100
+                progress = 0
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
             }
+            val percentageTextView = TextView(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                text = "0%"
+            }
+            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    val steps = arrayOf(20, 50, 75, 100)
+                    val closestStep = steps.minByOrNull { Math.abs(it - progress) } ?: 0
+                    seekBar?.progress = closestStep
+                    percentageTextView.text = "$closestStep%"
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            })
+
+            criterionLayout.addView(seekBar)
+            criterionLayout.addView(percentageTextView)
 
             // Add EditText for comments
-            val commentsEditText = EditText(context)
-            commentsEditText.layoutParams = LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1f
-            )
-            commentsEditText.setBackgroundResource(android.R.color.white)
-            criterionLayout.addView(commentsEditText)
+            val commentButton = Button(context).apply {
+                text = "Add comment"
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                setOnClickListener {
+                    CommentPopUpHandler(context).showCommentPopUp(criterion)
+                }
+            }
 
-            // Add the criterion layout to the grading area layout
+            criterionLayout.addView(commentButton)
+
             gradingAreaLayout.addView(criterionLayout)
-        }
+
+
+
+    }
+
+
+    }
 
 //        val submitButton = view.findViewById<Button>(R.id.button)
 //        submitButton.setOnClickListener{
@@ -131,7 +149,7 @@ class GradeStudentFragment : Fragment() {
 //            }
 //        }
 
-    }
+
 
 //    private fun calculateGrade(gradingAreaLayout: LinearLayout): Int {
 //        var totalPercentage = 0

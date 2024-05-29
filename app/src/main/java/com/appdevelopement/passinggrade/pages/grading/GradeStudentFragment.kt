@@ -30,11 +30,11 @@ class GradeStudentFragment : Fragment() {
         val gradingAreaLayout = view.findViewById<LinearLayout>(R.id.competencyContainer)
 
         lifecycleScope.launch {
-            val student = withContext(Dispatchers.IO){
+            val student = withContext(Dispatchers.IO) {
                 db.studentDao().findStudent(1)  // replace with actual studentId
             }
 
-            val criterias = withContext(Dispatchers.IO){
+            val criterias = withContext(Dispatchers.IO) {
                 db.compentenceDao().getCompetencesForExam(1)  // replace with actual examId
             }
 
@@ -48,29 +48,79 @@ class GradeStudentFragment : Fragment() {
                 gradingCriteria.forEach { criterion ->
                     // ... add TextView for each criterion to gradingAreaLayout
                     // change "criterion" in TextView setup if that's not what you want displayed
-                    val crtiterionLayout = LinearLayout(context).apply {
-                        // Implementation based on your existing code
+                    val criterionLayout = LinearLayout(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        orientation = LinearLayout.VERTICAL
+                        setPadding(10, 10, 10, 10) // set padding
+                    }
+
+                    // Create a layout for SeekBar section
+                    val seekBarLayout = LinearLayout(context).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                         )
                         orientation = LinearLayout.HORIZONTAL
-
-                        addView( TextView(context).apply{
-                            text = criterion
-                            layoutParams = LinearLayout.LayoutParams(
-                                0,
-                                LinearLayout.LayoutParams.WRAP_CONTENT,
-                                1f
-                            )
-                        })
-                        // Add other views to criterionLayout as per your requirement
                     }
 
+                    // Add TextView to seekBarLayout
+                    seekBarLayout.addView(TextView(context).apply {
+                        text = criterion
+                        layoutParams = LinearLayout.LayoutParams(
+                            0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1f
+                        )
+                        textSize = 20f
+                    })
+                    val progressTextView = TextView(context).apply { layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT) }
+
+                    seekBarLayout.addView(SeekBar(context).apply {
+                        max = 100
+                        progress = 0
+                        val heightInDp = 30
+                        val scale = resources.displayMetrics.density
+                        val heightInPixels = (heightInDp * scale + 0.5f).toInt()
+                        layoutParams = LinearLayout.LayoutParams(0, heightInPixels, 1f)
+
+                        setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                                val steps = arrayOf(5,10,15,20,25,30,35,40,45,50,75,100)
+                                val closestStep = steps.minByOrNull { kotlin.math.abs(it - progress) } ?: 0
+                                seekBar?.progress = closestStep
+                                progressTextView.text = "$closestStep%"
+                            }
+
+                            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+                            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+                        })
+                    })
+
+                    seekBarLayout.addView(progressTextView)
+
+                    // Add seekBarLayout to top level criterionLayout
+                    criterionLayout.addView(seekBarLayout)
+
+                    // Add Button to top level criterionLayout
+                    criterionLayout.addView(Button(context).apply {
+                        text = "Add comment"
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        setOnClickListener {
+                            // You need to handle the comment popup here
+                        }
+                    })
+
                     // Add Criterion layout to grading area layout
-                    gradingAreaLayout.addView(crtiterionLayout)
+                    gradingAreaLayout.addView(criterionLayout)
+
                 }
             }
-            }
         }
+    }
 }

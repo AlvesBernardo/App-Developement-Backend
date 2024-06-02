@@ -106,9 +106,7 @@ class GradingSheetFragment : Fragment() {
                                 insertCompetenceToDb(competence)
                                 Log.d("Competence: ",  competence.toString())
                             }
-
                             removeAllCompetences()
-                            gradingSheetAdapter.removeAllCriterias()
                             Log.d("Competences Size: "+ competenceList.size,  competenceList.toString())
                         }
                     }
@@ -163,6 +161,7 @@ class GradingSheetFragment : Fragment() {
 
     private fun removeAllCompetences(){
         competenceList.clear()
+        gradingSheetAdapter.removeAllCriterias()
     }
     private suspend fun insertCompetenceToDb(competence: Compentence){
         withContext(Dispatchers.IO) {

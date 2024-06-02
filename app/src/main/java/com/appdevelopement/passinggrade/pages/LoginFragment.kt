@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
 class LoginFragment : Fragment() {
 
@@ -39,7 +40,19 @@ class LoginFragment : Fragment() {
             return
         }
 
-        // Implement dynamic login logic here
-        // This could involve making a network request to validate the user credentials
+        // Perform login logic here (e.g., network request, database check)
+        // Replace the following line with your actual login logic
+        val isLoginSuccessful = true
+
+        if (isLoginSuccessful) {
+            // Navigate to UserDashboardFragment
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, UserDashboardFragment())
+            transaction.commit()
+        } else {
+            // Show error message or handle login failure
+            Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

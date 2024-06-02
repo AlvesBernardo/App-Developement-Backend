@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // Use middleware to add entities to database
         val database = AppDatabase.getDatabase(this)
-        TeacherManger.addTeacher(this)
+//        TeacherManger.addTeacher(this)
         AddStudent.addStundent(this)
         AddExam.addExam(this)
         CompetenceManager.addCompetences(this)

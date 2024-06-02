@@ -8,17 +8,23 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
 object TeacherManger {
-    val teacher1 = Teacher(
+//    val teacher1 = Teacher(
+//        idTeacher = 0,
+//        dtEmail = "jan@email.com",
+//        dtPassword = "JanPaw",
+//        dtName = "Teacher 1"
+//    )
+    val teacher2 = Teacher(
         idTeacher = 0,
-        dtEmail = "teacher1@example.com",
-        dtPassword = "securePassword",
-        dtName = "Teacher 1"
+        dtEmail = "gerjan@email.com",
+        dtPassword = "GerjanPaw",
+        dtName = "Teacher 2"
     )
 
     fun addTeacher(context: Context) {
         val dao = AppDatabase.getDatabase(context).teacherDao()
         CoroutineScope(IO).launch {
-            dao.insertTeacher(teacher1)
+            dao.insertTeacher(teacher2)
         }
     }
 }

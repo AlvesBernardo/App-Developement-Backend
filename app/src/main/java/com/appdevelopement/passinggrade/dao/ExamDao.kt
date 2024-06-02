@@ -19,6 +19,7 @@ interface ExamDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertexam(exam: Exam)
 
-
+    @Query("SELECT * FROM EXAM WHERE idCourse = :idCourse")
+    suspend fun getExamsByCourseId(idCourse: Int): List<Exam>
 
 }

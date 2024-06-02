@@ -17,4 +17,6 @@ interface CompentenceDao {
     @Query("SELECT * FROM Compentence WHERE idExam = :idExam")
     suspend fun getCompetencesForExam(idExam: Int): List<Compentence>
 
+
+
 }

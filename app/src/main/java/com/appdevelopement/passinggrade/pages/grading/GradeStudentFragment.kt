@@ -5,9 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.controllers.gradingController.CreateCompetenceGradeUseCase
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.utils.popups.CommentPopUpHandler
 import com.appdevelopement.passinggrade.utils.popups.StudentRecordCreator
@@ -17,10 +19,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-data class CriterionRecord(val name: String, var progress: Int, var comment:String)
+data class CriterionRecord(val name: String, var progress: Int, var comment: String)
 class GradeStudentFragment : Fragment() {
 
     private lateinit var db: AppDatabase
+
+    // Declare new variable
+    private lateinit var createCompetenceGradeUseCase: CreateCompetenceGradeUseCase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -30,6 +35,7 @@ class GradeStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = AppDatabase.getDatabase(requireContext())
+        createCompetenceGradeUseCase = CreateCompetenceGradeUseCase(db.CompentenceGradeDao())
         val studentNameBox = view.findViewById<TextView>(R.id.StudentName)
         val gradingAreaLayout = view.findViewById<LinearLayout>(R.id.competencyContainer)
         val submitButton = view.findViewById<Button>(R.id.button)
@@ -144,10 +150,15 @@ class GradeStudentFragment : Fragment() {
             submitButton.setOnClickListener {
                 if (student != null) {
                     val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout)
-                    val studentRecord = studentRecordCreator.getStudentRecord(student!!, totalGrade, gradingAreaLayout)
+                    val studentRecord = studentRecordCreator.getStudentRecord(student, totalGrade, gradingAreaLayout)
+                    val criterionRecords: List<CriterionRecord> = gradingAreaLayout.children
+                        .filter { it is LinearLayout && it.tag is CriterionRecord }
+                        .map { it.tag as CriterionRecord }
+                        .toList()
                     lifecycleScope.launch(Dispatchers.IO) {
                         val excelWriter = WriteToExcelFile(requireContext())
                         excelWriter.writeToExcel(student.idStudent.toString(), listOf(studentRecord))
+                        createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent)
                     }
                 } else {
                     // Handle your logic here if student is null

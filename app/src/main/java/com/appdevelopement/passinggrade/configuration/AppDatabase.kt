@@ -15,6 +15,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun examDao(): ExamDao
     abstract fun teacherCourseDao(): TeacherCourseDao
     abstract fun compentenceDao(): CompentenceDao
+    abstract fun CompentenceGradeDao():CompentenceGradeDao
 
     companion object {
         @Volatile

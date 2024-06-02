@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.appdevelopement.passinggrade.dao.*
 
-@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class], version = 2)
+@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class, CompetenceGrade::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun teacherDao(): TeacherDao
     abstract fun studentDao(): StudentDao

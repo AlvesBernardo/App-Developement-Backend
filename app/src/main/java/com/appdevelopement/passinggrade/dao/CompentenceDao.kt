@@ -14,4 +14,7 @@ interface CompentenceDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(compentence: Compentence)
 
+    @Query("SELECT * FROM Compentence WHERE idExam = :idExam")
+    suspend fun getCompetencesForExam(idExam: Int): List<Compentence>
+
 }

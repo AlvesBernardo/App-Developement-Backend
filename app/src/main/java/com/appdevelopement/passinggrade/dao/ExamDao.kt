@@ -13,10 +13,12 @@ interface ExamDao{
     @Query("SELECT * FROM Exam")
     fun getAll(): List<Exam>
 
-    @Insert
-    fun insertExam(exam: Exam)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertExam(exam: Exam): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertexam(exam: Exam)
+
+
 
 }

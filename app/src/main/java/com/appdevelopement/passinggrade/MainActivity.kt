@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade
 
 import GradeStudentFragment
+import LoginFragment
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Load LoginFragment initially
+        if (savedInstanceState == null) {
+            replaceFragment(LoginFragment())
+        }
 
         val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -42,11 +48,6 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> false
             }
-        }
-
-        // Load the default fragment
-        if (savedInstanceState == null) {
-            bottomNavigationItemView.selectedItemId = R.id.home  // Default to home fragment
         }
 
         // Use middleware to add entities to database

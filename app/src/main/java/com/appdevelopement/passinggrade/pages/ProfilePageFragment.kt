@@ -20,16 +20,6 @@ import com.appdevelopement.passinggrade.R
 import com.google.android.material.textfield.TextInputLayout
 import java.io.IOException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfilePageFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 
 class ProfilePageFragment : Fragment() {
     private lateinit var profileImageView: ImageView
@@ -67,19 +57,6 @@ class ProfilePageFragment : Fragment() {
                 // Carry out procedure to store the new password
             }
         }
-
-//        toggleButton.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                // Show password
-//                newPasswordEt.inputType = InputType.TYPE_CLASS_TEXT
-//            } else {
-//                // Hide password
-//                newPasswordEt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-//            }
-//            newPasswordEt.setSelection(newPasswordEt.text.toString().length) // Move cursor to the end
-//        }
-
-
     }
 
     private fun openGallery() {
@@ -101,57 +78,3 @@ class ProfilePageFragment : Fragment() {
         }
     }
 }
-
-//class ProfilePageFragment : Fragment() {
-//    // TODO: Rename and change types of parameters
-//    private lateinit var profileImageView: ImageView
-////    private var param2: String? = null
-//
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        val view =  inflater.inflate(R.layout.fragment_profile_page, container, false)
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        //Initialize Editext & Buttons
-//        val changeProfilePictureBttn = view.findViewById<Button> (R.id.bttnChangePicture)
-//        val submitPasswordBttn = view.findViewById<Button> (R.id.bttnSubmitPassword)
-//        val newPasswordEt = view.findViewById<EditText>(R.id.etNewPassword)
-//
-//        changeProfilePictureBttn.setOnClickListener{
-//            openGallery()
-//        }
-//
-//        submitPasswordBttn.setOnClickListener{
-//
-//            val password = newPasswordEt.text.toString()
-//            if(password.isNotEmpty()){
-//                val newPassword = password
-//
-//                //Carry out procedure to store the new password
-//            }
-//        }
-//
-//        return view
-//    }
-//
-//    private fun openGallery(){
-//        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//        galleryLauncher.launch(intent)
-//    }
-//
-//    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        if (result.resultCode == RESULT_OK && result.data != null) {
-//            val imageUri: Uri? = result.data?.data
-//            try {
-//                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
-//                profileImageView.setImageBitmap(bitmap)
-//            } catch (e: IOException) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
-//}

@@ -15,6 +15,7 @@ import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 import com.appdevelopement.passinggrade.pages.ProfilePageFragment
+import com.appdevelopement.passinggrade.pages.SignUpPageFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    replaceFragment(ProfilePageFragment())
+                    replaceFragment(SignUpPageFragment())
+//                    replaceFragment(ProfilePageFragment())
 //                    replaceFragment(GradingSheetFragment())
                     true
                 }

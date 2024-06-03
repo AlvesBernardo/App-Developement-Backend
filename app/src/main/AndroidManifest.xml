@@ -30,20 +30,20 @@
             </intent-filter>
         </activity>
 
-<!--        <activity android:name=".pages.GradeStudent"-->
-<!--                android:theme="@style/AppTheme"-->
-<!--                android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
-<!--        <activity android:name=".pages.StudentPageFragment"-->
-<!--                android:theme="@style/AppTheme"-->
-<!--                android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <!--        <activity android:name=".pages.GradeStudent"-->
+        <!--                android:theme="@style/AppTheme"-->
+        <!--                android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+        <!--        <activity android:name=".pages.StudentPageFragment"-->
+        <!--                android:theme="@style/AppTheme"-->
+        <!--                android:exported="true">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
 
 
 
@@ -51,4 +51,4 @@
 
 </manifest>
 
-<!--        android:name="com.appdevelopement.passinggrade.pages.StudentPageActivity"-->
+        <!--        android:name="com.appdevelopement.passinggrade.pages.StudentPageActivity"-->

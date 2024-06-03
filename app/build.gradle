@@ -143,5 +143,7 @@ dependencies {
     testImplementation 'androidx.room:room-testing:2.4.0'
     implementation("androidx.compose.ui:ui:1.6.7")
     implementation("androidx.compose.material:material:1.6.7")
+    implementation 'org.apache.poi:poi-ooxml:5.2.3' // Use the latest version
+
 
 }

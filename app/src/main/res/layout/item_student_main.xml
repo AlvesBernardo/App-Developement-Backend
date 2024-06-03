@@ -17,8 +17,7 @@
         <TextView
                 android:id="@+id/tvStudentName"
                 style="@style/TableRowStyle"
-                android:layout_width="wrap_content"
-                android:layout_column="0"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:textAlignment="center"
@@ -29,8 +28,7 @@
         <TextView
                 android:id="@+id/tvStudentNumber"
                 style="@style/TableRowStyle"
-                android:layout_width="wrap_content"
-                android:layout_column="1"
+                android:layout_width="0dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:textAlignment="center"
@@ -41,27 +39,20 @@
         <ImageView
                 android:id="@+id/tvGraded"
                 style="@style/TableRowStyle"
-                android:layout_width="6dp"
-                android:layout_column="2"
+                android:layout_width="24dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:textAlignment="center"
-                android:textSize="8sp"
                 android:src="@drawable/baseline_check_box_outline_blank_24"
                 android:layout_height="match_parent" />
 
         <Button
                 android:text="Add or Change grade"
-                android:layout_column="3"
-                android:layout_width="34dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnChangeGrade"
-                android:layout_weight="1"
                 android:textSize="8sp"
                 android:backgroundTint="#028577"
                 android:textColor="#FFFFFF" />
-
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

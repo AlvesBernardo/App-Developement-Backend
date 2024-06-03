@@ -13,6 +13,9 @@ interface CourseDao{
     @Query("SELECT * FROM Course")
     fun getAll(): List<Course>
 
+    @Query("SELECT * FROM Course")
+    fun getAllCourses(): List<Course>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(course: Course): Long
 //

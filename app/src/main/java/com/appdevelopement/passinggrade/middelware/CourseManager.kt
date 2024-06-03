@@ -1,6 +1,4 @@
-
-package com.appdevelopement.passinggrade.middelware
-
+package com.appdevelopement.passinggrade.middleware
 import android.content.Context
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Course
@@ -16,9 +14,14 @@ object CourseManager {
 
     suspend fun addCourse(context: Context): Course {
         val dao = AppDatabase.getDatabase(context).courseDao()
-        val courseId = withContext(Dispatchers.IO) {
-            dao.insertCourses(course)
+        return withContext(Dispatchers.IO) {
+            try {
+                val courseId = dao.insertCourses(course)
+                course.copy(idCourse = courseId.toInt())
+            } catch (e: Exception) {
+                // Handle the exception (e.g., log it, rethrow it, or return a default value)
+                throw e
+            }
         }
-        return course.copy(idCourse = courseId.toInt())
     }
 }

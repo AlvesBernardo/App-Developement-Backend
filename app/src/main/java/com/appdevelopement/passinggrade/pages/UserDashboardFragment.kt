@@ -18,13 +18,13 @@ class UserDashboardFragment : Fragment() {
 
         Course(0, "APP dev","Learn the basics of Kotlin programming."),
         Course(1, "OOP","Build modern Android UI with Compose."),
-        Course(2, "Info mangagemtn","Understand the principles and techniques for managing information."),
-        Course(3, "WebDev","Learn how to create dynamic websites using HTML, CSS, and JavaScript."),
-        Course(4, "database","Master the skills needed to design, implement, and manage databases."),
+        Course(2, "Info management","Understand the principles and techniques for managing information."),
+        Course(3, "Web Dev","Learn how to create dynamic websites using HTML, CSS, and JavaScript."),
+        Course(4, "database engineering","Master the skills needed to design, implement, and manage databases."),
         Course(5, "OOP1","Introduction to Object-Oriented Programming principles."),
         Course(6, "OOP2","Advanced concepts in Object-Oriented Programming."),
         Course(7,"Software quality","Learn about software testing, verification, and quality assurance."),
-        Course(8, "Software","Complete guide to developing applications for different platforms.")
+        Course(8, "Data Processing","Complete guide to developing applications for different platforms.")
 
     )
 
@@ -69,7 +69,7 @@ class UserDashboardFragment : Fragment() {
     private fun showCourseDialog(course: Course) {
         AlertDialog.Builder(requireContext())
             .setTitle(course.dtTitle)
-            .setMessage(course.dtTitle)
+            .setMessage(course.dtDescription)
             .setPositiveButton("Close", null)
             .show()
     }

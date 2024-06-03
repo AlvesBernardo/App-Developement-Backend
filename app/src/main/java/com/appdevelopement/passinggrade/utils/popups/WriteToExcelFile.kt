@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade.utils.popups
 
 import android.content.Context
+import android.os.Environment
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.IndexedColors
 import java.io.File
@@ -39,7 +40,7 @@ class WriteToExcelFile(private val context: Context) {
                 row.createCell(j).setCellValue(fieldValue)
         }
 
-        val path = context.getExternalFilesDir(null)?.absolutePath ?: ""
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         try {
             val fos = FileOutputStream(File(path, "$fileName.xlsx"))
             excelWorkbook.write(fos)

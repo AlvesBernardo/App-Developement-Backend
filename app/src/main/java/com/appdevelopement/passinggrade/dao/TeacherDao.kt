@@ -11,6 +11,10 @@ import com.appdevelopement.passinggrade.models.Teacher
 //hide information like image image hidding a grade
 @Dao
 interface TeacherDao{
+
+    @Query("SELECT * FROM Teacher WHERE dtEmail = :username AND dtPassword = :password LIMIT 1")
+    suspend fun getTeacherByCredentials(username: String, password: String): Teacher?
+
     @Query("Select * From Teacher")
     fun getAll() : List<Teacher>
 

@@ -8,13 +8,13 @@ import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.AddExam
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.appdevelopement.passinggrade.middelware.TeacherManger
 import com.appdevelopement.passinggrade.middelware.AddStudent
 import com.appdevelopement.passinggrade.middelware.CompetenceManager
 import com.appdevelopement.passinggrade.models.Teacher
 import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
+import com.appdevelopement.passinggrade.middelware.TeacherManagerV2
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +39,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile -> {
-                    replaceFragment(StudentPageFragment()) // You need to create this fragment
+                    replaceFragment(StudentPageFragment())
                     true
                 }
                 R.id.profilev2 -> {
-                    replaceFragment(UserDashboardFragment()) // You need to create this fragment
+                    replaceFragment(UserDashboardFragment())
                     true
                 }
                 else -> false
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // Use middleware to add entities to database
         val database = AppDatabase.getDatabase(this)
-//        TeacherManger.addTeacher(this)
+        TeacherManagerV2.addTeacher(this)
         AddStudent.addStundent(this)
         AddExam.addExam(this)
         CompetenceManager.addCompetences(this)

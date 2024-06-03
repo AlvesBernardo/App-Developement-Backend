@@ -40,18 +40,14 @@ class LoginFragment : Fragment() {
             return
         }
 
-        // Perform login logic here (e.g., network request, database check)
-        // Replace the following line with your actual login logic
         val isLoginSuccessful = true
 
         if (isLoginSuccessful) {
-            // Navigate to UserDashboardFragment
             val fragmentManager = requireActivity().supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, UserDashboardFragment())
             transaction.commit()
         } else {
-            // Show error message or handle login failure
             Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
         }
     }

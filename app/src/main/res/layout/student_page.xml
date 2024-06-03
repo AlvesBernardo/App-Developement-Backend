@@ -212,7 +212,7 @@
                 android:baselineAligned="false"
                 android:textAlignment="center"
                 android:textSize="8sp"
-                android:text="Change grade"
+                android:text="Add or Change grade"
                 app:layout_constraintEnd_toStartOf="@+id/guideline3"
                 app:layout_constraintBaseline_toBaselineOf="@+id/btnChangeGrade"
                 app:layout_constraintStart_toEndOf="@+id/btnChangeGrade"

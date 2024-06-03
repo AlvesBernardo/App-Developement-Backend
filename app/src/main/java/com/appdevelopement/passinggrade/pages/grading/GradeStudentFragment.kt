@@ -50,7 +50,7 @@ class GradeStudentFragment : Fragment() {
 
         lifecycleScope.launch {
             val student = withContext(Dispatchers.IO) {
-                db.studentDao().findStudent(1)  // replace with actual studentId
+                db.studentDao().findStudent(15)  // replace with actual studentId
             }
 
             val criterias = withContext(Dispatchers.IO) {

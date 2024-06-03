@@ -34,11 +34,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.grade -> {
-                    replaceFragment(GradeStudentFragment())
-                    true
-                }
-
                 R.id.profile -> {
                     replaceFragment(StudentPageFragment()) // You need to create this fragment
                     true
@@ -79,19 +74,19 @@ class MainActivity : AppCompatActivity() {
             val teacherId = teacher.idTeacher
 
             // Insert student
-            val student = AddStudent.addStudent(context)
-            val studentId = student.idStudent
+//            val student = AddStudent.addStudent(context)
+//            val studentId = student.idStudent
 
             // Insert course
             val course = CourseManager.addCourse(context)
             val courseId = course.idCourse
 
             // Insert exam
-            val exam = AddExam.addExam(context, teacherId, studentId, courseId)
-            val examId = exam.idExam
+//            val exam = AddExam.addExam(context, teacherId, studentId, courseId)
+//            val examId = exam.idExam
 
             // Insert competences
-            CompetenceManager.addCompetences(context, examId)
+//            CompetenceManager.addCompetences(context, examId)
         }
     }
 

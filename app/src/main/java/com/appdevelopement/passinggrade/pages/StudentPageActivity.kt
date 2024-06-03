@@ -1,4 +1,3 @@
-
 package com.appdevelopement.passinggrade.pages
 
 import android.os.Bundle
@@ -19,7 +18,6 @@ class StudentPageActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var studentAdapter: StudentAdapter
-//    private lateinit var etStudentNumberField: EditText
     private lateinit var searchView: SearchView
     private val studentList = arrayListOf(
         StudentDTO("John Doe", 126345, true),
@@ -35,7 +33,7 @@ class StudentPageActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.setHasFixedSize(true)
 
-        studentAdapter = StudentAdapter(studentList)
+        studentAdapter = StudentAdapter(studentList, supportFragmentManager) // Pass the FragmentManager here
         recyclerView.adapter = studentAdapter
 
         searchView = findViewById(R.id.searchView)
@@ -51,7 +49,7 @@ class StudentPageActivity : AppCompatActivity() {
             }
         })
 
-        //Spinner
+        // Spinner
         val filterItems = arrayOf("All", "Graded", "UnGraded")
 
         val filterAdapter = ArrayAdapter(
@@ -70,13 +68,13 @@ class StudentPageActivity : AppCompatActivity() {
                 // Do nothing
             }
         }
-
     }
-        private fun filterStudentByNumber(query: String?) {
+
+    private fun filterStudentByNumber(query: String?) {
         val filteredList: ArrayList<StudentDTO> = if (query.isNullOrEmpty()) {
             studentList
         } else {
-            ArrayList( studentList.filter {
+            ArrayList(studentList.filter {
                 it.studentNumber.toString().contains(query)
             })
         }

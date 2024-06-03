@@ -15,15 +15,15 @@ import kotlinx.coroutines.withContext
 object AddStudent {
     val student = Student(
         idStudent = 0,
-        studentName = "Jane Doe",
-        studentNumber = 12345,
+        studentName = "adas Doe",
+        studentNumber = 2321,
         isGraded = false
     )
 
     val student2 = Student(
         idStudent = 0,
-        studentName = "Jane Doe",
-        studentNumber = 12345,
+        studentName = "twas Doe",
+        studentNumber = 123131313,
         isGraded = false
     )
 

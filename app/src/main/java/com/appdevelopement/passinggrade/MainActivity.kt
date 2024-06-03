@@ -1,60 +1,90 @@
 package com.appdevelopement.passinggrade
 
+
+
+import android.content.Context
 import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.appdevelopement.passinggrade.middelware.AddStudent
+import com.appdevelopement.passinggrade.middelware.CompetenceManager
+import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.middelware.TeacherManagerV2
+import com.appdevelopement.passinggrade.middleware.CourseManager
 import com.appdevelopement.passinggrade.pages.GradingSheetFragment
-import com.appdevelopement.passinggrade.pages.StudentPageFragment
-import com.appdevelopement.passinggrade.pages.UserDashboardFragment
+import com.appdevelopement.passinggrade.pages.LoginFragment
 import com.appdevelopement.passinggrade.pages.ProfilePageFragment
-import com.appdevelopement.passinggrade.pages.SignUpPageFragment
+import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Load LoginFragment initially
+        if (savedInstanceState == null) {
+            replaceFragment(LoginFragment())
+        }
+
+        val database = AppDatabase.getDatabase(this)
+        val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
         val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         bottomNavigationItemView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.home -> {
+            val isLoggedIn = sharedPreferences.getBoolean("loggedIn",false)
+            val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+            val oneHourInMilliSeconds = 60 * 60 *1000
+            if(isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)) {
+                when (item.itemId) {
+                    R.id.home -> {
 //                    replaceFragment(SignUpPageFragment())
 //                    replaceFragment(ProfilePageFragment())
-                    replaceFragment(GradingSheetFragment())
-                    true
-                }
+                        replaceFragment(GradingSheetFragment())
+                        true
+                    }
 
-                R.id.profile -> {
-                    replaceFragment(StudentPageFragment()) // You need to create this fragment
-                    true
-                }
 
-                R.id.profilev2 -> {
-                    replaceFragment(UserDashboardFragment()) // You need to create this fragment
-                    true
-                }
+                    R.id.grade -> {
+                        replaceFragment(GradeStudentFragment())
+                        true
+                    }
 
-                else -> false
+                    R.id.profile -> {
+                        replaceFragment(StudentPageFragment())
+                        true
+                    }
+
+                    R.id.profilev2 -> {
+                        replaceFragment(ProfilePageFragment()) // You need to create this fragment
+
+                        true
+                    }
+
+                    else -> false
+                }
+            }else{
+                sharedPreferences.edit()?.remove("loggedIn")?.apply() // Remove the loggedIn flag
+                replaceFragment(LoginFragment())
+                Log.d("error", "User not logged in")
+                true
             }
         }
 
-        // Load the default fragment
-        if (savedInstanceState == null) {
-            bottomNavigationItemView.selectedItemId = R.id.home  // Default to home fragment
-        }
-
         // Use middleware to add entities to database
-        initializeDatabase()
+        TeacherManagerV2.addTeacher(this)
+//        AddStudent.addStundent(this)
+//        AddExam.addExam(this)
+//        CompetenceManager.addCompetences(this)
+//        initializeDatabase()
 
     }
 

@@ -13,5 +13,5 @@
             android:icon="@drawable/logout"/>
     <item android:title="Profile"
             android:id="@+id/profilev2"
-            android:icon="@drawable/logout"/>
+            android:icon="@drawable/user"/>
 </menu>

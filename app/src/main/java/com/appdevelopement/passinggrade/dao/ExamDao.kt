@@ -16,12 +16,13 @@ interface ExamDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertexam(exam: Exam)
 
+    @Query("SELECT * FROM EXAM WHERE idCourse = :idCourse")
+    suspend fun getExamsByCourseId(idCourse: Int): List<Exam>
+
     @Query("SELECT * FROM Exam where idExam= :examId")
     fun getExam(examId: Int): Exam?
 
     @Update
     suspend fun updateExam(exam: Exam)
-
-
 
 }

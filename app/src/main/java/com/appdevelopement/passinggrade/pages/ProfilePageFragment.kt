@@ -13,52 +13,66 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.database.AppDatabase
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 
 class ProfilePageFragment : Fragment() {
-    private lateinit var profileImageView: ImageView
 
+    private lateinit var profileImageView: ImageView
+    private lateinit var db: AppDatabase
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize ImageView
+
+        // DB connection
+        db = AppDatabase.getDatabase(requireContext())
+
         profileImageView = view.findViewById(R.id.ivProfilePicture)
 
-        // Initialize EditText & Buttons
-        val changeProfilePictureBttn = view.findViewById<Button>(R.id.bttnChangePicture)
         val submitPasswordBttn = view.findViewById<Button>(R.id.bttnSubmitPassword)
         val newPasswordEt = view.findViewById<EditText>(R.id.etNewPassword)
-//        val textInputLayout = view.findViewById<TextInputLayout>(R.id.textInputLayout)
-//        val toggleButton = view.findViewById<ToggleButton>(R.id.toggleButton)
 
-        changeProfilePictureBttn.setOnClickListener {
-            openGallery()
-        }
+        //Need to pass email to profile page then store it in profileEmail
+        val profileEmail = view.findViewById<TextView>(R.id.tvProfileEmail)
+
 
         submitPasswordBttn.setOnClickListener {
             val password = newPasswordEt.text.toString()
             if (password.isNotEmpty()) {
-                val newPassword = password
 
-                // Carry out procedure to store the new password
+                lifecycleScope.launch{
+
+                    updateProfilePassword(password, profileEmail.text.toString())
+                }
+
             }
         }
     }
 
+    private suspend fun updateProfilePassword(password: String, email: String){
+        withContext(Dispatchers.IO){
+            db.teacherDao().updateTeacher(password, email)
+        }
+    }
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(intent)

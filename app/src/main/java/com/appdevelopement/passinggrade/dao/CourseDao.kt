@@ -11,7 +11,7 @@ import com.appdevelopement.passinggrade.models.Exam
 @Dao
 interface CourseDao{
     @Query("SELECT * FROM Course")
-    fun getAll(): List<Course>
+    fun getAllCourses(): List<Course>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCourses(course: Course): Long

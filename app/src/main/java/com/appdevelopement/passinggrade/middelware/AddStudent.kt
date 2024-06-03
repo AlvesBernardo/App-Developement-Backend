@@ -20,10 +20,19 @@ object AddStudent {
         isGraded = false
     )
 
+    val student2 = Student(
+        idStudent = 0,
+        studentName = "Jane Doe",
+        studentNumber = 12345,
+        isGraded = false
+    )
+
+
     suspend fun addStudent(context: Context): Student {
         val dao = AppDatabase.getDatabase(context).studentDao()
         val studentId = withContext(Dispatchers.IO) {
             dao.insertStudent(student)
+            dao.insertStudent(student2)
         }
         return student.copy(idStudent = studentId.toInt())
     }

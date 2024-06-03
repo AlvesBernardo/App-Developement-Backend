@@ -5,19 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.controllers.gradingController.CreateCompetenceGradeUseCase
+import com.appdevelopement.passinggrade.controllers.gradingController.GradingUseCase
+import com.appdevelopement.passinggrade.controllers.gradingController.UpdateExamGradeUseCase
 import com.appdevelopement.passinggrade.database.AppDatabase
+import com.appdevelopement.passinggrade.utils.popups.CommentPopUpHandler
+import com.appdevelopement.passinggrade.utils.popups.StudentRecordCreator
+import com.appdevelopement.passinggrade.utils.popups.WriteToExcelFile
+import com.appdevelopement.passinggrade.utils.popups.calculators.CritertionCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
+data class CriterionRecord(val name: String, var progress: Int, var comment: String)
 class GradeStudentFragment : Fragment() {
 
     private lateinit var db: AppDatabase
 
+    // Declare new variable
+    private lateinit var createCompetenceGradeUseCase: CreateCompetenceGradeUseCase
+    private lateinit var updateExamGradeUseCase: UpdateExamGradeUseCase
+    private lateinit var gradingUseCase: GradingUseCase
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.grade_student, container, false)
@@ -26,8 +38,15 @@ class GradeStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = AppDatabase.getDatabase(requireContext())
+        createCompetenceGradeUseCase = CreateCompetenceGradeUseCase(db.CompentenceGradeDao(), db.compentenceDao())
+        gradingUseCase = GradingUseCase(db)
+        updateExamGradeUseCase = UpdateExamGradeUseCase(db.examDao())
+
         val studentNameBox = view.findViewById<TextView>(R.id.StudentName)
         val gradingAreaLayout = view.findViewById<LinearLayout>(R.id.competencyContainer)
+        val submitButton = view.findViewById<Button>(R.id.button)
+        val criterionCalculator = CritertionCalculator()
+        val studentRecordCreator = StudentRecordCreator()
 
         lifecycleScope.launch {
             val student = withContext(Dispatchers.IO) {
@@ -76,8 +95,15 @@ class GradeStudentFragment : Fragment() {
                         )
                         textSize = 20f
                     })
-                    val progressTextView = TextView(context).apply { layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT) }
+                    val progressTextView = TextView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                    }
 
+                    val record = CriterionRecord(criterion, 0, "")
+                    criterionLayout.tag = record
                     seekBarLayout.addView(SeekBar(context).apply {
                         max = 100
                         progress = 0
@@ -86,11 +112,13 @@ class GradeStudentFragment : Fragment() {
                         val heightInPixels = (heightInDp * scale + 0.5f).toInt()
                         layoutParams = LinearLayout.LayoutParams(0, heightInPixels, 1f)
 
+
                         setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                                val steps = arrayOf(5,10,15,20,25,30,35,40,45,50,75,100)
+                                val steps = arrayOf(5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100)
                                 val closestStep = steps.minByOrNull { kotlin.math.abs(it - progress) } ?: 0
                                 seekBar?.progress = closestStep
+                                record.progress = closestStep
                                 progressTextView.text = "$closestStep%"
                             }
 
@@ -111,14 +139,46 @@ class GradeStudentFragment : Fragment() {
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
+                        val commentPopUpHandler = CommentPopUpHandler(context)
                         setOnClickListener {
-                            // You need to handle the comment popup here
+                            commentPopUpHandler.showCommentPopUp(criterion)
+                            val comment = commentPopUpHandler.getComment(criterion)
+                            record.comment = comment
                         }
                     })
 
                     // Add Criterion layout to grading area layout
                     gradingAreaLayout.addView(criterionLayout)
 
+                }
+            }
+
+            submitButton.setOnClickListener {
+                if (student != null) {
+                    val MINIMUM_SCORE = 5.5
+                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout).toDouble()
+                    val studentRecord = studentRecordCreator.getStudentRecord(student, totalGrade, gradingAreaLayout)
+
+                    val criterionRecords: List<CriterionRecord> = gradingAreaLayout.children
+                        .filter { it is LinearLayout && it.tag is CriterionRecord }
+                        .map { it.tag as CriterionRecord }
+                        .toList()
+
+                    lifecycleScope.launch {
+                        val isPass =
+                            gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
+                        val excelWriter = WriteToExcelFile(requireContext())
+                        excelWriter.writeToExcel(student.idStudent.toString(), listOf(studentRecord))
+                        createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent, 1)
+                        if (isPass) {
+                            withContext(Dispatchers.IO) {
+                                updateExamGradeUseCase.execute(student.idStudent, totalGrade, isPass)
+                            }
+                        }
+                    }
+                } else {
+                    // Handle your logic here if student is null.
+                    Toast.makeText(context, "Error: Student is null", Toast.LENGTH_SHORT).show()
                 }
             }
         }

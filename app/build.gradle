@@ -22,6 +22,11 @@ android {
         versionName "2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/other-file.txt'
+    }
+
 
 //        javaCompileOptions {
 //            annotationProcessorOptions {
@@ -115,6 +120,7 @@ dependencies {
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'org.apache.poi:poi-ooxml:5.2.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation("androidx.room:room-testing:$room_version")

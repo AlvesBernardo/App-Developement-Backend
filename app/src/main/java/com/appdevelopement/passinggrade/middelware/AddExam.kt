@@ -1,26 +1,29 @@
 package com.appdevelopement.passinggrade.middelware
 
 import android.content.Context
+import android.util.Log
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 object AddExam {
-
-    val oop1Exam = Exam(
-        examId = 0,
-        idTeacher = 1,
-        idStudent = 1,
-        grade = 100,
-        comment = "Excellent",
-        examName = "OOP1"
-    )
-
-    fun addExam(context: Context) {
+    suspend fun addExam(context: Context, teacherId: Int, studentId: Int, courseId: Int): Exam {
         val dao = AppDatabase.getDatabase(context).examDao()
-        CoroutineScope(IO).launch {
-            dao.insertexam(oop1Exam)
+        val exam = Exam(
+            idExam = 0,
+            examName = "OOP1",
+            idTeacher = teacherId,
+            idStudent = studentId,
+            idCourse = courseId
+        )
+        val examId = withContext(Dispatchers.IO) {
+            dao.insertExam(exam)
         }
+        return exam.copy(idExam = examId.toInt())
     }
 }
+

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".pages.ProfilePageFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--  Guidelines  -->
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline2"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline3"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.93" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline4"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline5"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.94" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline7"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50364965" />
+
+
+    <ImageView
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/circle_background"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintHorizontal_bias="0.522"
+            android:layout_marginTop="44dp"
+            android:id="@+id/ivProfilePicture" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="qwertyuip@nhlstenden.com"
+            android:background="@color/lightGrey"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_bias="0.535"
+            android:padding="5dp"
+            android:id="@+id/tvProfileEmail" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="Change Password"
+            android:background="@color/lightGrey"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            android:id="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/tvProfileEmail"
+            android:layout_marginTop="50dp" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:layout_marginTop="24dp">
+
+        <EditText
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:id="@+id/etNewPassword"
+                android:hint="New Password"
+                app:layout_constraintStart_toStartOf="@+id/guideline2"
+                app:layout_constraintTop_toBottomOf="@+id/textView3"
+                android:layout_marginTop="20dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+            android:id="@+id/bttnSubmitPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:text="Submit"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="40dp"
+            app:layout_constraintHorizontal_bias="0.491" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--<ToggleButton-->
+<!--android:id="@+id/toggleButton"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_below="@id/textInputLayout"-->
+<!--android:textOff="Show"-->
+<!--android:textOn="Hide"-->
+<!--app:layout_constraintEnd_toStartOf="@+id/guideline3"-->
+<!--app:layout_constraintStart_toEndOf="@+id/textInputLayout"-->
+<!--app:layout_constraintTop_toBottomOf="@+id/bttnChangePicture"-->
+<!--android:layout_marginTop="132dp"-->
+<!--app:layout_constraintHorizontal_bias="0.555" />-->

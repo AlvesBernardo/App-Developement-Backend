@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
 //                    replaceFragment(SignUpPageFragment())
-//                    replaceFragment(ProfilePageFragment())
-                    replaceFragment(GradingSheetFragment())
+                    replaceFragment(ProfilePageFragment())
+//                    replaceFragment(GradingSheetFragment())
                     true
                 }
 

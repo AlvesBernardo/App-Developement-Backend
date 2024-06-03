@@ -6,4 +6,15 @@
     <dimen name="_10sdp">10dp</dimen>
     <dimen name="_30sdp">30dp</dimen>
     <dimen name="_14ssp">14sp</dimen>
+<!--    Text Styles-->
+    <dimen name="TextFont1">22sp</dimen>
+    <dimen name="TextFont2">17sp</dimen>
+    <dimen name="TextFont3">14sp</dimen>
+    <dimen name="TextFont4">12sp</dimen>
+<!--    Toggle & Buttons-->
+    <dimen name="ToggleDimension">28dp</dimen>
+
+<!--    Logo-->
+    <dimen name="Logo">140dp</dimen>
+
 </resources>

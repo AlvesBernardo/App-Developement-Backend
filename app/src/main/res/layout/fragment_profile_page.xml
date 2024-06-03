@@ -43,25 +43,32 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.50364965" />
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/TextFont1"
+            android:text="Change Profile"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="4dp" />
 
     <ImageView
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:src="@drawable/circle_background"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
+            style="@style/CompanyLogo"
+
             app:layout_constraintTop_toTopOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintHorizontal_bias="0.522"
-            android:layout_marginTop="44dp"
+            app:layout_constraintHorizontal_bias="0.504"
+            android:layout_marginTop="112dp"
             android:id="@+id/ivProfilePicture" />
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="qwertyuip@nhlstenden.com"
-            android:background="@color/lightGrey"
+            android:textSize="@dimen/TextFont2"
+            android:color="@color/black"
             app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -74,6 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:text="Change Password"
+            android:textSize="@dimen/TextFont2"
             android:background="@color/lightGrey"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             android:id="@+id/textView3"
@@ -95,6 +103,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/etNewPassword"
                 android:hint="New Password"
+                android:textSize="@dimen/TextFont3"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
                 app:layout_constraintTop_toBottomOf="@+id/textView3"
                 android:layout_marginTop="20dp" />
@@ -106,6 +115,7 @@
             android:layout_height="0dp"
             android:background="@color/black"
             android:textColor="@color/white"
+            android:textSize="@dimen/TextFont3"
             android:text="Submit"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
             app:layout_constraintStart_toStartOf="@+id/guideline2"

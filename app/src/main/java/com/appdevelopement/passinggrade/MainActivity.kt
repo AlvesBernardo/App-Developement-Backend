@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profilev2 -> {
-                    replaceFragment(UserDashboardFragment()) // You need to create this fragment
+                    replaceFragment(ProfilePageFragment()) // You need to create this fragment
                     true
                 }
 

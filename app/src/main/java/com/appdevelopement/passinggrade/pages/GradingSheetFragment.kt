@@ -41,7 +41,7 @@ class GradingSheetFragment : Fragment() {
     private lateinit var createSheetBtn :Button
     private lateinit var mustPassToggle :ImageView
     private lateinit var competenceWeight : EditText
-    private var maxTotalCompetenceWeight:Int = 10
+    private var maxTotalCompetenceWeight:Int = 99
 
     private var selectedCourseId: Int = -1
     private var selectedExamId: Int = -1

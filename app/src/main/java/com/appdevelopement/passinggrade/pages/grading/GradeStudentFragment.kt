@@ -22,14 +22,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 data class CriterionRecord(val name: String, var progress: Int, var comment: String)
+
 class GradeStudentFragment : Fragment() {
 
     private lateinit var db: AppDatabase
 
-    // Declare new variable
+    // Declare new variables
     private lateinit var createCompetenceGradeUseCase: CreateCompetenceGradeUseCase
     private lateinit var updateExamGradeUseCase: UpdateExamGradeUseCase
     private lateinit var gradingUseCase: GradingUseCase
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.grade_student, container, false)
@@ -49,34 +51,43 @@ class GradeStudentFragment : Fragment() {
         val studentRecordCreator = StudentRecordCreator()
 
         lifecycleScope.launch {
+            val studentId = 15 // replace with actual studentId
+            val examId = 2 // replace with actual examId
+
             val student = withContext(Dispatchers.IO) {
-                db.studentDao().findStudent(1)  // replace with actual studentId
+                db.studentDao().findStudent(studentId)
             }
 
             val criterias = withContext(Dispatchers.IO) {
-                db.compentenceDao().getCompetencesForExam(1)  // replace with actual examId
+                db.compentenceDao().getCompetencesForExam(examId)
             }
 
-            val gradingCriteria = criterias.map { it.dtName } // change "dtName" if it's not the correct field
+            val existingGrades = withContext(Dispatchers.IO) {
+                db.CompentenceGradeDao().getGradesForStudentAndExam(studentId, examId)
+            }
+
+            val gradingCriteria = criterias.map { it.dtName }
 
             withContext(Dispatchers.Main) {
                 if (student != null) {
                     studentNameBox.text = student.studentName
-                } // change "name" if it's not the correct field
+                }
 
                 gradingCriteria.forEach { criterion ->
-                    // ... add TextView for each criterion to gradingAreaLayout
-                    // change "criterion" in TextView setup if that's not what you want displayed
+                    val competence = criterias.find { it.dtName == criterion }
+                    val existingGrade = existingGrades.find { it.idComptence == competence?.idComptence }
+                    val progressValue = (existingGrade?.dtGrade ?: 0.0).toInt()
+                    val commentValue = existingGrade?.dtComment ?: ""
+
                     val criterionLayout = LinearLayout(context).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT
                         )
                         orientation = LinearLayout.VERTICAL
-                        setPadding(10, 10, 10, 10) // set padding
+                        setPadding(10, 10, 10, 10)
                     }
 
-                    // Create a layout for SeekBar section
                     val seekBarLayout = LinearLayout(context).apply {
                         layoutParams = LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -85,7 +96,6 @@ class GradeStudentFragment : Fragment() {
                         orientation = LinearLayout.HORIZONTAL
                     }
 
-                    // Add TextView to seekBarLayout
                     seekBarLayout.addView(TextView(context).apply {
                         text = criterion
                         layoutParams = LinearLayout.LayoutParams(
@@ -100,18 +110,18 @@ class GradeStudentFragment : Fragment() {
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                         )
+                        text = "$progressValue%"
                     }
 
-                    val record = CriterionRecord(criterion, 0, "")
+                    val record = CriterionRecord(criterion, progressValue, commentValue)
                     criterionLayout.tag = record
                     seekBarLayout.addView(SeekBar(context).apply {
                         max = 100
-                        progress = 0
+                        progress = progressValue
                         val heightInDp = 30
                         val scale = resources.displayMetrics.density
                         val heightInPixels = (heightInDp * scale + 0.5f).toInt()
                         layoutParams = LinearLayout.LayoutParams(0, heightInPixels, 1f)
-
 
                         setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -128,11 +138,8 @@ class GradeStudentFragment : Fragment() {
                     })
 
                     seekBarLayout.addView(progressTextView)
-
-                    // Add seekBarLayout to top level criterionLayout
                     criterionLayout.addView(seekBarLayout)
 
-                    // Add Button to top level criterionLayout
                     criterionLayout.addView(Button(context).apply {
                         text = "Add comment"
                         layoutParams = LinearLayout.LayoutParams(
@@ -141,15 +148,13 @@ class GradeStudentFragment : Fragment() {
                         )
                         val commentPopUpHandler = CommentPopUpHandler(context)
                         setOnClickListener {
-                            commentPopUpHandler.showCommentPopUp(criterion)
+                            commentPopUpHandler.showCommentPopUp(criterion, record.comment)
                             val comment = commentPopUpHandler.getComment(criterion)
                             record.comment = comment
                         }
                     })
 
-                    // Add Criterion layout to grading area layout
                     gradingAreaLayout.addView(criterionLayout)
-
                 }
             }
 
@@ -165,11 +170,10 @@ class GradeStudentFragment : Fragment() {
                         .toList()
 
                     lifecycleScope.launch {
-                        val isPass =
-                            gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
+                        val isPass = gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
                         val excelWriter = WriteToExcelFile(requireContext())
                         excelWriter.writeToExcel(student.idStudent.toString(), listOf(studentRecord))
-                        createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent, 1)
+                        createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent, examId)
                         if (isPass) {
                             withContext(Dispatchers.IO) {
                                 updateExamGradeUseCase.execute(student.idStudent, totalGrade, isPass)
@@ -177,7 +181,6 @@ class GradeStudentFragment : Fragment() {
                         }
                     }
                 } else {
-                    // Handle your logic here if student is null.
                     Toast.makeText(context, "Error: Student is null", Toast.LENGTH_SHORT).show()
                 }
             }

@@ -7,29 +7,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 class CommentPopUpHandler(private val context: Context) {
-    private val comments = mutableMapOf<String, String>()
-    fun showCommentPopUp(criterion: String){
+    private val commentsMap = mutableMapOf<String, String>()
+
+    fun showCommentPopUp(criterion: String, existingComment: String = "") {
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Comment for $criterion")
-
         val input = EditText(context)
-        input.inputType = InputType.TYPE_CLASS_TEXT
+        input.setText(existingComment)
         builder.setView(input)
-
         builder.setPositiveButton("OK") { dialog, _ ->
-            // Save the comment somewhere or handle it as needed
-            val comment = input.text.toString()
-            comments[comment] = comment
-            Toast.makeText(context, "Comment saved: $comment", Toast.LENGTH_SHORT).show()
+            commentsMap[criterion] = input.text.toString()
             dialog.dismiss()
         }
         builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-
-        val alertDialog = builder.create()
-        alertDialog.show()
+        builder.show()
     }
 
-    fun getComment(criterion: String): String{
-        return  comments[criterion] ?: ""
+    fun getComment(criterion: String): String {
+        return commentsMap[criterion] ?: ""
     }
 }

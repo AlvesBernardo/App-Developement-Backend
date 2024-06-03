@@ -1,12 +1,25 @@
 package com.appdevelopement.passinggrade
 
+<<<<<<< HEAD
+import GradeStudentFragment
+import LoginFragment
+=======
 import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
+>>>>>>> main-dev
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+<<<<<<< HEAD
+import com.appdevelopement.passinggrade.middelware.AddStudent
+import com.appdevelopement.passinggrade.middelware.CompetenceManager
+import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.pages.GradingSheetFragment
+import com.appdevelopement.passinggrade.pages.StudentPageFragment
+import com.appdevelopement.passinggrade.pages.UserDashboardFragment
+import com.appdevelopement.passinggrade.middelware.TeacherManagerV2
 import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
@@ -17,11 +30,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Load LoginFragment initially
+        if (savedInstanceState == null) {
+            replaceFragment(LoginFragment())
+        }
 
         val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
@@ -40,12 +57,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    replaceFragment(StudentPageFragment()) // You need to create this fragment
+                    replaceFragment(StudentPageFragment())
                     true
                 }
 
                 R.id.profilev2 -> {
                     replaceFragment(ProfilePageFragment()) // You need to create this fragment
+
                     true
                 }
 
@@ -53,13 +71,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Load the default fragment
-        if (savedInstanceState == null) {
-            bottomNavigationItemView.selectedItemId = R.id.home  // Default to home fragment
-        }
-
         // Use middleware to add entities to database
-        initializeDatabase()
+        val database = AppDatabase.getDatabase(this)
+        TeacherManagerV2.addTeacher(this)
+//        AddStudent.addStundent(this)
+//        AddExam.addExam(this)
+//        CompetenceManager.addCompetences(this)
+//        initializeDatabase()
 
     }
 

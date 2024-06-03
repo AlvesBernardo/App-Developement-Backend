@@ -1,3 +1,6 @@
+package com.appdevelopement.passinggrade.pages
+
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +46,8 @@ class LoginFragment : Fragment() {
         val isLoginSuccessful = true
 
         if (isLoginSuccessful) {
+            val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+            sharedPreferences?.edit()?.putBoolean("loggedIn",true)?.apply()
             val fragmentManager = requireActivity().supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, UserDashboardFragment())

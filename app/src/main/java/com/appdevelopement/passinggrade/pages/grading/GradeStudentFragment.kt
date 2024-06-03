@@ -51,7 +51,7 @@ class GradeStudentFragment : Fragment() {
         val studentRecordCreator = StudentRecordCreator()
 
         lifecycleScope.launch {
-            val studentId = 15 // replace with actual studentId
+            val studentId = 14 // replace with actual studentId
             val examId = 2 // replace with actual examId
 
             val student = withContext(Dispatchers.IO) {

@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Use middleware to add entities to database
-        initializeDatabase()
+        //initializeDatabase()
 
     }
 
@@ -64,30 +64,30 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun initializeDatabase() {
-        val context = this
-        CoroutineScope(Dispatchers.IO).launch {
-            // Ensure that all middleware operations are completed in the correct sequence
-
-            // Insert teacher
-            val teacher = TeacherManger.addTeacher(context)
-            val teacherId = teacher.idTeacher
-
-            // Insert student
-//            val student = AddStudent.addStudent(context)
-//            val studentId = student.idStudent
-
-            // Insert course
-            val course = CourseManager.addCourse(context)
-            val courseId = course.idCourse
-
-            // Insert exam
-//            val exam = AddExam.addExam(context, teacherId, studentId, courseId)
-//            val examId = exam.idExam
-
-            // Insert competences
-//            CompetenceManager.addCompetences(context, examId)
-        }
-    }
+//    private fun initializeDatabase() {
+//        val context = this
+//        CoroutineScope(Dispatchers.IO).launch {
+//            // Ensure that all middleware operations are completed in the correct sequence
+//
+//            // Insert teacher
+//            val teacher = TeacherManger.addTeacher(context)
+//            val teacherId = teacher.idTeacher
+//
+//            // Insert student
+////            val student = AddStudent.addStudent(context)
+////            val studentId = student.idStudent
+//
+//            // Insert course
+//            val course = CourseManager.addCourse(context)
+//            val courseId = course.idCourse
+//
+//            // Insert exam
+////            val exam = AddExam.addExam(context, teacherId, studentId, courseId)
+////            val examId = exam.idExam
+//
+//            // Insert competences
+////            CompetenceManager.addCompetences(context, examId)
+//        }
+//    }
 
 }

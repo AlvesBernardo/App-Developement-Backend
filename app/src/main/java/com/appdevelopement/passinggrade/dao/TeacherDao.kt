@@ -17,6 +17,7 @@ interface TeacherDao{
     @Insert
     suspend fun insertTeacher(teacher: Teacher): Long
 
-
+    @Query("UPDATE Teacher SET dtPassword=:dtPassword WHERE dtEmail=:dtEmail")
+    suspend fun updateTeacher(dtPassword: String, dtEmail: String)
 
 }

@@ -46,8 +46,11 @@ class LoginFragment : Fragment() {
         val isLoginSuccessful = true
 
         if (isLoginSuccessful) {
+            val currentTime = System.currentTimeMillis()
             val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-            sharedPreferences?.edit()?.putBoolean("loggedIn",true)?.apply()
+            sharedPreferences?.edit()?.putBoolean("loggedIn",true)
+                ?.putLong("loginTimestamp", currentTime)
+                ?.apply()
             val fragmentManager = requireActivity().supportFragmentManager
             val transaction = fragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, UserDashboardFragment())

@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity() {
 
         bottomNavigationItemView.setOnItemSelectedListener { item ->
             val isLoggedIn = sharedPreferences.getBoolean("loggedIn",false)
-            if(isLoggedIn) {
+            val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+            val oneHourInMilliSeconds = 60 * 60 *1000
+            if(isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)) {
                 when (item.itemId) {
                     R.id.home -> {
 //                    replaceFragment(SignUpPageFragment())
@@ -69,6 +71,7 @@ class MainActivity : AppCompatActivity() {
                     else -> false
                 }
             }else{
+                sharedPreferences.edit()?.remove("loggedIn")?.apply() // Remove the loggedIn flag
                 replaceFragment(LoginFragment())
                 Log.d("error", "User not logged in")
                 true

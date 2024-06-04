@@ -53,7 +53,6 @@ class StudentPageActivity : AppCompatActivity() {
         recyclerView.adapter = studentAdapter
 
         searchView = findViewById(R.id.searchView)
-
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -66,7 +65,7 @@ class StudentPageActivity : AppCompatActivity() {
         })
 
         // Spinner
-        val filterItems = arrayOf("A", "Graded", "UnGraded")
+        val filterItems = arrayOf("All", "Graded", "UnGraded")
         val filterAdapter = ArrayAdapter(
             this, R.layout.spinner_item, filterItems
         )
@@ -85,7 +84,7 @@ class StudentPageActivity : AppCompatActivity() {
         }
 
         // Import Excel Button
-        val importSheetButton: Button = findViewById(R.id.btnImportFuckingSheet)
+        val importSheetButton: Button = findViewById(R.id.btnImportSheet)  // Ensure this ID matches your layout file
         importSheetButton.setOnClickListener {
             Log.d("StudentPageActivity", "Import button clicked")
             requestReadPermissionAndPickFile()
@@ -177,9 +176,6 @@ class StudentPageActivity : AppCompatActivity() {
         try {
             val data = readFromExcelFile.readFromExcel(uri)
             Log.d("StudentPageActivity", "Data read from Excel: $data")
-            studentList.clear()
-            studentList.addAll(data)
-            studentAdapter.updateData(studentList)
             Toast.makeText(this, "Data Imported Successfully", Toast.LENGTH_SHORT).show()
         } catch (e: IOException) {
             e.printStackTrace()

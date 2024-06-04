@@ -5,6 +5,8 @@ import android.net.Uri
 import com.appdevelopement.passinggrade.dto.StudentDTO
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.IOException
+import java.util.ArrayList
+import org.apache.poi.ss.usermodel.*
 
 class ReadFromExcelFile(private val context: Context) {
 
@@ -15,15 +17,40 @@ class ReadFromExcelFile(private val context: Context) {
         val workbook = XSSFWorkbook(inputStream)
         val sheet = workbook.getSheetAt(0)
 
-        val data = mutableListOf<StudentDTO>()
-        for (row in sheet) {
-            val name = row.getCell(0).stringCellValue
-            val studentNumber = row.getCell(1).numericCellValue.toInt() // Convert to Int
-            val isGraded = row.getCell(2).booleanCellValue
-            data.add(StudentDTO(name, studentNumber, isGraded))
+        val studentDTOList = ArrayList<StudentDTO>()
+        val iterator = sheet.iterator()
+
+        repeat(2) {
+            if (iterator.hasNext()) {
+                iterator.next()
+            }
         }
+
+        for (row in iterator) {
+            val studentNumber = getCellValue(row.getCell(1)).toDouble().toInt()
+            val studentName = getCellValue(row.getCell(2))
+            val isGraded = getCellValue(row.getCell(3)).isNotEmpty()
+
+            val studentDTO = StudentDTO(
+                studentName = studentName,
+                studentNumber = studentNumber,
+                isGraded = isGraded
+            )
+            studentDTOList.add(studentDTO)
+        }
+
         workbook.close()
         inputStream.close()
-        return data
+        return studentDTOList
+    }
+
+    private fun getCellValue(cell: Cell?): String {
+        return when (cell?.cellType) {
+            CellType.STRING -> cell.stringCellValue
+            CellType.NUMERIC -> cell.numericCellValue.toString()
+            CellType.BOOLEAN -> cell.booleanCellValue.toString()
+            CellType.FORMULA -> cell.cellFormula
+            else -> ""
+        }
     }
 }

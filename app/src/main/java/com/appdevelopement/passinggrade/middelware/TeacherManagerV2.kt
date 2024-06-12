@@ -16,19 +16,19 @@ object TeacherManagerV2 {
 //        dtPassword = "JanPaw",
 //        dtName = "Teacher 1"
 //    )
-        val teacher2 = Teacher(
-            idTeacher = 0,
-    dtEmail = "gerjan@email.com",
-    dtPassword = "GerjanPaw",
-    dtName = "Teacher 2"
-    )
+//        val teacher2 = Teacher(
+//            idTeacher = 0,
+//    dtEmail = "gerjan@email.com",
+//    dtPassword = "GerjanPaw",
+//    dtName = "Teacher 2"
+//    )
 
-    fun addTeacher(context: Context) {
-        val dao = AppDatabase.getDatabase(context).teacherDao()
-        CoroutineScope(IO).launch {
-            dao.insertTeacher(teacher2)
-        }
-    }
+//    fun addTeacher(context: Context) {
+//        val dao = AppDatabase.getDatabase(context).teacherDao()
+//        CoroutineScope(IO).launch {
+//            dao.insertTeacher(teacher1)
+//        }
+//    }
 
     suspend fun getTeacherByCredentials(context: Context, username: String, password: String): Teacher? {
         val dao = AppDatabase.getDatabase(context).teacherDao()

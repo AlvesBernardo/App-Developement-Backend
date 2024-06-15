@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
             //           val courseId = course.idCourse
 
             // Insert exam
-//            val exam = AddExam.addExam(context, teacherId, studentId, courseId)
+//            val exam = AddExam.addExam(context, 43, 1, 1)
 //            val examId = exam.idExam
 
             // Insert competences

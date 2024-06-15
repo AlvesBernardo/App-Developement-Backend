@@ -15,7 +15,7 @@ object AddExam {
         val dao = AppDatabase.getDatabase(context).examDao()
         val exam = Exam(
             idExam = 0,
-            examName = "OOP1",
+            examName = "OOP1 try 1",
             idTeacher = teacherId,
             idStudent = studentId,
             idCourse = courseId

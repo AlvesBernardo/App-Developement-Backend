@@ -19,6 +19,7 @@ class StudentPageActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var studentAdapter: StudentAdapter
     private lateinit var searchView: SearchView
+    val courseId = intent?.extras?.getInt("idCourse")
     private val studentList = arrayListOf(
         StudentDTO("John Doe", 126345, true),
         StudentDTO("Jane Smith", 678890, false),

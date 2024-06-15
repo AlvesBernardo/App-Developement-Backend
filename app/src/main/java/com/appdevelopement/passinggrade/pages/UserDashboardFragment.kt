@@ -36,7 +36,8 @@ class UserDashboardFragment : Fragment() {
 
         getActivity()?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)?.getInt("idTeacher", -1)?.let { teacherId ->
             lifecycleScope.launch {
-                getCoursesForTeacher(requireContext(), teacherId)
+                val courses = getCoursesForTeacher(requireContext(), teacherId)
+                recyclerView.adapter = CourseAdapter(courses)
             }
         }
         return view

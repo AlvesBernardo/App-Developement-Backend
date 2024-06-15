@@ -125,7 +125,7 @@ class GradeStudentFragment : Fragment() {
 
                         setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                                val steps = arrayOf(5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100)
+                                val steps = arrayOf(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100)
                                 val closestStep = steps.minByOrNull { kotlin.math.abs(it - progress) } ?: 0
                                 seekBar?.progress = closestStep
                                 record.progress = closestStep
@@ -140,6 +140,14 @@ class GradeStudentFragment : Fragment() {
                     seekBarLayout.addView(progressTextView)
                     criterionLayout.addView(seekBarLayout)
 
+                    val commentDisplayTextView = TextView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+                        text = commentValue
+                    }
+
                     criterionLayout.addView(Button(context).apply {
                         text = "Add comment"
                         layoutParams = LinearLayout.LayoutParams(
@@ -148,9 +156,10 @@ class GradeStudentFragment : Fragment() {
                         )
                         val commentPopUpHandler = CommentPopUpHandler(context)
                         setOnClickListener {
-                            commentPopUpHandler.showCommentPopUp(criterion, record.comment)
-                            val comment = commentPopUpHandler.getComment(criterion)
-                            record.comment = comment
+                            commentPopUpHandler.showCommentPopUp(criterion, record.comment) { newComment ->
+                                record.comment = newComment
+                                commentDisplayTextView.text = newComment // Show comment in textView
+                            }
                         }
                     })
 
@@ -161,7 +170,7 @@ class GradeStudentFragment : Fragment() {
             submitButton.setOnClickListener {
                 if (student != null) {
                     val MINIMUM_SCORE = 5.5
-                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout).toDouble()
+                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout,criterias).toDouble() / 10.0
                     val studentRecord = studentRecordCreator.getStudentRecord(student, totalGrade, gradingAreaLayout)
 
                     val criterionRecords: List<CriterionRecord> = gradingAreaLayout.children
@@ -170,7 +179,8 @@ class GradeStudentFragment : Fragment() {
                         .toList()
 
                     lifecycleScope.launch {
-                        val isPass = gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
+                        val isPass =
+                            gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
                         val excelWriter = WriteToExcelFile(requireContext())
                         excelWriter.writeToExcel(student.idStudent.toString(), listOf(studentRecord))
                         createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent, examId)

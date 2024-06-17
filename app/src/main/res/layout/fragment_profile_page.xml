@@ -60,7 +60,6 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="qwertyuip@nhlstenden.com"
             android:background="@color/lightGrey"
             app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture"
             app:layout_constraintStart_toStartOf="@+id/guideline2"

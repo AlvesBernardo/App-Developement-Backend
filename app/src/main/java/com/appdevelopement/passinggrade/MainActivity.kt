@@ -50,14 +50,8 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
 
-
-                    R.id.grade -> {
-                        replaceFragment(GradingSheetFragment())
-                        true
-                    }
-
                     R.id.profile -> {
-                        replaceFragment(StudentPageFragment())
+                        replaceFragment((SheetManagementFragment()))
                         true
                     }
 
@@ -100,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             // Ensure that all middleware operations are completed in the correct sequence
 
 //            // Insert teacher
-//              val teacher = TeacherManger.addTeacher(context)
+//            val teacher = TeacherManger.addTeacher(context)
 //            val teacherId = teacher.idTeacher
 
 //             Insert student
@@ -108,17 +102,17 @@ class MainActivity : AppCompatActivity() {
 //            val studentId = student.idStudent
 
 //            // Insert course
-//                       val course = CourseManager.addCourse(context)
+//            val course = CourseManager.addCourse(context)
 //            val courseId = course.idCourse
 //
 //            // Insert exam
-//           val exam = AddExam.addExam(context, 1, 1, 1)
-//          val examId = exam.idExam
+//            val exam = AddExam.addExam(context, 1, 1, 1)
+//            val examId = exam.idExam
 
             // Insert competences
 //            CompetenceManager.addCompetences(context, examId)
-      //      TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
-    //        TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
+            //      TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
+            //        TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
         }
     }
 

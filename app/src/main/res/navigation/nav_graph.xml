@@ -1,0 +1,32 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_graph"
+            app:startDestination="@+id/UserDashboardFragment">
+
+    <fragment
+            android:id="@+id/UserDashboardFragment"
+            android:name="com.appdevelopement.passinggrade.pages.UserDashboardFragment"
+            android:label="UserDashboardFragment"
+            tools:layout="@layout/fragment_user_dashboard">
+
+        <action
+                android:id="@+id/action_userDashboardFragment_to_studentPageFragment"
+                app:destination="@id/StudentPageFragment">
+            <argument
+                    android:name="examId"
+                    app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+            android:id="@+id/StudentPageFragment"
+            android:name="com.appdevelopement.passinggrade.pages.StudentPageFragment"
+            android:label="StudentPageFragment"
+            tools:layout="@layout/student_page">
+
+    <argument
+                android:name="examId"
+                app:argType="integer" />
+    </fragment>
+</navigation>

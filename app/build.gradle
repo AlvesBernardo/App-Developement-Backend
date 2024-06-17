@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.devtools.ksp' version '1.8.0-1.0.8'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 ext {
@@ -143,5 +144,10 @@ dependencies {
     testImplementation 'androidx.room:room-testing:2.4.0'
     implementation("androidx.compose.ui:ui:1.6.7")
     implementation("androidx.compose.material:material:1.6.7")
+
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.1"
 
 }

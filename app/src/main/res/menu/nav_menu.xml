@@ -11,7 +11,7 @@
     <item android:title="Profile"
             android:id="@+id/profile"
             android:icon="@drawable/logout"/>
-    <item android:title="Sheets"
-            android:id="@+id/sheets"
-            android:icon="@drawable/logout"/>
+    <item android:title="Profile"
+            android:id="@+id/profilev2"
+            android:icon="@drawable/user"/>
 </menu>

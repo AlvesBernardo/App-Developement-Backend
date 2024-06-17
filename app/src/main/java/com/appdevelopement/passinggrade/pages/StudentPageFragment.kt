@@ -1,4 +1,3 @@
-
 package com.appdevelopement.passinggrade.pages
 
 import android.os.Bundle
@@ -41,13 +40,7 @@ class StudentPageFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        val studentList = arrayListOf(
-            StudentDTO("John Doe", 126345, true),
-            StudentDTO("Jane Smith", 678890, false),
-            StudentDTO("Alice Johnson", 547321, true)
-        )
-
-        studentAdapter = StudentAdapter(studentList)
+        studentAdapter = StudentAdapter(studentList, parentFragmentManager) // Pass the FragmentManager here
         recyclerView.adapter = studentAdapter
 
         searchView = view.findViewById(R.id.searchView)
@@ -59,12 +52,11 @@ class StudentPageFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 filterStudentByNumber(newText)
-//                filterStudentByName(newText)
                 return true
             }
         })
 
-        //Spinner
+        // Spinner
         val filterItems = arrayOf("All", "Graded", "UnGraded")
 
         val filterAdapter = ArrayAdapter(
@@ -81,7 +73,7 @@ class StudentPageFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-//                filterStudentsByGradeStatus(filterItems[position])
+                filterStudentsByGradeStatus(filterItems[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -92,11 +84,11 @@ class StudentPageFragment : Fragment() {
         return view
     }
 
-        private fun filterStudentByNumber(query: String?) {
+    private fun filterStudentByNumber(query: String?) {
         val filteredList: ArrayList<StudentDTO> = if (query.isNullOrEmpty()) {
             studentList
         } else {
-            ArrayList( studentList.filter {
+            ArrayList(studentList.filter {
                 it.studentNumber.toString().contains(query)
             })
         }
@@ -105,7 +97,6 @@ class StudentPageFragment : Fragment() {
         }
         studentAdapter.updateData(filteredList)
     }
-
 
     private fun filterStudentsByGradeStatus(filter: String) {
         val filteredList: ArrayList<StudentDTO> = when (filter) {
@@ -116,4 +107,3 @@ class StudentPageFragment : Fragment() {
         studentAdapter.updateData(filteredList)
     }
 }
-

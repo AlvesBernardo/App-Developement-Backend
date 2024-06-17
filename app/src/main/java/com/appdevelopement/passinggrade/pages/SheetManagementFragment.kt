@@ -1,128 +1,87 @@
-//package com.appdevelopement.passinggrade.pages
-//
-//import android.os.Bundle
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.layout.Box
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.layout.size
-//import androidx.compose.foundation.layout.width
-//import androidx.compose.foundation.rememberScrollState
-//import androidx.compose.foundation.verticalScroll
-//import androidx.compose.material.MaterialTheme
-//import androidx.compose.material.Surface
-//import androidx.compose.material.Tab
-//import androidx.compose.material.TabRow
-//import androidx.compose.material.TabRowDefaults
-//import androidx.compose.material.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.mutableStateOf
-//import androidx.compose.runtime.remember
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.tooling.preview.Preview
-//import androidx.compose.ui.unit.dp
-//import androidx.fragment.app.Fragment
-//import androidx.compose.ui.platform.ComposeView
-//import com.appdevelopement.passinggrade.R
-//
-//
-//class SheetManagementFragment : Fragment() {
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_blank, container, false).apply {
-//            findViewById<ComposeView>(R.id.compose_view).setContent {
-//                SheetsManagementFragment()
-//            }
-//        }
-//    }
-//
-//    companion object {
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            SheetManagementFragment()
-//    }
-//}
-//
-//// Compose functions
-//
-//@Composable
-//fun SheetsManagementFragment() {
-//    val tabs = listOf("Create/Edit sheet", "Read Gradesheet", "Import file", "Assign course")
-//    val (selectedTab, onTabSelected) = remember { mutableStateOf(tabs[0]) }
-//
-//    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-//        Box(modifier = Modifier.verticalScroll(rememberScrollState())) {
-//            TabRow(
-//                selectedTabIndex = tabs.indexOf(selectedTab),
-//                backgroundColor = Color.Transparent,
-//                contentColor = MaterialTheme.colors.onSurface,
-//                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-//                indicator = { tabPositions ->
-//                    Box(
-//                        modifier = Modifier
-//                            .background(MaterialTheme.colors.primary)
-//                            .padding(vertical = 8.dp) // Adjust vertical padding as needed
-//                            .size(width = 4.dp, height = TabRowDefaults.IndicatorHeight)
-//                    )
-//                }
-//            ) {
-//                tabs.forEach { tab ->
-//                    Tab(
-//                        text = { Text(tab) },
-//                        selected = selectedTab == tab,
-//                        onClick = { onTabSelected(tab) }
-//                    )
-//                }
-//            }
-//
-//            when (selectedTab) {
-//                "Create/Edit sheet" -> CreateEditSheet()
-//                "Read Gradesheet" -> ReadGradesheet()
-//                "Import file" -> ImportFile()
-//                "Assign course" -> AssignCourse()
-//            }
-//        }
-//    }
-//}
-//
-//@Composable
-//fun CreateEditSheet() {
-//    Box(modifier = Modifier.padding(16.dp)) {
-//        Text("Create/Edit sheet functionality")
-//    }
-//}
-//
-//@Composable
-//fun ReadGradesheet() {
-//    Box(modifier = Modifier.padding(16.dp)) {
-//        Text("Read Gradesheet functionality")
-//    }
-//}
-//
-//@Composable
-//fun ImportFile() {
-//    Box(modifier = Modifier.padding(16.dp)) {
-//        Text("Import file functionality")
-//    }
-//}
-//
-//@Composable
-//fun AssignCourse() {
-//    Box(modifier = Modifier.padding(16.dp)) {
-//        Text("Assign course functionality")
-//    }
-//}
-//
-//@Preview
-//@Composable
-//fun PreviewSheetsManagementFragment() {
-//    SheetsManagementFragment()
-//}
+package com.appdevelopement.passinggrade.pages
+
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
+import com.appdevelopement.passinggrade.R
+import com.google.android.material.tabs.TabLayout
+
+class SheetManagementFragment : androidx.fragment.app.Fragment() {
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_sheet_management, container, false)
+
+        val viewPager: ViewPager = view.findViewById(R.id.viewPager)
+        val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
+
+        viewPager.adapter = SheetsPagerAdapter(childFragmentManager)
+        tabLayout.setupWithViewPager(viewPager)
+
+        return view
+    }
+
+    class SheetsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+        private val tabTitles = arrayOf("Create/Edit sheet", "Read Gradesheet", "Import file", "Assign course")
+
+        override fun getCount(): Int {
+            return tabTitles.size
+        }
+
+        override fun getItem(position: Int): androidx.fragment.app.Fragment {
+            return ContentFragment.newInstance(tabTitles[position])
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return tabTitles[position]
+        }
+    }
+
+    class ContentFragment : androidx.fragment.app.Fragment() {
+        private var tabTitle: String? = null
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            arguments?.let {
+                tabTitle = it.getString(ARG_TAB_TITLE)
+            }
+        }
+
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val view = inflater.inflate(R.layout.fragment_content, container, false)
+            val textView: TextView = view.findViewById(R.id.textView)
+            textView.text = when (tabTitle) {
+                "Create/Edit sheet" -> "Create/Edit sheet functionality"
+                "Read Gradesheet" -> "Read Gradesheet functionality"
+                "Import file" -> "Import file functionality"
+                "Assign course" -> "Assign course functionality"
+                else -> ""
+            }
+            return view
+        }
+
+        companion object {
+            private const val ARG_TAB_TITLE = "tab_title"
+
+            @JvmStatic
+            fun newInstance(tabTitle: String) =
+                ContentFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_TAB_TITLE, tabTitle)
+                    }
+                }
+        }
+    }
+}

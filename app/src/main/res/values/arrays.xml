@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="course_array">
+        <item>OOP1</item>
+        <item>OOP2</item>
+    </string-array>
+</resources>

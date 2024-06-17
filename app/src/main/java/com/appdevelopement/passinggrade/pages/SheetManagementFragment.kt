@@ -1,5 +1,6 @@
 package com.appdevelopement.passinggrade.pages
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 
 class SheetManagementFragment : androidx.fragment.app.Fragment() {
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

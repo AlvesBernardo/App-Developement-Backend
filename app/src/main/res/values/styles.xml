@@ -5,6 +5,16 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+
+
+    <style name="CompanyLogo">
+        <item name="android:layout_width">@dimen/Logo</item>
+        <item name="android:layout_height">@dimen/Logo</item>
+        <item name="android:src">"@drawable/circle_background"</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
     <style name="TableRowStyle">
         <item name="android:background">@drawable/table_row_background</item>
         <item name="android:textSize">@dimen/_10sdp</item>

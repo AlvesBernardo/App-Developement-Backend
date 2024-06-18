@@ -1,12 +1,14 @@
 package com.appdevelopement.passinggrade.pages
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ScrollView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
@@ -29,6 +31,10 @@ class LoginFragment : Fragment() {
         password = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.login)
 
+        val scrollView: ScrollView = view.findViewById(R.id.scrollView)
+        email.adjustForKeyboardLogin(scrollView)
+        password.adjustForKeyboardLogin(scrollView)
+
         loginButton.setOnClickListener { loginUser() }
 
         return view
@@ -48,7 +54,7 @@ class LoginFragment : Fragment() {
         if (isLoginSuccessful) {
             val currentTime = System.currentTimeMillis()
             val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-            sharedPreferences?.edit()?.putBoolean("loggedIn",true)
+            sharedPreferences?.edit()?.putBoolean("loggedIn", true)
                 ?.putLong("loginTimestamp", currentTime)
                 ?.apply()
             val fragmentManager = requireActivity().supportFragmentManager
@@ -57,6 +63,27 @@ class LoginFragment : Fragment() {
             transaction.commit()
         } else {
             Toast.makeText(activity, "Invalid email or password.", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+fun View.adjustForKeyboardLogin(scrollView: ScrollView) {
+    viewTreeObserver.addOnGlobalLayoutListener {
+        val rect = Rect()
+        getWindowVisibleDisplayFrame(rect)
+        val screenHeight = rootView.height
+        val keypadHeight = screenHeight - rect.bottom
+
+        if (keypadHeight > screenHeight * 0.15) {
+            // Keyboard is opened
+            scrollView.post {
+                scrollView.smoothScrollTo(0, bottom)
+            }
+        } else {
+            // Keyboard is closed
+            scrollView.post {
+                scrollView.smoothScrollTo(0, 0)
+            }
         }
     }
 }

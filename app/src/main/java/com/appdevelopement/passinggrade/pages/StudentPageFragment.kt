@@ -1,5 +1,6 @@
 package com.appdevelopement.passinggrade.pages
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,18 +10,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.StudentAdapter
+import com.appdevelopement.passinggrade.dto.StudentDTO
+import com.appdevelopement.passinggrade.utils.popups.ReadFromExcelFile
+import com.appdevelopement.passinggrade.models.Student
 import com.appdevelopement.passinggrade.dao.StudentDao
 import com.appdevelopement.passinggrade.database.AppDatabase
-import com.appdevelopement.passinggrade.dto.StudentDTO
-import com.appdevelopement.passinggrade.models.Student
-import com.appdevelopement.passinggrade.utils.popups.ReadFromExcelFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,26 +40,18 @@ class StudentPageFragment : Fragment() {
     private lateinit var searchView: SearchView
     private lateinit var studentList: ArrayList<StudentDTO>
     private lateinit var studentDao: StudentDao
-    private var examId: Int = -1
 
     companion object {
         private const val PICK_FILE_REQUEST_CODE = 1
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 2
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            examId = it.getInt("idExam", -1)
-        }
-    }
-
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.student_page, container, false)
-        Log.d("StudentPageFragment", "Loading students for exam ID: $examId")
+
         // Initialize studentDao
         val db = AppDatabase.getDatabase(requireContext())
         studentDao = db.studentDao()
@@ -94,7 +93,10 @@ class StudentPageFragment : Fragment() {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 filterStudentsByGradeStatus(filterItems[position])
             }
@@ -121,21 +123,15 @@ class StudentPageFragment : Fragment() {
         startActivityForResult(intent, PICK_FILE_REQUEST_CODE)
     }
 
-
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray
-    ) {
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     pickFile()
                 } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Permission denied to read your External storage",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(requireContext(), "Permission denied to read your External storage", Toast.LENGTH_SHORT).show()
                 }
                 return
             }

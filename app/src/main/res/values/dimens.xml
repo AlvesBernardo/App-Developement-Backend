@@ -15,6 +15,6 @@
     <dimen name="ToggleDimension">28dp</dimen>
 
 <!--    Logo-->
-    <dimen name="Logo">140dp</dimen>
+    <dimen name="Logo">180dp</dimen>
 
 </resources>

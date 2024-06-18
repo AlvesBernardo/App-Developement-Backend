@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/darkGrey">
+        android:background="@color/background">
 
     <TextView
             android:id="@+id/StudentName"
@@ -18,10 +18,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="68dp" />
+            android:layout_marginTop="68dp"/>
 
     <ScrollView
-            android:id="@+id/Platimnum"
+            android:id="@+id/Platinum"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/WhiteSolid"
@@ -45,15 +45,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:background="@color/white"
-            android:textColor="@color/black"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/white"
             android:layout_marginBottom="140dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:backgroundTint="@color/white">
-    </Button>
+            app:layout_constraintHorizontal_bias="0.5"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

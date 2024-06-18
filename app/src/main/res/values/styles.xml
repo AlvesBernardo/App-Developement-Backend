@@ -10,7 +10,7 @@
     <style name="CompanyLogo">
         <item name="android:layout_width">@dimen/Logo</item>
         <item name="android:layout_height">@dimen/Logo</item>
-        <item name="android:src">"@drawable/circle_background"</item>
+        <item name="android:src">"@drawable/loginimg"</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:scaleType">centerCrop</item>
     </style>

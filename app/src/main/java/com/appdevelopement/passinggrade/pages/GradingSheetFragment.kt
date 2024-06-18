@@ -83,19 +83,21 @@ class GradingSheetFragment : Fragment() {
                     requireContext(), R.layout.spinner_item, courseTitle
                 )
 
-                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-                courseSpinner.adapter = filterAdapter
+                loadExamsForSelectedCourse(selectedCourseId)
 
-                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                        selectedCourseId = courses[position].idCourse
-                        loadExamsForSelectedCourse(selectedCourseId)
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // Does nothing
-                    }
-                }
+//                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
+//                courseSpinner.adapter = filterAdapter
+//
+//                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                        selectedCourseId = courses[position].idCourse
+////                        loadExamsForSelectedCourse(selectedCourseId)
+//                    }
+//
+//                    override fun onNothingSelected(parent: AdapterView<*>?) {
+//                        // Does nothing
+//                    }
+//                }
 
                 createSheetBtn.setOnClickListener{
                     lifecycleScope.launch {
@@ -111,6 +113,46 @@ class GradingSheetFragment : Fragment() {
                 }
             }
         }
+
+//        lifecycleScope.launch {
+//            val courses = getCoursesFromDb()
+//
+//            if (courses != null) {
+//                // Initialize Spinner
+//                val courseTitle = courses.map { it.dtTitle }
+//
+//                val filterAdapter = ArrayAdapter(
+//                    requireContext(), R.layout.spinner_item, courseTitle
+//                )
+//
+//                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
+//                courseSpinner.adapter = filterAdapter
+//
+//                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                        selectedCourseId = courses[position].idCourse
+//                        loadExamsForSelectedCourse(selectedCourseId)
+//                    }
+//
+//                    override fun onNothingSelected(parent: AdapterView<*>?) {
+//                        // Does nothing
+//                    }
+//                }
+//
+//                createSheetBtn.setOnClickListener{
+//                    lifecycleScope.launch {
+//                        if (totalCompetenceWeight() > 0) {
+//                            for (competence in competenceList) {
+//                                insertCompetenceToDb(competence)
+//                                Log.d("Competence: ",  competence.toString())
+//                            }
+//                            removeAllCompetences()
+//                            Log.d("Competences Size: "+ competenceList.size,  competenceList.toString())
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         mustPassToggle.setOnClickListener {
             mustPassIsToggled = !mustPassIsToggled

@@ -32,7 +32,7 @@ data class Exam(
     @PrimaryKey(autoGenerate = true) val idExam: Int,
     val examName: String,
     val idTeacher: Int,
-    val idStudent: Int,
+    val idStudent: Int?,
     val idCourse: Int,
     val dtFinalGrade: Double? = null
 )

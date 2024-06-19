@@ -23,10 +23,12 @@ import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.apache.poi.sl.draw.geom.Context
 import org.ktorm.dsl.plus
 import android.widget.ScrollView
 
 class GradingSheetFragment : Fragment() {
+
 
     // Fields
     private lateinit var db: AppDatabase
@@ -50,7 +52,8 @@ class GradingSheetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+//        val storedId = sharedPref.getInt("loggedIn", defaultValue)
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
         // DB connection

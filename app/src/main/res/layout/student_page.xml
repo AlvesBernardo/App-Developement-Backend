@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/guideline7"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.50364965" />
+            app:layout_constraintGuide_percent="0.5" />
 
     <!-- CourseName -->
     <TextView
@@ -98,7 +98,6 @@
             android:ems="10"
             android:id="@+id/searchView"
             android:inputType="number"
-
             app:iconifiedByDefault="false"
             app:searchHintIcon="@null"
             android:focusable="false"
@@ -113,6 +112,7 @@
     <!-- Scan Excel Sheet Button -->
 
 
+    <!-- FilterBy Spinner -->
     <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,8 +122,9 @@
             app:layout_constraintTop_toTopOf="@+id/guideline6"
             android:layout_marginTop="30dp" />
 
+    <!-- Import Excel Sheet Button -->
     <Button
-            android:text="Export Grades"
+            android:id="@+id/btnImportSheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnCreateSheet"

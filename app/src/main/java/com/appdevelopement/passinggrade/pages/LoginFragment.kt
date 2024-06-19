@@ -10,22 +10,21 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
 class LoginFragment : Fragment() {
 
-    private lateinit var username: EditText
+    private lateinit var email: EditText
     private lateinit var password: EditText
     private lateinit var loginButton: Button
 
     override fun onCreateView(
-        inflater: LayoutInflater, 
-        container: ViewGroup?, 
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        username = view.findViewById(R.id.username)
+        email = view.findViewById(R.id.email)
         password = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.login)
 
@@ -35,11 +34,11 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginUser() {
-        val usernameInput = username.text.toString()
+        val emailInput = email.text.toString()
         val passwordInput = password.text.toString()
 
-        if (usernameInput.isEmpty() || passwordInput.isEmpty()) {
-            Toast.makeText(activity, "Username or password field can't be empty.", Toast.LENGTH_SHORT).show()
+        if (emailInput.isEmpty() || passwordInput.isEmpty()) {
+            Toast.makeText(activity, "Email or password field can't be empty.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -48,7 +47,7 @@ class LoginFragment : Fragment() {
         if (isLoginSuccessful) {
             val currentTime = System.currentTimeMillis()
             val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-            sharedPreferences?.edit()?.putBoolean("loggedIn",true)
+            sharedPreferences?.edit()?.putBoolean("loggedIn", true)
                 ?.putLong("loginTimestamp", currentTime)
                 ?.apply()
             val fragmentManager = requireActivity().supportFragmentManager
@@ -56,7 +55,7 @@ class LoginFragment : Fragment() {
             transaction.replace(R.id.fragment_container, UserDashboardFragment())
             transaction.commit()
         } else {
-            Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Invalid email or password.", Toast.LENGTH_SHORT).show()
         }
     }
 }

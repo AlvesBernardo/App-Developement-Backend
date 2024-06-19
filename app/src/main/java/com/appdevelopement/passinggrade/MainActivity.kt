@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.dao.TeacherCourseDao
 import com.appdevelopement.passinggrade.database.AppDatabase
+import com.appdevelopement.passinggrade.middelware.*
+import com.appdevelopement.passinggrade.middelware.AddStudent
+import com.appdevelopement.passinggrade.middelware.CompetenceManager
+import com.appdevelopement.passinggrade.models.Teacher
 import com.appdevelopement.passinggrade.middelware.TeacherManagerV2
 import com.appdevelopement.passinggrade.middleware.CourseManager
 import com.appdevelopement.passinggrade.middleware.TeacherCourseManager
@@ -15,15 +19,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
-import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 import com.appdevelopement.passinggrade.pages.*
+import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Load LoginFragment initially
+        if (savedInstanceState == null) {
+            replaceFragment(LoginFragment())
+        }
+
 
         val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
         val isLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
@@ -47,15 +58,16 @@ class MainActivity : AppCompatActivity() {
             if (currentIsSessionValid) {
                 when (item.itemId) {
                     R.id.home -> {
-                        replaceFragment(GradingSheetFragment())
+//                    replaceFragment(SignUpPageFragment())
+//                    replaceFragment(ProfilePageFragment())
+                    replaceFragment(UserDashboardFragment())
+//                        replaceFragment(LoginFragment())
                         true
                     }
-//                    R.id.grade -> {
-//                        replaceFragment(GradeStudentFragment())
-//                        true
-//                    }
                     R.id.profile -> {
-                        replaceFragment((SheetManagementFragment()))
+//                        replaceFragment(GradingSheetFragment())
+//                        replaceFragment((SheetManagementFragment()))
+                        replaceFragment(GradeStudentFragment())
                         true
                     }
                     R.id.profilev2 -> {
@@ -77,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         // AddStudent.addStundent(this)
         // AddExam.addExam(this)
         // CompetenceManager.addCompetences(this)
-        
+
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -106,11 +118,11 @@ class MainActivity : AppCompatActivity() {
 ////            // Insert exam
 //            val exam = AddExam.addExam(context, 1, 1, 1)
 //            val examId = exam.idExam
-
-            // Insert competences
+//
+////             Insert competences
 //            CompetenceManager.addCompetences(context, examId)
-            //      TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
-            //        TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
+//                  TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
+//                    TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
         }
     }
 

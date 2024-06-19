@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
                         replaceFragment(GradingSheetFragment())
                         true
                     }
-                    R.id.grade -> {
-                        replaceFragment(GradeStudentFragment())
-                        true
-                    }
+//                    R.id.grade -> {
+//                        replaceFragment(GradeStudentFragment())
+//                        true
+//                    }
                     R.id.profile -> {
                         replaceFragment((SheetManagementFragment()))
                         true
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         /*Line 75 is uncommented, 76 is commented on  login-styling branch*/
-        // TeacherManagerV2.addTeacher(this)
+//         TeacherManagerV2.addTeacher(this)
         initializeDatabase()
         // AddStudent.addStundent(this)
         // AddExam.addExam(this)

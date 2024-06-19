@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 
 class LoginFragment : Fragment() {
 
@@ -48,7 +47,7 @@ class LoginFragment : Fragment() {
         if (isLoginSuccessful) {
             val currentTime = System.currentTimeMillis()
             val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-            sharedPreferences?.edit()?.putBoolean("loggedIn",true)
+            sharedPreferences?.edit()?.putBoolean("loggedIn", true)
                 ?.putLong("loginTimestamp", currentTime)
                 ?.apply()
             val fragmentManager = requireActivity().supportFragmentManager

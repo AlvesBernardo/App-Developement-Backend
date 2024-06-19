@@ -17,7 +17,6 @@ import com.appdevelopement.passinggrade.dao.TeacherDao
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.TeacherManger
 import com.appdevelopement.passinggrade.models.Teacher
-import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -50,26 +49,28 @@ class LoginFragment : Fragment() {
         val passwordInput = password.text.toString()
 
         if (emailInput.isEmpty() || passwordInput.isEmpty()) {
-            Toast.makeText(activity, "Email or password field can't be empty.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, "Username or password field can't be empty.", Toast.LENGTH_SHORT).show()
             return
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
-            val teacher = getTeacher(usernameInput, passwordInput)
+            val teacher = getTeacher(emailInput, passwordInput)
             withContext (Dispatchers.Main) {
-                //Current login logic
-            if (isLoginSuccessful) {
-                val currentTime = System.currentTimeMillis()
-                val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-                sharedPreferences?.edit()?.putBoolean("loggedIn", true)
-                    ?.putLong("loginTimestamp", currentTime)
-                    ?.apply()
-                val fragmentManager = requireActivity().supportFragmentManager
-                val transaction = fragmentManager.beginTransaction()
-                transaction.replace(R.id.fragment_container, UserDashboardFragment())
-                transaction.commit()
-            } else {
-                Toast.makeText(activity, "Invalid email or password.", Toast.LENGTH_SHORT).show()
+
+                // Add a null check here before setting sharedPreferences
+                if (teacher != null) {
+                    val currentTime = System.currentTimeMillis()
+                    val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+                    sharedPreferences?.edit()?.putBoolean("loggedIn", true)
+                        ?.putLong("loginTimestamp", currentTime)
+                        ?.putInt("idTeacher", teacher.idTeacher)
+                        ?.apply()
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragment_container, UserDashboardFragment())
+                    transaction.commit()
+                } else {
+                    Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -100,25 +101,3 @@ class LoginFragment : Fragment() {
         return TeacherManger.getTeacherByEmailAndPassword(requireContext(), email, password)
     }
 }
-//Pulled login logic from line 61
-// =======
-                // Add a null check here before setting sharedPreferences
-    //             if (teacher != null) {
-    //                 val currentTime = System.currentTimeMillis()
-    //                 val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-    //                 sharedPreferences?.edit()?.putBoolean("loggedIn", true)
-    //                     ?.putLong("loginTimestamp", currentTime)
-    //                     ?.putInt("idTeacher", teacher.idTeacher)
-    //                     ?.apply()
-    //                 val fragmentManager = requireActivity().supportFragmentManager
-    //                 val transaction = fragmentManager.beginTransaction()
-    //                 transaction.replace(R.id.fragment_container, UserDashboardFragment())
-    //                 transaction.commit()
-    //             } else {
-    //                 Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
-    //             }
-    //         }
-    //     }
-    // }
-
-    // Move this function inside the Fragment and make it a suspending function

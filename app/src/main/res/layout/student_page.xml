@@ -123,31 +123,33 @@
             android:layout_marginTop="30dp" />
 
     <!-- Import Excel Sheet Button -->
-    <Button
-            android:id="@+id/btnImportSheet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnCreateSheet"
-            android:background="@drawable/rounded_button"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="44dp"
-            android:layout_marginTop="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+<!--    <Button-->
+<!--            android:id="@+id/btnImportSheet"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btnCreateSheet"-->
+<!--            android:background="@drawable/rounded_button"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline3"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_marginBottom="44dp"-->
+<!--            android:layout_marginTop="26dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />-->
+<!--    android:id="@+id/btnAddCriteria"-->
 
     <Button
-            android:text="Scan Excel Sheet"
+            android:text="Import Sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btnAddCriteria"
-            android:background="@drawable/rounded_button_black"
+            android:id="@+id/btnImportSheet"
+            android:background="@drawable/rounded_button"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="44dp"
             android:layout_marginTop="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3" />
 
     <LinearLayout
             android:id="@+id/llStudents"

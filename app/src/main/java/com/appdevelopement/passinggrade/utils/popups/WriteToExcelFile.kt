@@ -60,8 +60,6 @@ class WriteToExcelFile(private val context: Context) {
             }
         }
 
-
-
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         try {
             val fos = FileOutputStream(File(path, "$fileName.xlsx"))

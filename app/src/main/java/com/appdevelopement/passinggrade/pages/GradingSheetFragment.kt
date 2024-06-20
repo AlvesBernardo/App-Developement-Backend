@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 import org.apache.poi.sl.draw.geom.Context
 import org.ktorm.dsl.plus
 import android.widget.ScrollView
+import com.appdevelopement.passinggrade.utils.popups.WriteToExcelFile
 
 class GradingSheetFragment : Fragment() {
 
@@ -115,6 +116,21 @@ class GradingSheetFragment : Fragment() {
                             }
                             removeAllCompetences()
                             Log.d("Competences Size: " + competenceList.size, competenceList.toString())
+
+                            val grade = calculateGrade()
+
+                            // Prepare records for writing to Excel
+                            val records = competenceList.map {
+                                arrayOf(
+                                    it.idComptence.toString(),
+                                    it.dtName,
+                                    grade.toString(),
+                                    "" // Left it like this assuming the comments are empty
+                                )
+                            }
+
+                            val writeToExcelFile = WriteToExcelFile(requireContext())
+                            writeToExcelFile.writeToExcel("GradingSheet", records)
                         }
                     }
                 }
@@ -275,6 +291,24 @@ class GradingSheetFragment : Fragment() {
         return withContext(Dispatchers.IO) {
             db.examDao().getExamsByCourseId(courseId)
         }
+    }
+    private fun calculateGrade() {
+        val criteriaCount = recyclerView.childCount
+        var totalScore = 0.0
+
+        for (i in 0 until criteriaCount) {
+            val criteriaView = recyclerView.getChildAt(i)
+            val editText = criteriaView.findViewById<EditText>(R.id.etCriteriaWeight)
+            val score = editText.text.toString().toDoubleOrNull()
+            if (score != null) {
+                totalScore += score
+            }
+        }
+
+        val averageScore = if (criteriaCount > 0) totalScore / criteriaCount else 0.0
+        val result = if (averageScore >= 5.5) "Passing grade: $averageScore" else "Fail grade: $averageScore"
+
+        Toast.makeText(requireContext(), result, Toast.LENGTH_LONG).show()
     }
 }
 

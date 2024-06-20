@@ -22,6 +22,9 @@ interface ExamDao{
     @Query("SELECT * FROM Exam where idExam= :examId")
     fun getExam(examId: Int): Exam?
 
+    @Query("SELECT * FROM Exam where idTeacher= :teacherId")
+    suspend fun getExamByTeacher(teacherId: Int): List<Exam>
+
     @Update
     suspend fun updateExam(exam: Exam)
 

@@ -13,8 +13,8 @@ import kotlinx.coroutines.withContext
 object TeacherManger {
     private val teacher1 = Teacher(
         idTeacher = 0,
-        dtEmail = "teacher1@example.com",
-        dtPassword = "securePassword",
+        dtEmail = "jan@email.com",
+        dtPassword = "JanPaw",
         dtName = "Teacher 1"
     )
 
@@ -24,5 +24,12 @@ object TeacherManger {
             dao.insertTeacher(teacher1)
         }
         return teacher1.copy(idTeacher = teacherId.toInt())
+    }
+
+    suspend fun getTeacherByEmailAndPassword(context: Context, email: String, password: String): Teacher?{
+        val dao = AppDatabase.getDatabase(context).teacherDao()
+        return withContext(IO){
+            dao.getTeacherByCredentials(email, password)
+        }
     }
 }

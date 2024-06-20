@@ -5,9 +5,6 @@
             android:id="@+id/home"
             android:icon="@drawable/home"
             />
-    <item android:title="Grade"
-            android:id="@+id/grade"
-            android:icon="@drawable/test"/>
     <item android:title="Profile"
             android:id="@+id/profile"
             android:icon="@drawable/logout"/>

@@ -4,17 +4,14 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-<<<<<<< HEAD
-        <DropdownSelection timestamp="2024-06-03T15:29:20.842584700Z">
+        <DropdownSelection timestamp="2024-06-18T16:01:07.242266200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\samsung_API_33.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=R58NA4QCH3T" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
-=======
->>>>>>> main-dev
       </SelectionState>
     </selectionStates>
   </component>

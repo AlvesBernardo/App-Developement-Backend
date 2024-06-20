@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.appdevelopement.passinggrade.models.Course
-import com.appdevelopement.passinggrade.models.Exam
 
 
 @Dao

@@ -1,32 +1,32 @@
-//package com.appdevelopement.passinggrade.pages
+// package com.appdevelopement.passinggrade.pages
 //
-//import android.os.Bundle
-//import android.util.Log
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import android.widget.AdapterView
-//import android.widget.ArrayAdapter
-//import android.widget.Button
-//import android.widget.EditText
-//import android.widget.ImageView
-//import android.widget.Spinner
-//import android.widget.Toast
-//import androidx.fragment.app.Fragment
-//import androidx.lifecycle.lifecycleScope
-//import androidx.recyclerview.widget.LinearLayoutManager
-//import androidx.recyclerview.widget.RecyclerView
-//import com.appdevelopement.passinggrade.R
-//import com.appdevelopement.passinggrade.database.AppDatabase
-//import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.launch
-//import kotlinx.coroutines.withContext
-//import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
-//import com.appdevelopement.passinggrade.models.Compentence
-//import com.appdevelopement.passinggrade.models.Course
-//import com.appdevelopement.passinggrade.models.Exam
+// import android.os.Bundle
+// import android.util.Log
+// import android.view.LayoutInflater
+// import android.view.View
+// import android.view.ViewGroup
+// import android.widget.AdapterView
+// import android.widget.ArrayAdapter
+// import android.widget.Button
+// import android.widget.EditText
+// import android.widget.ImageView
+// import android.widget.Spinner
+// import android.widget.Toast
+// import androidx.fragment.app.Fragment
+// import androidx.lifecycle.lifecycleScope
+// import androidx.recyclerview.widget.LinearLayoutManager
+// import androidx.recyclerview.widget.RecyclerView
+// import com.appdevelopement.passinggrade.R
+// import com.appdevelopement.passinggrade.database.AppDatabase
+// import kotlinx.coroutines.Dispatchers
+// import kotlinx.coroutines.launch
+// import kotlinx.coroutines.withContext
+// import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
+// import com.appdevelopement.passinggrade.models.Compentence
+// import com.appdevelopement.passinggrade.models.Course
+// import com.appdevelopement.passinggrade.models.Exam
 //
-//class GradingSheetFragment : Fragment() {
+// class GradingSheetFragment : Fragment() {
 //
 //    // Fields
 //    private lateinit var db: AppDatabase
@@ -83,8 +83,10 @@
 //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
 //                courseSpinner.adapter = filterAdapter
 //
-//                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+//                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
+// {
+//                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position:
+// Int, id: Long) {
 //                        selectedCourseId = courses[position].idCourse
 //                        loadExamsForSelectedCourse(selectedCourseId)
 //                    }
@@ -102,7 +104,8 @@
 //                                Log.d("Competence: ",  competence.toString())
 //                            }
 //                            removeAllCompetences()
-//                            Log.d("Competences Size: "+ competenceList.size,  competenceList.toString())
+//                            Log.d("Competences Size: "+ competenceList.size,
+// competenceList.toString())
 //                        }
 //                    }
 //                }
@@ -133,7 +136,8 @@
 //                    resetVars()
 //                }
 //            }else{
-//                Toast.makeText(requireContext(), "Error! Max competence weight "+ totalCompetenceWeight() +" will be exceed:", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireContext(), "Error! Max competence weight "+
+// totalCompetenceWeight() +" will be exceed:", Toast.LENGTH_SHORT).show()
 //            }
 //        }
 //
@@ -201,7 +205,8 @@
 //                val examSpinner: Spinner? = view?.findViewById(R.id.spnrFilterByExam)
 //                examSpinner?.adapter = examFilterAdapter
 //
-//                examSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                examSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
+// {
 //                    override fun onItemSelected(
 //                        parent: AdapterView<*>?,
 //                        view: View?,
@@ -224,4 +229,4 @@
 //            db.examDao().getExamsByCourseId(courseId)
 //        }
 //    }
-//}
+// }

@@ -6,7 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.IndexedColors
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException // Add this import
+import java.io.IOException
 
 class WriteToExcelFile(private val context: Context) {
     private val excelColumns = arrayOf("Id", "Competence", "Grade", "Comment")
@@ -47,10 +47,10 @@ class WriteToExcelFile(private val context: Context) {
                         val font = excelWorkbook.createFont()
 
                         when {
-                            grade < 2 -> font.color = IndexedColors.DARK_RED.getIndex()
-                            grade < 4 -> font.color = IndexedColors.RED.getIndex()
-                            grade < 5.5 -> font.color = IndexedColors.ORANGE.getIndex()
-                            else -> font.color = IndexedColors.BRIGHT_GREEN.getIndex()
+                            grade < 2 -> font.color = IndexedColors.DARK_RED.index
+                            grade < 4 -> font.color = IndexedColors.RED.index
+                            grade < 5.5 -> font.color = IndexedColors.ORANGE.index
+                            else -> font.color = IndexedColors.BRIGHT_GREEN.index
                         }
 
                         cellStyle.setFont(font)

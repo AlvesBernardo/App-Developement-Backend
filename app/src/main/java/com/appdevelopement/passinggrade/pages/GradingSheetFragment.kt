@@ -13,23 +13,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
 import com.appdevelopement.passinggrade.database.AppDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
 import com.appdevelopement.passinggrade.dto.CourseDto
 import com.appdevelopement.passinggrade.dto.GradingSheetDto
 import com.appdevelopement.passinggrade.models.Compentence
 import com.appdevelopement.passinggrade.models.Course
 import com.appdevelopement.passinggrade.models.Exam
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.apache.poi.sl.draw.geom.Context
-import org.ktorm.dsl.plus
-import android.widget.ScrollView
 import com.appdevelopement.passinggrade.utils.popups.WriteToExcelFile
+import org.ktorm.dsl.plus
 
 class GradingSheetFragment : Fragment() {
-
 
     // Fields
     private lateinit var db: AppDatabase
@@ -53,8 +50,7 @@ class GradingSheetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-//        val storedId = sharedPref.getInt("loggedIn", defaultValue)
+
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
         // DB connection
@@ -73,13 +69,6 @@ class GradingSheetFragment : Fragment() {
         mustPassToggle = view.findViewById(R.id.ivMustPassToggle)
         competenceWeight = view.findViewById(R.id.etCriteriaWeight)
 
-        // Get the ScrollView from the layout
-        val scrollView: ScrollView = view.findViewById(R.id.scrollView)
-
-        // Call the utility function to adjust for keyboard visibility
-        gradingSheetItem.adjustForKeyboardGrading(scrollView)
-        competenceWeight.adjustForKeyboardGrading(scrollView)
-
         lifecycleScope.launch {
             val courses = getCoursesFromDb()
 
@@ -91,21 +80,19 @@ class GradingSheetFragment : Fragment() {
                     requireContext(), R.layout.spinner_item, courseTitle
                 )
 
-                loadExamsForSelectedCourse(selectedCourseId)
+                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
+                courseSpinner.adapter = filterAdapter
 
-                //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-                //                courseSpinner.adapter = filterAdapter
-                //
-                //                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                //                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //                        selectedCourseId = courses[position].idCourse
-                ////                        loadExamsForSelectedCourse(selectedCourseId)
-                //                    }
-                //
-                //                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                //                        // Does nothing
-                //                    }
-                //                }
+                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        selectedCourseId = courses[position].idCourse
+                        loadExamsForSelectedCourse(selectedCourseId)
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // Does nothing
+                    }
+                }
 
                 createSheetBtn.setOnClickListener {
                     lifecycleScope.launch {
@@ -124,8 +111,8 @@ class GradingSheetFragment : Fragment() {
                                 arrayOf(
                                     it.idComptence.toString(),
                                     it.dtName,
-                                    grade.toString(),
-                                    "" // Left it like this assuming the comments are empty
+                                    grade.toString(), // Include the grade here
+                                    "" // Assuming comments are empty for now
                                 )
                             }
 
@@ -136,46 +123,6 @@ class GradingSheetFragment : Fragment() {
                 }
             }
         }
-
-        //        lifecycleScope.launch {
-        //            val courses = getCoursesFromDb()
-        //
-        //            if (courses != null) {
-        //                // Initialize Spinner
-        //                val courseTitle = courses.map { it.dtTitle }
-        //
-        //                val filterAdapter = ArrayAdapter(
-        //                    requireContext(), R.layout.spinner_item, courseTitle
-        //                )
-        //
-        //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-        //                courseSpinner.adapter = filterAdapter
-        //
-        //                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        //                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //                        selectedCourseId = courses[position].idCourse
-        //                        loadExamsForSelectedCourse(selectedCourseId)
-        //                    }
-        //
-        //                    override fun onNothingSelected(parent: AdapterView<*>?) {
-        //                        // Does nothing
-        //                    }
-        //                }
-        //
-        //                createSheetBtn.setOnClickListener{
-        //                    lifecycleScope.launch {
-        //                        if (totalCompetenceWeight() > 0) {
-        //                            for (competence in competenceList) {
-        //                                insertCompetenceToDb(competence)
-        //                                Log.d("Competence: ",  competence.toString())
-        //                            }
-        //                            removeAllCompetences()
-        //                            Log.d("Competences Size: "+ competenceList.size,  competenceList.toString())
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
 
         mustPassToggle.setOnClickListener {
             mustPassIsToggled = !mustPassIsToggled
@@ -244,7 +191,6 @@ class GradingSheetFragment : Fragment() {
     }
 
     private fun canAddNewCompetence(competenceWeight: Int): Boolean {
-
         val newTotalCompetenceWeight = totalCompetenceWeight() + competenceWeight
         return newTotalCompetenceWeight <= maxTotalCompetenceWeight
     }
@@ -292,7 +238,8 @@ class GradingSheetFragment : Fragment() {
             db.examDao().getExamsByCourseId(courseId)
         }
     }
-    private fun calculateGrade() {
+
+    private fun calculateGrade(): Double {
         val criteriaCount = recyclerView.childCount
         var totalScore = 0.0
 
@@ -309,6 +256,8 @@ class GradingSheetFragment : Fragment() {
         val result = if (averageScore >= 5.5) "Passing grade: $averageScore" else "Fail grade: $averageScore"
 
         Toast.makeText(requireContext(), result, Toast.LENGTH_LONG).show()
+
+        return averageScore
     }
 }
 

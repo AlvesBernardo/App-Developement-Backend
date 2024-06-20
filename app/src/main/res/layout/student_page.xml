@@ -11,6 +11,32 @@
 
 
     <!-- Guidelines -->
+        android:background="@color/background"
+        tools:context=".pages.StudentPageFragment">
+
+    <!-- Profile Image -->
+<!--    <ImageButton-->
+<!--            android:id="@+id/ibProfileImg"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:src="@drawable/baseline_catching_pokemon_24"-->
+<!--            android:contentDescription="@string/profile_img"-->
+<!--            android:onClick="onImageButtonClick"-->
+<!--            android:background="@drawable/circle_background"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/guideline4" />-->
+
+    <!-- Floating Action Button Menu -->
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:clickable="true"-->
+<!--            app:srcCompat="@drawable/baseline_menu_24"-->
+<!--            android:id="@+id/fabMenu"-->
+<!--            app:layout_constraintTop_toTopOf="@+ixd/guideline4"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline3" />-->
+
+    <!--  Guidelines  -->
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,18 +74,29 @@
 
     <!-- CourseName -->
     <TextView
-            android:text="TextView"
+            android:text="Student Grading Page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:id="@+id/tvCourseName"
-            app:layout_constraintTop_toBottomOf="@+id/ibProfileImg"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            android:layout_marginTop="30dp" />
+            app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <!-- Student Number Field -->
+    <!--  Student Number Field  -->
+    <!--    <EditText-->
+    <!--            android:layout_width="165dp"-->
+    <!--            android:layout_height="48dp"-->
+    <!--            android:ems="10"-->
+    <!--            android:id="@+id/etStudentNumberField"-->
+    <!--            android:hint="Search by student number"-->
+    <!--            android:textSize="@dimen/_10ssp"-->
+    <!--            app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+    <!--            app:layout_constraintTop_toBottomOf="@+id/tvCourseName"-->
+    <!--            android:layout_marginTop="20dp"-->
+    <!--            android:inputType="number" />-->
+
     <androidx.appcompat.widget.SearchView
             android:layout_width="165dp"
             android:layout_height="48dp"
@@ -70,33 +107,54 @@
             app:searchHintIcon="@null"
             android:focusable="false"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourseName"
-            android:layout_marginTop="20dp"
-            app:queryHint="Search by number..." />
+            app:queryHint="Search by number..."
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            android:layout_marginTop="20dp" />
+    <!-- FilterBy Spinner  -->
+
+    <!-- Export Grades Button -->
+
+    <!-- Scan Excel Sheet Button -->
+
 
     <!-- FilterBy Spinner -->
     <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/spnrFilterBy"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
             android:textAlignment="textEnd"
-            android:layout_marginBottom="14dp"
-            app:layout_constraintBottom_toTopOf="@+id/llStudents"
-            app:layout_constraintTop_toBottomOf="@+id/fabMenu"
-            app:layout_constraintVertical_bias="0.852" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            android:layout_marginTop="30dp" />
 
     <!-- Import Excel Sheet Button -->
+<!--    <Button-->
+<!--            android:id="@+id/btnImportSheet"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btnCreateSheet"-->
+<!--            android:background="@drawable/rounded_button"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/guideline3"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            android:layout_marginBottom="44dp"-->
+<!--            android:layout_marginTop="26dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/recyclerView" />-->
+<!--    android:id="@+id/btnAddCriteria"-->
+
     <Button
-            android:id="@+id/btnImportSheet"
+            android:text="Import Sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Import Excel Sheet"
-            android:layout_marginTop="84dp"
+            android:id="@+id/btnImportSheet"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="44dp"
+            android:layout_marginTop="26dp"
             app:layout_constraintTop_toBottomOf="@+id/recyclerView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.149" />
+            app:layout_constraintEnd_toStartOf="@+id/guideline3" />
 
     <LinearLayout
             android:id="@+id/llStudents"
@@ -105,8 +163,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/tvCourseName"
-            android:layout_marginTop="75dp">
+            app:layout_constraintTop_toTopOf="@+id/guideline6"
+            android:layout_marginTop="90dp">
 
         <TextView
                 android:id="@+id/tvTitleOne"
@@ -172,12 +230,19 @@
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="339dp"
-            android:layout_height="240dp"
+            android:layout_width="340dp"
+            android:layout_height="300dp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/spnrFilterBy"
             app:layout_constraintHorizontal_bias="0.545"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="80dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline6"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,7 @@
 package com.appdevelopement.passinggrade.pages
+
+import android.annotation.SuppressLint
+
 //this is hakan code i was just not able to pull it
 import android.os.Bundle
 import android.view.LayoutInflater

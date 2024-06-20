@@ -28,12 +28,12 @@ class StudentAdapter(
         viewHolder.tvStudentName.text = student.studentName
         viewHolder.tvStudentNumber.text = student.studentNumber.toString()
 
-        val imageDrawableResId = if (student.isGraded) {
-            R.drawable.baseline_check_box_24
-        } else {
-            R.drawable.baseline_check_box_outline_blank_24
-        }
-        viewHolder.tvGraded.setImageResource(imageDrawableResId)
+//        val imageDrawableResId = if (student.isGraded) {
+//            R.drawable.baseline_check_box_24
+//        } else {
+//            R.drawable.baseline_check_box_outline_blank_24
+//        }
+//        viewHolder.tvGraded.setImageResource(imageDrawableResId)
 
         // Set OnClickListener for btnChangeGrade
         viewHolder.btnChangeGrade.setOnClickListener {

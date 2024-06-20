@@ -34,7 +34,6 @@ class ReadFromExcelFile(private val context: Context) {
             val studentDTO = StudentDTO(
                 studentName = studentName,
                 studentNumber = studentNumber,
-                isGraded = isGraded
             )
             studentDTOList.add(studentDTO)
         }

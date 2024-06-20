@@ -58,6 +58,7 @@ class UserDashboardFragment : Fragment() {
         override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
             val exam = examList[position]
             holder.examButton.text = exam.examName
+            Log.d("UserDashboardFragment", "Clicked on exam with id ${exam.idExam}")
             holder.examButton.setOnClickListener {
                 val fragment = StudentPageFragment().apply {
                     arguments = Bundle().apply {

@@ -14,6 +14,6 @@ class StudentRecordCreator {
 
         val generalComment = criterionRecord.joinToString("\n") { "${it.name}: ${it.comment}" }
 
-        return arrayOf(student.idStudent.toString(), totalGrade.toString())
+        return arrayOf(student.studentNumber.toString(), totalGrade.toString())
     }
 }

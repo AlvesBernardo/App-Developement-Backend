@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.appdevelopement.passinggrade.dao.*
 
-@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class, CompetenceGrade::class], version = 7)
+@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class, CompetenceGrade::class, ExamStudentCrossRef::class], version = 18)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun teacherDao(): TeacherDao
     abstract fun studentDao(): StudentDao
@@ -16,6 +16,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun teacherCourseDao(): TeacherCourseDao
     abstract fun compentenceDao(): CompentenceDao
     abstract fun CompentenceGradeDao():CompentenceGradeDao
+    abstract fun examStudentCrossReference(): ExamStudentCorssReferecne
 
     companion object {
         @Volatile

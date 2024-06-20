@@ -15,7 +15,7 @@ class CreateCompetenceGradeUseCase(private val competenceGradeDao: CompentenceGr
                 val competenceGrade = CompetenceGrade(
                     idCompetenceGradeId = 0,
                     idTeacher = 1,
-                    idStudent = studentId,
+                    studentNumber = studentId,
                     idComptence = record.idComptence, // use this instead
                     dtGrade = criterionRecord[index].progress.toDouble(),
                     dtComment = criterionRecord[index].comment

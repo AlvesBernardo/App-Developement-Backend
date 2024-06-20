@@ -14,17 +14,15 @@ import kotlinx.coroutines.withContext
 
 object AddStudent {
     val student = Student(
-        idStudent = 0,
+        studentNumber = 0,
         studentName = "Bernardo Alves",
-        studentNumber = 2321,
-        isGraded = false
+//        isGraded = false
     )
 
     val student2 = Student(
-        idStudent = 0,
+        studentNumber = 0,
         studentName = "Mehdi Sadghi",
-        studentNumber = 123131313,
-        isGraded = false
+//        isGraded = false
     )
 
 
@@ -34,7 +32,7 @@ object AddStudent {
             dao.insertStudent(student)
             dao.insertStudent(student2)
         }
-        return student.copy(idStudent = studentId.toInt())
+        return student.copy(studentNumber = studentId.toInt())
     }
 
 

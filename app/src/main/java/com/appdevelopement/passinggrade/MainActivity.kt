@@ -93,21 +93,21 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             // Ensure that all middleware operations are completed in the correct sequence
 
-////            // Insert teacher
-//            val teacher = TeacherManger.addTeacher(context)
-//            val teacherId = teacher.idTeacher
-//
+             //Insert teacher
+            val teacher = TeacherManger.addTeacher(context)
+            val teacherId = teacher.idTeacher
+
 ////             Insert student
 //            val student = AddStudent.addStudent(context)
-//            val studentId = student.idStudent
+//            val studentId = student.studentNumber
+
+//            // Insert course
+            val course = CourseManager.addCourse(context)
+            val courseId = course.idCourse
 //
-////            // Insert course
-//            val course = CourseManager.addCourse(context)
-//            val courseId = course.idCourse
-////
-////            // Insert exam
-//            val exam = AddExam.addExam(context, 1, 1, 1)
-//            val examId = exam.idExam
+            // Insert exam
+            val exam = AddExam.addExam(context, 1, 2)
+            val examId = exam.idExam
 
             // Insert competences
 //            CompetenceManager.addCompetences(context, examId)

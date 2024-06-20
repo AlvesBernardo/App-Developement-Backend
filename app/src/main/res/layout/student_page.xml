@@ -8,27 +8,7 @@
         android:padding="15dp"
         tools:context=".pages.StudentPageFragment">
 
-    <!-- Profile Image -->
-    <ImageButton
-            android:id="@+id/ibProfileImg"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/baseline_catching_pokemon_24"
-            android:contentDescription="@string/profile_img"
-            android:onClick="onImageButtonClick"
-            android:background="@drawable/circle_background"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-    <!-- Floating Action Button Menu -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:clickable="true"
-            app:srcCompat="@drawable/baseline_menu_24"
-            android:id="@+id/fabMenu"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3" />
 
     <!-- Guidelines -->
     <androidx.constraintlayout.widget.Guideline

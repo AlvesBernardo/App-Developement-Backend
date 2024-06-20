@@ -180,13 +180,13 @@ class GradeStudentFragment : Fragment() {
 
                     lifecycleScope.launch {
                         val isPass =
-                            gradingUseCase.hasPassedMandatoryCompetences(student.idStudent) && totalGrade >= MINIMUM_SCORE
+                            gradingUseCase.hasPassedMandatoryCompetences(student.studentNumber) && totalGrade >= MINIMUM_SCORE
                         val excelWriter = WriteToExcelFile(requireContext())
-                        excelWriter.writeToExcel(student.idStudent.toString(), listOf(studentRecord))
-                        createCompetenceGradeUseCase.execute(criterionRecords, student.idStudent, examId)
+                        excelWriter.writeToExcel(student.studentNumber.toString(), listOf(studentRecord))
+                        createCompetenceGradeUseCase.execute(criterionRecords, student.studentNumber, examId)
                         if (isPass) {
                             withContext(Dispatchers.IO) {
-                                updateExamGradeUseCase.execute(student.idStudent, totalGrade, isPass)
+                                updateExamGradeUseCase.execute(student.studentNumber, totalGrade, isPass)
                             }
                         }
                     }

@@ -66,8 +66,8 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.profile -> {
 //                        replaceFragment(GradingSheetFragment())
-//                        replaceFragment((SheetManagementFragment()))
-                        replaceFragment(GradeStudentFragment())
+                     replaceFragment((SheetManagementFragment()))
+                        //replaceFragment(GradeStudentFragment())
                         true
                     }
                     R.id.profilev2 -> {

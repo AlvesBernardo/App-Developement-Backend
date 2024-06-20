@@ -56,7 +56,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnChangeGrade"
-                android:textSize="8sp"
                 android:layout_weight="1"
                 android:textSize="@dimen/TextFont5"
                 android:backgroundTint="#028577"

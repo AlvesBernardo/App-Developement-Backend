@@ -41,7 +41,9 @@ class GradingSheetFragment : Fragment() {
     private lateinit var mustPassToggle: ImageView
     private lateinit var competenceWeight: EditText
     private var maxTotalCompetenceWeight: Int = 99
+    private val examsArray = ArrayList<Exam>()
 
+    private var teacherId: Int = -1
     private var selectedCourseId: Int = -1
     private var selectedExamId: Int = -1
 
@@ -52,8 +54,13 @@ class GradingSheetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-//        val storedId = sharedPref.getInt("loggedIn", defaultValue)
+
+        teacherId = activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
+            ?.getInt("idTeacher", -1) ?: -1
+
+        lifecycleScope.launch {
+            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
+        }
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
         // DB connection
@@ -92,19 +99,6 @@ class GradingSheetFragment : Fragment() {
 
                 loadExamsForSelectedCourse(selectedCourseId)
 
-                //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-                //                courseSpinner.adapter = filterAdapter
-                //
-                //                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                //                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //                        selectedCourseId = courses[position].idCourse
-                ////                        loadExamsForSelectedCourse(selectedCourseId)
-                //                    }
-                //
-                //                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                //                        // Does nothing
-                //                    }
-                //                }
 
                 createSheetBtn.setOnClickListener {
                     lifecycleScope.launch {
@@ -121,45 +115,6 @@ class GradingSheetFragment : Fragment() {
             }
         }
 
-        //        lifecycleScope.launch {
-        //            val courses = getCoursesFromDb()
-        //
-        //            if (courses != null) {
-        //                // Initialize Spinner
-        //                val courseTitle = courses.map { it.dtTitle }
-        //
-        //                val filterAdapter = ArrayAdapter(
-        //                    requireContext(), R.layout.spinner_item, courseTitle
-        //                )
-        //
-        //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-        //                courseSpinner.adapter = filterAdapter
-        //
-        //                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-        //                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //                        selectedCourseId = courses[position].idCourse
-        //                        loadExamsForSelectedCourse(selectedCourseId)
-        //                    }
-        //
-        //                    override fun onNothingSelected(parent: AdapterView<*>?) {
-        //                        // Does nothing
-        //                    }
-        //                }
-        //
-        //                createSheetBtn.setOnClickListener{
-        //                    lifecycleScope.launch {
-        //                        if (totalCompetenceWeight() > 0) {
-        //                            for (competence in competenceList) {
-        //                                insertCompetenceToDb(competence)
-        //                                Log.d("Competence: ",  competence.toString())
-        //                            }
-        //                            removeAllCompetences()
-        //                            Log.d("Competences Size: "+ competenceList.size,  competenceList.toString())
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
 
         mustPassToggle.setOnClickListener {
             mustPassIsToggled = !mustPassIsToggled
@@ -241,10 +196,11 @@ class GradingSheetFragment : Fragment() {
 
     private fun loadExamsForSelectedCourse(courseId: Int) {
         lifecycleScope.launch {
-            val exams = getExamsFromDb(courseId)
+            examsArray.clear()
+            examsArray.addAll(getCoursesForTeacher(requireContext(), teacherId))
 
-            if (exams != null) {
-                val examNames = exams.map { it.examName }
+            if (examsArray.isNotEmpty()) {
+                val examNames = examsArray.map { it.examName }
 
                 val examFilterAdapter = ArrayAdapter(
                     requireContext(), R.layout.spinner_item, examNames
@@ -260,11 +216,11 @@ class GradingSheetFragment : Fragment() {
                         position: Int,
                         id: Long
                     ) {
-                        selectedExamId = exams[position].idExam
+                        selectedExamId = examsArray[position].idExam
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // Does nothing
+                        // Handle when nothing is selected
                     }
                 }
             }
@@ -274,6 +230,13 @@ class GradingSheetFragment : Fragment() {
     private suspend fun getExamsFromDb(courseId: Int): List<Exam>? {
         return withContext(Dispatchers.IO) {
             db.examDao().getExamsByCourseId(courseId)
+        }
+    }
+    private suspend fun getCoursesForTeacher(context: android.content.Context, teacherId: Int): List<Exam> {
+        Log.d("TeacherCourses", "Teacher ID: $teacherId")
+        val dao = AppDatabase.getDatabase(context).examDao()
+        return withContext(Dispatchers.IO) {
+            dao.getExamByTeacher(teacherId)
         }
     }
 }
@@ -297,4 +260,6 @@ fun View.adjustForKeyboardGrading(scrollView: ScrollView) {
             }
         }
     }
+
+
 }

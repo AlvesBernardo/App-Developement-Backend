@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -21,10 +22,20 @@ class SheetManagementFragment : androidx.fragment.app.Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sheet_managment, container, false)
-
         val viewPager: ViewPager = view.findViewById(R.id.viewPager)
         val tabLayout: TabLayout = view.findViewById(R.id.tabLayout)
 
+
+        val createSheetButton: Button = view.findViewById(R.id.createEditSheetButton)
+
+        createSheetButton.setOnClickListener {
+            val fragment = GradingSheetFragment()
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, fragment)
+                addToBackStack(null)
+                commit()
+            }
+        }
         viewPager.adapter = SheetsPagerAdapter(childFragmentManager)
         tabLayout.setupWithViewPager(viewPager)
 

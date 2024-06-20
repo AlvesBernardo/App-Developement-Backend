@@ -110,11 +110,12 @@
             android:layout_marginTop="10dp">
 
             <EditText
-                    android:layout_width="365dp"
-                    android:layout_height="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:id="@+id/etNewPassword"
                     android:padding="8dp"
                     android:background="@drawable/rounded_corners"
+                    android:textColor="@android:color/black"
                     tools:layout_editor_absoluteY="435dp"
                     app:layout_constraintStart_toStartOf="@+id/guideline2" />
     </com.google.android.material.textfield.TextInputLayout>

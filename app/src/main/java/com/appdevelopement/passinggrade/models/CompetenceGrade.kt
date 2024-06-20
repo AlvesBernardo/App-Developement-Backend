@@ -15,8 +15,8 @@ import androidx.room.PrimaryKey
         ),
         ForeignKey(
             entity = Student::class,
-            parentColumns = arrayOf("idStudent"),
-            childColumns = arrayOf("idStudent"),
+            parentColumns = arrayOf("studentNumber"),
+            childColumns = arrayOf("studentNumber"),
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
@@ -25,11 +25,11 @@ import androidx.room.PrimaryKey
             childColumns = arrayOf("idComptence"),
             onDelete = ForeignKey.CASCADE)
     ],
-    indices = [Index("idTeacher"), Index("idComptence"), Index("idStudent")])
+    indices = [Index("idTeacher"), Index("idComptence"), Index("studentNumber")])
 data class CompetenceGrade(
     @PrimaryKey(autoGenerate = true) val idCompetenceGradeId: Int,
     val idTeacher: Int,
-    val idStudent: Int,
+    val studentNumber: Int,
     val idComptence: Int,
     val dtGrade: Double,
     val dtComment: String?

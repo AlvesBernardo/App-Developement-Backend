@@ -14,6 +14,14 @@ interface StudentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStudent(student: Student): Long
 
-    @Query("SELECT * FROM Student where idStudent = :idStudent")
-    suspend fun findStudent(idStudent: Int): Student?
+    @Query("SELECT * FROM Student WHERE studentNumber == :studentNumber")
+    suspend fun findStudent(studentNumber: Int): Student?
+
+    @Query("""
+SELECT student.* FROM student
+INNER JOIN examstudentcrossref 
+ON student.studentNumber = examstudentcrossref.studentNumber
+WHERE examstudentcrossref.idExam = :examId
+""")
+    suspend fun getStudentsForExam(examId: Int): List<Student>
 }

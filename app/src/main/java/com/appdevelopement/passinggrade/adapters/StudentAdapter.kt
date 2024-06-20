@@ -24,16 +24,16 @@ class StudentAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val student = studentArrayList[position]
+        viewHolder.tvStudentName.text = student.studentName
+        viewHolder.tvStudentNumber.text = student.studentNumber.toString()
 
-        viewHolder.tvStudentName.text = studentArrayList[position].studentName
-        viewHolder.tvStudentNumber.text = studentArrayList[position].studentNumber.toString()
-
-        val imageDrawableResId = if (studentArrayList[position].isGraded) {
-            R.drawable.baseline_check_box_24
-        } else {
-            R.drawable.baseline_check_box_outline_blank_24
-        }
-        viewHolder.tvGraded.setImageResource(imageDrawableResId)
+//        val imageDrawableResId = if (student.isGraded) {
+//            R.drawable.baseline_check_box_24
+//        } else {
+//            R.drawable.baseline_check_box_outline_blank_24
+//        }
+//        viewHolder.tvGraded.setImageResource(imageDrawableResId)
 
         // Set OnClickListener for btnChangeGrade
         viewHolder.btnChangeGrade.setOnClickListener {
@@ -48,8 +48,8 @@ class StudentAdapter(
         return studentArrayList.size
     }
 
-    fun updateData(filteredItems: ArrayList<StudentDTO>) {
-        studentArrayList = filteredItems
+    fun updateData(newStudentList: List<StudentDTO>) {
+        studentArrayList = ArrayList(newStudentList)
         notifyDataSetChanged()
     }
 

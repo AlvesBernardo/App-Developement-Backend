@@ -13,9 +13,8 @@ class UpdateExamGradeUseCase(private val examDao: ExamDao) {
                     idExam = exam.idExam,
                     examName = exam.examName,
                     idTeacher = exam.idTeacher,
-                    idStudent = exam.idStudent,
                     idCourse = exam.idCourse,
-                    dtFinalGrade = finalGrade
+//                    dtFinalGrade = finalGrade
                 )
                 if (pass) {
                     examDao.updateExam(updatedExam)

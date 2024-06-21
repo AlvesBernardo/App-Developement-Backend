@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="_1sdp">1dp</dimen>
+    <dimen name="_5sdp">5dp</dimen>
+    <dimen name="_8sdp">8dp</dimen>
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_30sdp">30dp</dimen>
+    <dimen name="_14ssp">14sp</dimen>
+    <!--    Text Styles-->
+    <dimen name="TextFont1">22sp</dimen> <!-- Title text -->
+    <dimen name="TextFont2">17sp</dimen> <!-- Subtitle text -->
+    <dimen name="TextFont3">14sp</dimen> <!-- Normal text font -->
+    <dimen name="TextFont4">12sp</dimen> <!-- Small text font -->
+    <dimen name="TextFont5">8sp</dimen> <!-- Small text font -->
+
+    <!--    Toggle & Buttons-->
+    <dimen name="ToggleDimension">28dp</dimen>
+
+    <!--    Logo-->
+    <dimen name="Logo">180dp</dimen>
+
+</resources>

@@ -1,39 +1,31 @@
 package com.appdevelopement.passinggrade.middelware
 
-
 import android.content.Context
-import android.util.Log
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Student
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 object AddStudent {
-    val student = Student(
-        studentNumber = 0,
-        studentName = "Bernardo Alves",
-//        isGraded = false
-    )
+  val student =
+      Student(
+          studentNumber = 0,
+          studentName = "Bernardo Alves",
+      )
 
-    val student2 = Student(
-        studentNumber = 0,
-        studentName = "Mehdi Sadghi",
-//        isGraded = false
-    )
+  val student2 =
+      Student(
+          studentNumber = 0,
+          studentName = "Mehdi Sadghi",
+      )
 
-
-    suspend fun addStudent(context: Context): Student {
-        val dao = AppDatabase.getDatabase(context).studentDao()
-        val studentId = withContext(Dispatchers.IO) {
-            dao.insertStudent(student)
-            dao.insertStudent(student2)
+  suspend fun addStudent(context: Context): Student {
+    val dao = AppDatabase.getDatabase(context).studentDao()
+    val studentId =
+        withContext(Dispatchers.IO) {
+          dao.insertStudent(student)
+          dao.insertStudent(student2)
         }
-        return student.copy(studentNumber = studentId.toInt())
-    }
-
-
+    return student.copy(studentNumber = studentId.toInt())
+  }
 }

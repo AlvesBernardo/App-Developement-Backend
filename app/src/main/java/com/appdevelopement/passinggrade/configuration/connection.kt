@@ -1,6 +1,6 @@
-//import android.util.Log
-//import org.ktorm.database.Database
-//object DatabaseProvider {
+// import android.util.Log
+// import org.ktorm.database.Database
+// object DatabaseProvider {
 //
 //    val database: Database? = try {
 //        Database.connect(
@@ -13,4 +13,4 @@
 //        Log.e("Database Connection", "Failed to connect to the database", ex)
 //        null
 //    }
-//}
+// }

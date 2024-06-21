@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,6 +24,7 @@
                 android:textSize="@dimen/_10ssp"
                 android:text="Grading Criteria Name"
                 android:layout_height="wrap_content" />
+
         <TextView
                 android:id="@+id/tvGradingCriteriaWeight"
                 style="@style/TableRowStyle"
@@ -37,19 +37,19 @@
                 android:text="Grading Criteria Weight"
                 android:layout_height="wrap_content" />
 
-<!--        <ImageView-->
-<!--                android:id="@+id/ivRemoveCriteria"-->
-<!--                style="@style/TableRowStyle"-->
-<!--                android:layout_width="1dp"-->
-<!--                android:layout_column="2"-->
-<!--                android:layout_weight="1"-->
-<!--                android:background="@color/white"-->
-<!--                android:textAlignment="textStart"-->
-<!--                android:textSize="@dimen/_10ssp"-->
-<!--                android:src="@drawable/baseline_close_24"-->
-<!--                android:padding="7dp"-->
-<!--                android:clickable="true"-->
-<!--                android:focusable="true"/>-->
+        <!--        <ImageView-->
+        <!--                android:id="@+id/ivRemoveCriteria"-->
+        <!--                style="@style/TableRowStyle"-->
+        <!--                android:layout_width="1dp"-->
+        <!--                android:layout_column="2"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:background="@color/white"-->
+        <!--                android:textAlignment="textStart"-->
+        <!--                android:textSize="@dimen/_10ssp"-->
+        <!--                android:src="@drawable/baseline_close_24"-->
+        <!--                android:padding="7dp"-->
+        <!--                android:clickable="true"-->
+        <!--                android:focusable="true"/>-->
 
 
     </LinearLayout>

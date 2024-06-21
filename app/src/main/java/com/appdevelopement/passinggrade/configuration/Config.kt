@@ -1,9 +1,9 @@
-//import android.content.Context
-//import com.appdevelopement.passinggrade.R
-//import java.io.InputStreamReader
-//import java.util.*
+// import android.content.Context
+// import com.appdevelopement.passinggrade.R
+// import java.io.InputStreamReader
+// import java.util.*
 //
-//object Config {
+// object Config {
 //    lateinit var dbUrl: String
 //    lateinit var dbDriver: String
 //    lateinit var dbUser: String
@@ -19,4 +19,4 @@
 //        dbUser = properties.getProperty("db.user")
 //        dbPassword = properties.getProperty("db.password")
 //    }
-//}
+// }

@@ -20,10 +20,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <!-- Your existing layout code here -->
-            <!-- Profile Image -->
-            <!-- Floating Action Button Menu -->
-            <!-- Guidelines -->
             <androidx.constraintlayout.widget.Guideline
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

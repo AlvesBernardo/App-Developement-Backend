@@ -1,7 +1,7 @@
-//import android.app.Application
-//import androidx.room.Room
+// import android.app.Application
+// import androidx.room.Room
 //
-//class MyApp : Application() {
+// class MyApp : Application() {
 //
 //    lateinit var db: AppDatabase
 //
@@ -13,4 +13,4 @@
 //            AppDatabase::class.java, "passinggrade"
 //        ).build()
 //    }
-//}
+// }

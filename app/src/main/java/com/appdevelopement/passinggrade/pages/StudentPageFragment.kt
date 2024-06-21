@@ -51,6 +51,7 @@ class StudentPageFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.student_page, container, false)
         examId = arguments?.getInt("idExam") ?: -1
+        Log.d("StudentPageFragment", "Exam ID: $examId")
         fetchStudentsForExam(examId)
 
         db = AppDatabase.getDatabase(requireContext())
@@ -61,13 +62,14 @@ class StudentPageFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        studentAdapter = StudentAdapter(toDisplayList, examId, parentFragmentManager)
+        studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId)
         recyclerView.adapter = studentAdapter
 
         toDisplayList.clear()
         runBlocking {
-            println("array has $toDisplayList")
-            toDisplayList.addAll(getStudentsRelatedToExam(examId).map { convertToStudentDto(it) })
+            val students = getStudentsRelatedToExam(examId)
+            Log.d("StudentPageFragment", "Fetched Students: $students")
+            toDisplayList.addAll(students.map { convertToStudentDto(it) })
         }
         studentAdapter.notifyDataSetChanged()
 
@@ -108,7 +110,7 @@ class StudentPageFragment : Fragment() {
         // Import Excel Button
         val importButton: Button = view.findViewById(R.id.btnImportSheet)
         importButton.setOnClickListener {
-            Log.d("Debug", "importButton clicked")
+            Log.d("StudentPageFragment", "importButton clicked")
             pickFile()
         }
 
@@ -176,16 +178,6 @@ class StudentPageFragment : Fragment() {
         studentAdapter.updateData(tempList)
     }
 
-    // private fun filterStudentsByGradeStatus(filter: String) {
-    //     val tempList: ArrayList<StudentDTO> = ArrayList(studentList).apply {
-    //         when (filter) {
-    //             "Graded" -> retainAll { it.isGraded }
-    //             "UnGraded" -> retainAll { !it.isGraded }
-    //         }
-    //     }
-    //     studentAdapter.updateData(tempList)
-    // }
-
     private fun importExcelData(uri: Uri) {
         val readFromExcelFile = ReadFromExcelFile(requireContext())
         val examId = arguments?.getInt("idExam") ?: -1
@@ -236,6 +228,7 @@ class StudentPageFragment : Fragment() {
         val studentsInExamIds = runBlocking {
             examStudentCorssReferecne.getStudentNumbersForExam(examId)
         }
+        Log.d("StudentPageFragment", "Students in Exam IDs: $studentsInExamIds")
 
         return runBlocking {
             studentsInExamIds.mapNotNull { studentNumber ->
@@ -246,7 +239,7 @@ class StudentPageFragment : Fragment() {
 
     private fun convertToStudentDto(student: Student): StudentDTO {
         return StudentDTO(
-            student.studentNumber, student.studentName,
+            student.studentNumber, student.studentName
         )
     }
 
@@ -254,7 +247,6 @@ class StudentPageFragment : Fragment() {
         return Student(
             studentNumber = studentDto.studentNumber,
             studentName = studentDto.studentName,
-            // isGraded = studentDto.isGraded
         )
     }
 
@@ -262,6 +254,7 @@ class StudentPageFragment : Fragment() {
         GlobalScope.launch(Dispatchers.IO) {
             val students = studentDao.getStudentsForExam(examId).map { convertToStudentDto(it) }
             withContext(Dispatchers.Main) {
+                Log.d("StudentPageFragment", "Fetched students for exam $examId: $students")
                 toDisplayList.clear()
                 toDisplayList.addAll(students)
                 studentAdapter.notifyDataSetChanged()

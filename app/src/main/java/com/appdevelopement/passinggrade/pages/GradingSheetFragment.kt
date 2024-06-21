@@ -188,11 +188,9 @@ class GradingSheetFragment : Fragment() {
 
     private fun totalCompetenceWeight(): Int {
         var totalWeight = 0
-
         for (competence in competenceList) {
             totalWeight += competence.dtCompetenceWeight
         }
-
         return totalWeight
     }
 

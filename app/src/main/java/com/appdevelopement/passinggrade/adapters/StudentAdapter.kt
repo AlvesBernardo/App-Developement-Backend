@@ -1,5 +1,6 @@
 package com.appdevelopement.passinggrade.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,8 @@ import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 
 class StudentAdapter(
     private var studentArrayList: ArrayList<StudentDTO>,
+    private val fragmentManager: FragmentManager,
     private val examId: Int,
-    private val fragmentManager: FragmentManager // Add fragment manager parameter
 ) : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -28,6 +29,7 @@ class StudentAdapter(
         val student = studentArrayList[position]
         viewHolder.tvStudentName.text = student.studentName
         viewHolder.tvStudentNumber.text = student.studentNumber.toString()
+        Log.d("StudentAdapter", "Binding student: ${student.studentName}")
 
 //        val imageDrawableResId = if (student.isGraded) {
 //            R.drawable.baseline_check_box_24

@@ -147,7 +147,7 @@ We are using SQLlite room to run our database.
 
 
 # Credentials
-You can use jan@email.com password JanPaw and martin@email.con with MarPaw as the credentials
+You can use jan@email.com password JanPaw and martijn@email.con with MarPaw as the credentials
 
 You may import students from the excel sheel like you provided us with. 
 

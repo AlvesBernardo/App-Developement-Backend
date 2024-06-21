@@ -33,7 +33,6 @@ import com.appdevelopement.passinggrade.models.TeacherCourse
             CompetenceGrade::class,
             ExamStudentCrossRef::class],
     version = 19)
-@Database(entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class, CompetenceGrade::class, ExamStudentCrossRef::class], version = 19)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun teacherDao(): TeacherDao
 

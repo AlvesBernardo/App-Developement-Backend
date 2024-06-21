@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -42,7 +41,6 @@ class StudentPageFragment : Fragment() {
     private var examId: Int = -1
     private var toDisplayList = ArrayList<StudentDTO>()
 
-
     companion object {
         private const val PICK_FILE_REQUEST_CODE = 1
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 2
@@ -52,7 +50,7 @@ class StudentPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.student_page, container, false)
-        val examId = arguments?.getInt("idExam") ?: -1
+        examId = arguments?.getInt("idExam") ?: -1
         fetchStudentsForExam(examId)
 
         db = AppDatabase.getDatabase(requireContext())
@@ -63,7 +61,7 @@ class StudentPageFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager)
+        studentAdapter = StudentAdapter(toDisplayList, examId, parentFragmentManager)
         recyclerView.adapter = studentAdapter
 
         toDisplayList.clear()
@@ -99,7 +97,7 @@ class StudentPageFragment : Fragment() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-               // filterStudentsByGradeStatus(filterItems[position])
+                // filterStudentsByGradeStatus(filterItems[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -141,7 +139,6 @@ class StudentPageFragment : Fragment() {
         startActivityForResult(intent, PICK_FILE_REQUEST_CODE)
     }
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
@@ -179,15 +176,15 @@ class StudentPageFragment : Fragment() {
         studentAdapter.updateData(tempList)
     }
 
-//    private fun filterStudentsByGradeStatus(filter: String) {
-//        val tempList: ArrayList<StudentDTO> = ArrayList(studentList).apply {
-//            when (filter) {
-//                "Graded" -> retainAll { it.isGraded }
-//                "UnGraded" -> retainAll { !it.isGraded }
-//            }
-//        }
-//        studentAdapter.updateData(tempList)
-//    }
+    // private fun filterStudentsByGradeStatus(filter: String) {
+    //     val tempList: ArrayList<StudentDTO> = ArrayList(studentList).apply {
+    //         when (filter) {
+    //             "Graded" -> retainAll { it.isGraded }
+    //             "UnGraded" -> retainAll { !it.isGraded }
+    //         }
+    //     }
+    //     studentAdapter.updateData(tempList)
+    // }
 
     private fun importExcelData(uri: Uri) {
         val readFromExcelFile = ReadFromExcelFile(requireContext())
@@ -223,7 +220,6 @@ class StudentPageFragment : Fragment() {
                     studentAdapter.updateData(newStudentList)
                     Toast.makeText(requireContext(), "Data Imported Successfully", Toast.LENGTH_SHORT).show()
                     fetchStudentsForExam(examId)
-
                 }
 
             } catch (e: IOException) {
@@ -232,10 +228,8 @@ class StudentPageFragment : Fragment() {
                     Toast.makeText(requireContext(), "Error Importing Data", Toast.LENGTH_SHORT).show()
                 }
             }
-
         }
     }
-
 
     private fun getStudentsRelatedToExam(examId: Int): List<Student> {
         // Fetch the students that are participating in the exam from your database
@@ -252,7 +246,6 @@ class StudentPageFragment : Fragment() {
 
     private fun convertToStudentDto(student: Student): StudentDTO {
         return StudentDTO(
-
             student.studentNumber, student.studentName,
         )
     }
@@ -261,9 +254,10 @@ class StudentPageFragment : Fragment() {
         return Student(
             studentNumber = studentDto.studentNumber,
             studentName = studentDto.studentName,
-            //isGraded = studentDto.isGraded)
+            // isGraded = studentDto.isGraded
         )
     }
+
     private fun fetchStudentsForExam(examId: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             val students = studentDao.getStudentsForExam(examId).map { convertToStudentDto(it) }
@@ -274,5 +268,4 @@ class StudentPageFragment : Fragment() {
             }
         }
     }
-
 }

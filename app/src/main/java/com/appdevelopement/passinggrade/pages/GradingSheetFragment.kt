@@ -15,20 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
 import com.appdevelopement.passinggrade.database.AppDatabase
-import com.appdevelopement.passinggrade.dto.CourseDto
-import com.appdevelopement.passinggrade.dto.GradingSheetDto
 import com.appdevelopement.passinggrade.models.Compentence
 import com.appdevelopement.passinggrade.models.Course
 import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.apache.poi.sl.draw.geom.Context
-import org.ktorm.dsl.plus
-import android.widget.ScrollView
 
 class GradingSheetFragment : Fragment() {
-
 
     // Fields
     private lateinit var db: AppDatabase
@@ -46,6 +40,8 @@ class GradingSheetFragment : Fragment() {
     private var teacherId: Int = -1
     private var selectedCourseId: Int = -1
     private var selectedExamId: Int = -1
+    private var examId: Int = -1
+    private var studentNumber: Int = -1
 
     private val competenceList = mutableListOf<Compentence>()
 
@@ -54,14 +50,16 @@ class GradingSheetFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        examId = arguments?.getInt("examId") ?: -1
+        studentNumber = arguments?.getInt("studentNumber") ?: -1
 
-        teacherId = activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
-            ?.getInt("idTeacher", -1) ?: -1
-
-        lifecycleScope.launch {
-            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
-        }
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
+
+        val examIdTextView: TextView = view.findViewById(R.id.examIdTextView)
+        val studentNumberTextView: TextView = view.findViewById(R.id.studentNumberTextView)
+
+        examIdTextView.text = "Exam ID: $examId"
+        studentNumberTextView.text = "Student Number: $studentNumber"
 
         // DB connection
         db = AppDatabase.getDatabase(requireContext())
@@ -86,6 +84,13 @@ class GradingSheetFragment : Fragment() {
         gradingSheetItem.adjustForKeyboardGrading(scrollView)
         competenceWeight.adjustForKeyboardGrading(scrollView)
 
+        teacherId = activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
+            ?.getInt("idTeacher", -1) ?: -1
+
+        lifecycleScope.launch {
+            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
+        }
+
         lifecycleScope.launch {
             val courses = getCoursesFromDb()
 
@@ -98,7 +103,6 @@ class GradingSheetFragment : Fragment() {
                 )
 
                 loadExamsForSelectedCourse(selectedCourseId)
-
 
                 createSheetBtn.setOnClickListener {
                     lifecycleScope.launch {
@@ -114,7 +118,6 @@ class GradingSheetFragment : Fragment() {
                 }
             }
         }
-
 
         mustPassToggle.setOnClickListener {
             mustPassIsToggled = !mustPassIsToggled
@@ -145,6 +148,17 @@ class GradingSheetFragment : Fragment() {
         }
 
         return view
+    }
+
+    companion object {
+        fun newInstance(examId: Int, studentNumber: Int): GradingSheetFragment {
+            val fragment = GradingSheetFragment()
+            val args = Bundle()
+            args.putInt("examId", examId)
+            args.putInt("studentNumber", studentNumber)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     private fun updateImageViewState(mustPassToggle: ImageView?) {
@@ -183,7 +197,6 @@ class GradingSheetFragment : Fragment() {
     }
 
     private fun canAddNewCompetence(competenceWeight: Int): Boolean {
-
         val newTotalCompetenceWeight = totalCompetenceWeight() + competenceWeight
         return newTotalCompetenceWeight <= maxTotalCompetenceWeight
     }
@@ -232,6 +245,7 @@ class GradingSheetFragment : Fragment() {
             db.examDao().getExamsByCourseId(courseId)
         }
     }
+
     private suspend fun getCoursesForTeacher(context: android.content.Context, teacherId: Int): List<Exam> {
         Log.d("TeacherCourses", "Teacher ID: $teacherId")
         val dao = AppDatabase.getDatabase(context).examDao()
@@ -260,6 +274,4 @@ fun View.adjustForKeyboardGrading(scrollView: ScrollView) {
             }
         }
     }
-
-
 }

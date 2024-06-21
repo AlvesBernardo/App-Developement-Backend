@@ -20,7 +20,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <!-- Your existing layout code here -->
+            <!-- New TextViews for Exam ID and Student Number -->
+            <TextView
+                    android:id="@+id/examIdTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Exam ID"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp" />
+
+            <TextView
+                    android:id="@+id/studentNumberTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student Number"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/examIdTextView"
+                    android:layout_marginBottom="16dp" />
+
+            <!-- Existing layout code here -->
             <!-- Profile Image -->
             <!-- Floating Action Button Menu -->
             <!-- Guidelines -->

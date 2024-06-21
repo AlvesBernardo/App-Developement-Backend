@@ -14,6 +14,7 @@ import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 
 class StudentAdapter(
     private var studentArrayList: ArrayList<StudentDTO>,
+    private val examId: Int,
     private val fragmentManager: FragmentManager // Add fragment manager parameter
 ) : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 

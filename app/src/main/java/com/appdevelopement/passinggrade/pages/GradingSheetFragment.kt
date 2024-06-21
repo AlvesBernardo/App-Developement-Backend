@@ -30,256 +30,237 @@ import kotlinx.coroutines.withContext
 
 class GradingSheetFragment : Fragment() {
 
+  // Fields
+  private lateinit var db: AppDatabase
+  private var mustPassIsToggled: Boolean = false
+  private lateinit var recyclerView: RecyclerView
+  private lateinit var gradingSheetAdapter: GradingSheetAdapter
+  private lateinit var gradingSheetItem: EditText
+  private lateinit var addCriteriaBtn: Button
+  private lateinit var createSheetBtn: Button
+  private lateinit var mustPassToggle: ImageView
+  private lateinit var competenceWeight: EditText
+  private var maxTotalCompetenceWeight: Int = 100
+  private val examsList = mutableListOf<Exam>()
 
-    // Fields
-    private lateinit var db: AppDatabase
-    private var mustPassIsToggled: Boolean = false
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var gradingSheetAdapter: GradingSheetAdapter
-    private lateinit var gradingSheetItem: EditText
-    private lateinit var addCriteriaBtn: Button
-    private lateinit var createSheetBtn: Button
-    private lateinit var mustPassToggle: ImageView
-    private lateinit var competenceWeight: EditText
-    private var maxTotalCompetenceWeight: Int = 100
-    private val examsList = mutableListOf<Exam>()
+  private var teacherId: Int = -1
+  private var selectedExamId: Int = -1
 
-    private var teacherId: Int = -1
-    private var selectedExamId: Int = -1
+  private val competenceList = mutableListOf<Compentence>()
 
-    private val competenceList = mutableListOf<Compentence>()
+  @SuppressLint("MissingInflatedId")
+  override fun onCreateView(
+      inflater: LayoutInflater,
+      container: ViewGroup?,
+      savedInstanceState: Bundle?
+  ): View? {
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    teacherId =
+        activity
+            ?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
+            ?.getInt("idTeacher", -1) ?: -1
 
-        teacherId =
-            activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
-                ?.getInt("idTeacher", -1) ?: -1
+    val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
+    // DB connection
+    db = AppDatabase.getDatabase(requireContext())
 
-        val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
+    // Get the ScrollView from the layout
+    val scrollView: ScrollView = view.findViewById(R.id.scrollView)
 
-        // DB connection
-        db = AppDatabase.getDatabase(requireContext())
+    recyclerView = view.findViewById(R.id.recyclerView)
+    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+    recyclerView.setHasFixedSize(true)
 
-        // Get the ScrollView from the layout
-        val scrollView: ScrollView = view.findViewById(R.id.scrollView)
+    gradingSheetAdapter = GradingSheetAdapter(competenceList)
+    recyclerView.adapter = gradingSheetAdapter
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.setHasFixedSize(true)
+    gradingSheetItem = view.findViewById(R.id.etGradingCriteria)
+    addCriteriaBtn = view.findViewById(R.id.btnAddCriteria)
+    createSheetBtn = view.findViewById(R.id.btnCreateSheet)
+    mustPassToggle = view.findViewById(R.id.ivMustPassToggle)
+    competenceWeight = view.findViewById(R.id.etCriteriaWeight)
 
-        gradingSheetAdapter = GradingSheetAdapter(competenceList)
-        recyclerView.adapter = gradingSheetAdapter
+    // Call the utility function to adjust for keyboard visibility|| to put the view above teh
+    // keyboard
+    gradingSheetItem.adjustForKeyboardGrading(scrollView)
+    competenceWeight.adjustForKeyboardGrading(scrollView)
 
-        gradingSheetItem = view.findViewById(R.id.etGradingCriteria)
-        addCriteriaBtn = view.findViewById(R.id.btnAddCriteria)
-        createSheetBtn = view.findViewById(R.id.btnCreateSheet)
-        mustPassToggle = view.findViewById(R.id.ivMustPassToggle)
-        competenceWeight = view.findViewById(R.id.etCriteriaWeight)
+    lifecycleScope.launch { loadExams() }
 
-
-        // Call the utility function to adjust for keyboard visibility|| to put the view above teh keyboard
-        gradingSheetItem.adjustForKeyboardGrading(scrollView)
-        competenceWeight.adjustForKeyboardGrading(scrollView)
-
-        lifecycleScope.launch {
-            loadExams()
-        }
-
-        mustPassToggle.setOnClickListener {
-            mustPassIsToggled = !mustPassIsToggled
-            updateImageViewState(mustPassToggle)
-        }
-
-        // Button to add grading criteria
-        addCriteriaBtn.setOnClickListener {
-            val text = gradingSheetItem.text.toString()
-            val competenceW = competenceWeight.text.toString().toInt()
-
-            if (canAddNewCompetence(competenceW)) {
-                if (text.isNotEmpty() && selectedExamId != -1) {
-                    val competenceRecord = Compentence(
-                        idComptence = 0,
-                        idExam = selectedExamId,
-                        dtName = text,
-                        dtCompetenceWeight = competenceW,
-                        dtMustPass = mustPassIsToggled
-                    )
-                    Log.d("CompetenceRecord", competenceRecord.toString())
-                    gradingSheetAdapter.addCriteria(competenceRecord)
-                    resetVars()
-                }
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    "Error! Max total weight of criterias " + maxTotalCompetenceWeight + " will be exceeded",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        createSheetBtn.setOnClickListener {
-            lifecycleScope.launch {
-                if (totalCompetenceWeight() == 100 && selectedExamId != -1) {
-                    for (competence in competenceList) {
-                        insertCompetenceToDb(competence)
-                        Log.d("Competence: ", competence.toString())
-                    }
-                    removeAllCompetences()
-                    Log.d(
-                        "Competences Size: " + competenceList.size,
-                        competenceList.toString()
-                    )
-                    Toast.makeText(
-                        requireContext(),
-                        "Grading Sheet for selected exam created successfully!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-
-        return view
+    mustPassToggle.setOnClickListener {
+      mustPassIsToggled = !mustPassIsToggled
+      updateImageViewState(mustPassToggle)
     }
 
-    private fun loadExams() {
-        lifecycleScope.launch {
+    // Button to add grading criteria
+    addCriteriaBtn.setOnClickListener {
+      val text = gradingSheetItem.text.toString()
+      val competenceW = competenceWeight.text.toString().toInt()
 
-            getCoursesForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
-            Log.d("UpdateExamList: ", "$examsList")
-
-//              Log.d("TeacherCourses", "Teacher ID: $teacherId")
-
-            if (examsList.isNotEmpty()) {
-                val examNames = examsList.map { it.examName }
-
-                val examFilterAdapter = ArrayAdapter(
-                    requireContext(), R.layout.spinner_item, examNames
-                )
-
-                val examSpinner: Spinner? = view?.findViewById(R.id.spnrFilterByExam)
-                examSpinner?.adapter = examFilterAdapter
-
-                examSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        selectedExamId = examsList[position].idExam
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // Handle when nothing is selected
-                    }
-                }
-            }
+      if (canAddNewCompetence(competenceW)) {
+        if (text.isNotEmpty() && selectedExamId != -1) {
+          val competenceRecord =
+              Compentence(
+                  idComptence = 0,
+                  idExam = selectedExamId,
+                  dtName = text,
+                  dtCompetenceWeight = competenceW,
+                  dtMustPass = mustPassIsToggled)
+          Log.d("CompetenceRecord", competenceRecord.toString())
+          gradingSheetAdapter.addCriteria(competenceRecord)
+          resetVars()
         }
+      } else {
+        Toast.makeText(
+                requireContext(),
+                "Error! Max total weight of criterias " +
+                    maxTotalCompetenceWeight +
+                    " will be exceeded",
+                Toast.LENGTH_SHORT)
+            .show()
+      }
     }
 
-    private suspend fun getCompetencesOfSelectedExam(): List<Compentence>? {
-        return withContext(Dispatchers.IO) {
-            db.compentenceDao().getCompetencesForExam(selectedExamId)
-        }
-    }
-
-    private fun updateImageViewState(mustPassToggle: ImageView?) {
-        if (mustPassIsToggled) {
-            mustPassToggle?.setImageResource(R.drawable.baseline_check_box_24)
+    createSheetBtn.setOnClickListener {
+      lifecycleScope.launch {
+        if (totalCompetenceWeight() == 100 && selectedExamId != -1) {
+          for (competence in competenceList) {
+            insertCompetenceToDb(competence)
+            Log.d("Competence: ", competence.toString())
+          }
+          removeAllCompetences()
+          Log.d("Competences Size: " + competenceList.size, competenceList.toString())
+          Toast.makeText(
+                  requireContext(),
+                  "Grading Sheet for selected exam created successfully!",
+                  Toast.LENGTH_SHORT)
+              .show()
         } else {
-            mustPassToggle?.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
+          Toast.makeText(
+                  requireContext(),
+                  "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight,
+                  Toast.LENGTH_SHORT)
+              .show()
         }
+      }
     }
 
-    private fun addAllCompetences(newCompetenceList: List<Compentence>?) {
-        competenceList.clear()
-        if (newCompetenceList != null) {
-            competenceList.addAll(newCompetenceList)
-            gradingSheetAdapter.addAllCriteria(newCompetenceList)
-        }
+    return view
+  }
+
+  private fun loadExams() {
+    lifecycleScope.launch {
+      getCoursesForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
+      Log.d("UpdateExamList: ", "$examsList")
+
+      //              Log.d("TeacherCourses", "Teacher ID: $teacherId")
+
+      if (examsList.isNotEmpty()) {
+        val examNames = examsList.map { it.examName }
+
+        val examFilterAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, examNames)
+
+        val examSpinner: Spinner? = view?.findViewById(R.id.spnrFilterByExam)
+        examSpinner?.adapter = examFilterAdapter
+
+        examSpinner?.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+              override fun onItemSelected(
+                  parent: AdapterView<*>?,
+                  view: View?,
+                  position: Int,
+                  id: Long
+              ) {
+                selectedExamId = examsList[position].idExam
+              }
+
+              override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Handle when nothing is selected
+              }
+            }
+      }
+    }
+  }
+
+  private suspend fun getCompetencesOfSelectedExam(): List<Compentence>? {
+    return withContext(Dispatchers.IO) { db.compentenceDao().getCompetencesForExam(selectedExamId) }
+  }
+
+  private fun updateImageViewState(mustPassToggle: ImageView?) {
+    if (mustPassIsToggled) {
+      mustPassToggle?.setImageResource(R.drawable.baseline_check_box_24)
+    } else {
+      mustPassToggle?.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
+    }
+  }
+
+  private fun addAllCompetences(newCompetenceList: List<Compentence>?) {
+    competenceList.clear()
+    if (newCompetenceList != null) {
+      competenceList.addAll(newCompetenceList)
+      gradingSheetAdapter.addAllCriteria(newCompetenceList)
+    }
+  }
+
+  private fun removeAllCompetences() {
+    competenceList.clear()
+    gradingSheetAdapter.removeAllCriterias()
+  }
+
+  private suspend fun insertCompetenceToDb(competence: Compentence) {
+    withContext(Dispatchers.IO) { db.compentenceDao().insert(competence) }
+  }
+
+  private fun totalCompetenceWeight(): Int {
+    var totalWeight = 0
+
+    for (competence in competenceList) {
+      totalWeight += competence.dtCompetenceWeight
     }
 
-    private fun removeAllCompetences() {
-        competenceList.clear()
-        gradingSheetAdapter.removeAllCriterias()
-    }
+    return totalWeight
+  }
 
-    private suspend fun insertCompetenceToDb(competence: Compentence) {
-        withContext(Dispatchers.IO) {
-            db.compentenceDao().insert(competence)
-        }
-    }
+  private fun canAddNewCompetence(competenceWeight: Int): Boolean {
 
-    private fun totalCompetenceWeight(): Int {
-        var totalWeight = 0
+    val newTotalCompetenceWeight = totalCompetenceWeight() + competenceWeight
+    return newTotalCompetenceWeight <= maxTotalCompetenceWeight
+  }
 
-        for (competence in competenceList) {
-            totalWeight += competence.dtCompetenceWeight
-        }
+  private fun resetVars() {
+    gradingSheetItem.text.clear()
+    competenceWeight.text.clear()
+    mustPassToggle.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
+  }
 
-        return totalWeight
-    }
+  private suspend fun getExamsFromDb(courseId: Int): List<Exam>? {
+    return withContext(Dispatchers.IO) { db.examDao().getExamsByCourseId(courseId) }
+  }
 
-    private fun canAddNewCompetence(competenceWeight: Int): Boolean {
-
-        val newTotalCompetenceWeight = totalCompetenceWeight() + competenceWeight
-        return newTotalCompetenceWeight <= maxTotalCompetenceWeight
-    }
-
-    private fun resetVars() {
-        gradingSheetItem.text.clear()
-        competenceWeight.text.clear()
-        mustPassToggle.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
-    }
-
-    private suspend fun getExamsFromDb(courseId: Int): List<Exam>? {
-        return withContext(Dispatchers.IO) {
-            db.examDao().getExamsByCourseId(courseId)
-        }
-    }
-
-    private suspend fun getCoursesForTeacher(
-        context: android.content.Context,
-        teacherId: Int
-    ): List<Exam>? {
-        Log.d("TeacherCourses", "Teacher ID: $teacherId")
-        val dao = AppDatabase.getDatabase(context).examDao()
-        return withContext(Dispatchers.IO) {
-            dao.getExamByTeacher(teacherId)
-        }
-    }
+  private suspend fun getCoursesForTeacher(
+      context: android.content.Context,
+      teacherId: Int
+  ): List<Exam>? {
+    Log.d("TeacherCourses", "Teacher ID: $teacherId")
+    val dao = AppDatabase.getDatabase(context).examDao()
+    return withContext(Dispatchers.IO) { dao.getExamByTeacher(teacherId) }
+  }
 }
 
 fun View.adjustForKeyboardGrading(scrollView: ScrollView) {
-    viewTreeObserver.addOnGlobalLayoutListener {
-        val rect = Rect()
-        getWindowVisibleDisplayFrame(rect)
-        val screenHeight = rootView.height
-        val keypadHeight = screenHeight - rect.bottom
+  viewTreeObserver.addOnGlobalLayoutListener {
+    val rect = Rect()
+    getWindowVisibleDisplayFrame(rect)
+    val screenHeight = rootView.height
+    val keypadHeight = screenHeight - rect.bottom
 
-        if (keypadHeight > screenHeight * 0.15) {
-            // Keyboard is opened
-            scrollView.post {
-                scrollView.smoothScrollTo(0, bottom)
-            }
-        } else {
-            // Keyboard is closed
-            scrollView.post {
-                scrollView.smoothScrollTo(0, 0)
-            }
-        }
+    if (keypadHeight > screenHeight * 0.15) {
+      // Keyboard is opened
+      scrollView.post { scrollView.smoothScrollTo(0, bottom) }
+    } else {
+      // Keyboard is closed
+      scrollView.post { scrollView.smoothScrollTo(0, 0) }
     }
-
-
+  }
 }

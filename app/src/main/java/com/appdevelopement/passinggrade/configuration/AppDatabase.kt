@@ -22,34 +22,47 @@ import com.appdevelopement.passinggrade.models.Teacher
 import com.appdevelopement.passinggrade.models.TeacherCourse
 
 @Database(
-    entities = [Teacher::class, Student::class, Course::class, Exam::class, TeacherCourse::class, Compentence::class, CompetenceGrade::class, ExamStudentCrossRef::class],
-    version = 18
-)
+    entities =
+        [
+            Teacher::class,
+            Student::class,
+            Course::class,
+            Exam::class,
+            TeacherCourse::class,
+            Compentence::class,
+            CompetenceGrade::class,
+            ExamStudentCrossRef::class],
+    version = 18)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun teacherDao(): TeacherDao
-    abstract fun studentDao(): StudentDao
-    abstract fun courseDao(): CourseDao
-    abstract fun examDao(): ExamDao
-    abstract fun teacherCourseDao(): TeacherCourseDao
-    abstract fun compentenceDao(): CompentenceDao
-    abstract fun CompentenceGradeDao(): CompentenceGradeDao
-    abstract fun examStudentCrossReference(): ExamStudentCorssReferecne
+  abstract fun teacherDao(): TeacherDao
 
-    companion object {
-        @Volatile
-        private var INSTANCE: AppDatabase? = null
+  abstract fun studentDao(): StudentDao
 
-        fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "app-dev"
-                ).fallbackToDestructiveMigration()
+  abstract fun courseDao(): CourseDao
+
+  abstract fun examDao(): ExamDao
+
+  abstract fun teacherCourseDao(): TeacherCourseDao
+
+  abstract fun compentenceDao(): CompentenceDao
+
+  abstract fun CompentenceGradeDao(): CompentenceGradeDao
+
+  abstract fun examStudentCrossReference(): ExamStudentCorssReferecne
+
+  companion object {
+    @Volatile private var INSTANCE: AppDatabase? = null
+
+    fun getDatabase(context: Context): AppDatabase {
+      return INSTANCE
+          ?: synchronized(this) {
+            val instance =
+                Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app-dev")
+                    .fallbackToDestructiveMigration()
                     .build()
-                INSTANCE = instance
-                instance
-            }
-        }
+            INSTANCE = instance
+            instance
+          }
     }
+  }
 }

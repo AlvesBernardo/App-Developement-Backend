@@ -7,21 +7,18 @@ import androidx.room.PrimaryKey
 
 @Entity(
     indices = [Index("idTeacher"), Index("idCourse")],
-    foreignKeys = [
-        ForeignKey(
-            entity = Teacher::class,
-            parentColumns = arrayOf("idTeacher"),
-            childColumns = arrayOf("idTeacher"),
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = Course::class,
-            parentColumns = arrayOf("idCourse"),
-            childColumns = arrayOf("idCourse"),
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+    foreignKeys =
+        [
+            ForeignKey(
+                entity = Teacher::class,
+                parentColumns = arrayOf("idTeacher"),
+                childColumns = arrayOf("idTeacher"),
+                onDelete = ForeignKey.CASCADE),
+            ForeignKey(
+                entity = Course::class,
+                parentColumns = arrayOf("idCourse"),
+                childColumns = arrayOf("idCourse"),
+                onDelete = ForeignKey.CASCADE)])
 data class Exam(
     @PrimaryKey(autoGenerate = true) val idExam: Int,
     val examName: String,

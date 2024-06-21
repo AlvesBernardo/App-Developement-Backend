@@ -7,20 +7,16 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.appdevelopement.passinggrade.database.AppDatabase
 
 class DatabaseHelper(private val context: Context) {
-    val Migration_1_2 = object : Migration(1, 2) {
+  val Migration_1_2 =
+      object : Migration(1, 2) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            TODO("Not yet implemented")
+          TODO("Not yet implemented")
         }
-    }
+      }
 
-    val db: AppDatabase by lazy {
-        Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "app-dev"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
-
-    }
+  val db: AppDatabase by lazy {
+    Room.databaseBuilder(context, AppDatabase::class.java, "app-dev")
+        .fallbackToDestructiveMigration()
+        .build()
+  }
 }

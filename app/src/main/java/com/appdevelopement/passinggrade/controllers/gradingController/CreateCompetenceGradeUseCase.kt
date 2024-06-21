@@ -11,22 +11,22 @@ class CreateCompetenceGradeUseCase(
     private val competenceDao: CompentenceDao
 ) {
 
-    suspend fun execute(criterionRecord: List<CriterionRecord>, studentId: Int, examId: Int) {
-        try {
-            val competences = competenceDao.getCompetencesForExam(examId)
-            competences.forEachIndexed { index, record ->
-                val competenceGrade = CompetenceGrade(
-                    idCompetenceGradeId = 0,
-                    idTeacher = 1,
-                    studentNumber = studentId,
-                    idComptence = record.idComptence, // use this instead
-                    dtGrade = criterionRecord[index].progress.toDouble(),
-                    dtComment = criterionRecord[index].comment
-                );
-                competenceGradeDao.insertComptenceGrade(competenceGrade)
-            }
-        } catch (e: Exception) {
-            Log.e("CreateCompetenceGradeUseCase", "Error inserting CompetenceGrade", e)
-        }
+  suspend fun execute(criterionRecord: List<CriterionRecord>, studentId: Int, examId: Int) {
+    try {
+      val competences = competenceDao.getCompetencesForExam(examId)
+      competences.forEachIndexed { index, record ->
+        val competenceGrade =
+            CompetenceGrade(
+                idCompetenceGradeId = 0,
+                idTeacher = 1,
+                studentNumber = studentId,
+                idComptence = record.idComptence, // use this instead
+                dtGrade = criterionRecord[index].progress.toDouble(),
+                dtComment = criterionRecord[index].comment)
+        competenceGradeDao.insertComptenceGrade(competenceGrade)
+      }
+    } catch (e: Exception) {
+      Log.e("CreateCompetenceGradeUseCase", "Error inserting CompetenceGrade", e)
     }
+  }
 }

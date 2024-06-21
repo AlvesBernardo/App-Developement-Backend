@@ -18,91 +18,87 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-
 class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
 
-        // Load LoginFragment initially
-        if (savedInstanceState == null) {
-            replaceFragment(LoginFragment())
-        }
+    // Load LoginFragment initially
+    if (savedInstanceState == null) {
+      replaceFragment(LoginFragment())
+    }
 
+    val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+    val isLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
+    val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+    val oneHourInMilliSeconds = 60 * 60 * 1000
+    val isSessionValid =
+        isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
 
-        val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
-        val isLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
-        val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
-        val oneHourInMilliSeconds = 60 * 60 * 1000
-        val isSessionValid =
-            isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
+    if (isSessionValid) {
+      replaceFragment(UserDashboardFragment())
+    } else {
+      replaceFragment(LoginFragment())
+    }
 
-        if (isSessionValid) {
+    val database = AppDatabase.getDatabase(this)
+    val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+    bottomNavigationItemView.setOnItemSelectedListener { item ->
+      val currentIsLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
+      val currentLoginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+      val currentIsSessionValid =
+          currentIsLoggedIn &&
+              ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
+      if (currentIsSessionValid) {
+        when (item.itemId) {
+          R.id.home -> {
             replaceFragment(UserDashboardFragment())
-        } else {
-            replaceFragment(LoginFragment())
+            true
+          }
+
+          R.id.profile -> {
+            replaceFragment((SheetManagementFragment()))
+            true
+          }
+
+          R.id.profilev2 -> {
+            replaceFragment(ProfilePageFragment())
+            true
+          }
+
+          else -> false
         }
-
-        val database = AppDatabase.getDatabase(this)
-        val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        bottomNavigationItemView.setOnItemSelectedListener { item ->
-            val currentIsLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
-            val currentLoginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
-            val currentIsSessionValid =
-                currentIsLoggedIn && ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
-            if (currentIsSessionValid) {
-                when (item.itemId) {
-                    R.id.home -> {
-                        replaceFragment(UserDashboardFragment())
-                        true
-                    }
-
-                    R.id.profile -> {
-                        replaceFragment((SheetManagementFragment()))
-                        true
-                    }
-
-                    R.id.profilev2 -> {
-                        replaceFragment(ProfilePageFragment())
-                        true
-                    }
-
-                    else -> false
-                }
-            } else {
-                sharedPreferences.edit()?.remove("loggedIn")?.apply() 
-                replaceFragment(LoginFragment())
-                Log.d("error", "User not logged in")
-                true
-            }
-        }
-        initializeDatabase()
+      } else {
+        sharedPreferences.edit()?.remove("loggedIn")?.apply()
+        replaceFragment(LoginFragment())
+        Log.d("error", "User not logged in")
+        true
+      }
     }
+    initializeDatabase()
+  }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+  private fun replaceFragment(fragment: Fragment) {
+    supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
+  }
+
+  private fun initializeDatabase() {
+    val context = this
+    CoroutineScope(Dispatchers.IO).launch {
+      // Ensure that all middleware operations are completed in the correct sequence
+
+      // Insert teacher
+      val teacher = TeacherManger.addTeacher(context)
+      val teacherId = teacher.idTeacher
+
+      val course = CourseManager.addCourse(context)
+      val courseId = course.idCourse
+
+      // Insert exam
+      val exam = AddExam.addExam(context, 1, 2)
+      val examId = exam.idExam
+
     }
-
-    private fun initializeDatabase() {
-        val context = this
-        CoroutineScope(Dispatchers.IO).launch {
-            // Ensure that all middleware operations are completed in the correct sequence
-
-            //Insert teacher
-            val teacher = TeacherManger.addTeacher(context)
-            val teacherId = teacher.idTeacher
-
-            val course = CourseManager.addCourse(context)
-            val courseId = course.idCourse
-
-            // Insert exam
-            val exam = AddExam.addExam(context, 1, 2)
-            val examId = exam.idExam
-
-        }
-    }
-
+  }
 }

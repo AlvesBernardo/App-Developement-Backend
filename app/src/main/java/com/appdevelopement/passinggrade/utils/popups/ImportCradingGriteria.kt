@@ -1,5 +1,3 @@
 package com.appdevelopement.passinggrade.utils.popups
 
-
-class ImportCradingGriteria {
-}
+class ImportCradingGriteria {}

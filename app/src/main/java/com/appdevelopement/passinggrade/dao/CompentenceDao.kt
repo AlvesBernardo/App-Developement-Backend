@@ -8,14 +8,10 @@ import com.appdevelopement.passinggrade.models.Compentence
 
 @Dao
 interface CompentenceDao {
-    @Query("SELECT * FROM Compentence")
-    fun getAll(): List<Compentence>
+  @Query("SELECT * FROM Compentence") fun getAll(): List<Compentence>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(compentence: Compentence)
+  @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insert(compentence: Compentence)
 
-    @Query("SELECT * FROM Compentence WHERE idExam = :idExam")
-    suspend fun getCompetencesForExam(idExam: Int): List<Compentence>
-
-
+  @Query("SELECT * FROM Compentence WHERE idExam = :idExam")
+  suspend fun getCompetencesForExam(idExam: Int): List<Compentence>
 }

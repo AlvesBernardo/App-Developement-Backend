@@ -9,46 +9,48 @@ import java.io.IOException
 
 class ReadFromExcelFile(private val context: Context) {
 
-    @Throws(IOException::class)
-    fun readFromExcel(uri: Uri): List<StudentDTO> {
-        val inputStream = context.contentResolver.openInputStream(uri)
+  @Throws(IOException::class)
+  fun readFromExcel(uri: Uri): List<StudentDTO> {
+    val inputStream =
+        context.contentResolver.openInputStream(uri)
             ?: throw IOException("Unable to open input stream from URI")
-        val workbook = XSSFWorkbook(inputStream)
-        val sheet = workbook.getSheetAt(0)
+    val workbook = XSSFWorkbook(inputStream)
+    val sheet = workbook.getSheetAt(0)
 
-        val studentDTOList = ArrayList<StudentDTO>()
-        val iterator = sheet.iterator()
+    val studentDTOList = ArrayList<StudentDTO>()
+    val iterator = sheet.iterator()
 
-        repeat(2) {
-            if (iterator.hasNext()) {
-                iterator.next()
-            }
-        }
-
-        for (row in iterator) {
-            val studentNumber = getCellValue(row.getCell(1)).toDouble().toInt()
-            val studentName = getCellValue(row.getCell(2))
-            val isGraded = getCellValue(row.getCell(3)).isNotEmpty()
-
-            val studentDTO = StudentDTO(
-                studentName = studentName,
-                studentNumber = studentNumber,
-            )
-            studentDTOList.add(studentDTO)
-        }
-
-        workbook.close()
-        inputStream.close()
-        return studentDTOList
+    repeat(2) {
+      if (iterator.hasNext()) {
+        iterator.next()
+      }
     }
 
-    private fun getCellValue(cell: Cell?): String {
-        return when (cell?.cellType) {
-            CellType.STRING -> cell.stringCellValue
-            CellType.NUMERIC -> cell.numericCellValue.toString()
-            CellType.BOOLEAN -> cell.booleanCellValue.toString()
-            CellType.FORMULA -> cell.cellFormula
-            else -> ""
-        }
+    for (row in iterator) {
+      val studentNumber = getCellValue(row.getCell(1)).toDouble().toInt()
+      val studentName = getCellValue(row.getCell(2))
+      val isGraded = getCellValue(row.getCell(3)).isNotEmpty()
+
+      val studentDTO =
+          StudentDTO(
+              studentName = studentName,
+              studentNumber = studentNumber,
+          )
+      studentDTOList.add(studentDTO)
     }
+
+    workbook.close()
+    inputStream.close()
+    return studentDTOList
+  }
+
+  private fun getCellValue(cell: Cell?): String {
+    return when (cell?.cellType) {
+      CellType.STRING -> cell.stringCellValue
+      CellType.NUMERIC -> cell.numericCellValue.toString()
+      CellType.BOOLEAN -> cell.booleanCellValue.toString()
+      CellType.FORMULA -> cell.cellFormula
+      else -> ""
+    }
+  }
 }

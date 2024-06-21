@@ -8,22 +8,19 @@ import com.appdevelopement.passinggrade.models.Student
 
 @Dao
 interface StudentDao {
-    @Query("SELECT * FROM Student")
-    fun getAll(): List<Student>
+  @Query("SELECT * FROM Student") fun getAll(): List<Student>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertStudent(student: Student): Long
+  @Insert(onConflict = OnConflictStrategy.REPLACE) suspend fun insertStudent(student: Student): Long
 
-    @Query("SELECT * FROM Student WHERE studentNumber == :studentNumber")
-    suspend fun findStudent(studentNumber: Int): Student?
+  @Query("SELECT * FROM Student WHERE studentNumber == :studentNumber")
+  suspend fun findStudent(studentNumber: Int): Student?
 
-    @Query(
-        """
+  @Query(
+      """
 SELECT student.* FROM student
 INNER JOIN examstudentcrossref 
 ON student.studentNumber = examstudentcrossref.studentNumber
 WHERE examstudentcrossref.idExam = :examId
-"""
-    )
-    suspend fun getStudentsForExam(examId: Int): List<Student>
+""")
+  suspend fun getStudentsForExam(examId: Int): List<Student>
 }

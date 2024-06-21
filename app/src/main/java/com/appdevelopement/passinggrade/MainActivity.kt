@@ -58,22 +58,10 @@ class MainActivity : AppCompatActivity() {
             true
           }
 
-
           R.id.profile -> {
             replaceFragment((SheetManagementFragment()))
             true
           }
-
-           // Insert course
-            val course = CourseManager.addCourse(context)
-            val courseId = course.idCourse
-
-            // Insert exam
-            val exam = AddExam.addExam(context, 1, 2)
-            val exam1 = AddExam.addExam(context, 2, 2)
-            val exam2 = AddExam.addExam(context, 1,3 )
-            val exam3 = AddExam.addExam(context, 2, 4)
-
 
           R.id.profilev2 -> {
             replaceFragment(ProfilePageFragment())
@@ -81,14 +69,6 @@ class MainActivity : AppCompatActivity() {
           }
 
           else -> false
-
-            CompetenceManager.addCompetences(context, 1)
-            CompetenceManager.addCompetences(context, 2)
-            CompetenceManager.addCompetences(context, 3)
-            CompetenceManager.addCompetences(context, 4)
-//               TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
-//                    TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
-
         }
       } else {
         sharedPreferences.edit()?.remove("loggedIn")?.apply()

@@ -1,13 +1,11 @@
 package com.appdevelopement.passinggrade.utils.popups.calculators
 
-import android.graphics.Color
 import android.widget.LinearLayout
 import com.appdevelopement.passinggrade.models.Compentence
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
-import kotlin.math.roundToInt
 
 class CritertionCalculator {
-    fun calculateTotalGrade(gradingAreaLayout: LinearLayout, competences: List<Compentence>): Int {
+    fun calculateTotalGrade(gradingAreaLayout: LinearLayout, competences: List<Compentence>): Double {
         var weightedSum = 0.0
         var weightSum = 0
 
@@ -21,8 +19,11 @@ class CritertionCalculator {
                 weightSum += competence.dtCompetenceWeight
             }
         }
-        val average = weightedSum / weightSum // The weight sum is the divider here
-        return (average * 10).roundToInt() // This is to convert the grade to a scale of 0 to 10
-    }
 
+        return if (weightSum > 0) {
+            weightedSum / weightSum // Calculate the weighted average
+        } else {
+            0.0 // Return 0 if there are no competences to grade
+        }
+    }
 }

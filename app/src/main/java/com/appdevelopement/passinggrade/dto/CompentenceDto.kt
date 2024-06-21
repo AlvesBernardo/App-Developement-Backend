@@ -1,8 +1,9 @@
-//package com.appdevelopement.passinggrade.dto
-//
-//import androidx.room.ColumnInfo
-//
-//data class CompentenceDto(
-//    @ColumnInfo(name = "dtName") val dtName : String,
-//    @ColumnInfo(name = "dtDescription") val dtDescription: String? = null
-//)
+package com.appdevelopement.passinggrade.dto
+
+data class CompentenceDto(
+    val idComptence: Int,
+    val idExam: Int,
+    val dtName: String,
+    val dtCompetenceWeight: Int,
+    val dtMustPass: Boolean
+)

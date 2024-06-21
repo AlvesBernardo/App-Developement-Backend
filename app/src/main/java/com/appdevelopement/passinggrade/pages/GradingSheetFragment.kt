@@ -91,20 +91,7 @@ class GradingSheetFragment : Fragment() {
                 )
 
                 loadExamsForSelectedCourse(selectedCourseId)
-
-                //                val courseSpinner: Spinner = view.findViewById(R.id.spnrFilterByCourse)
-                //                courseSpinner.adapter = filterAdapter
-                //
-                //                courseSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                //                    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                //                        selectedCourseId = courses[position].idCourse
-                ////                        loadExamsForSelectedCourse(selectedCourseId)
-                //                    }
-                //
-                //                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                //                        // Does nothing
-                //                    }
-                //                }
+                
 
                 createSheetBtn.setOnClickListener {
                     lifecycleScope.launch {

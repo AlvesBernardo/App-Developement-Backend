@@ -15,16 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
 import com.appdevelopement.passinggrade.database.AppDatabase
-import com.appdevelopement.passinggrade.dto.CourseDto
-import com.appdevelopement.passinggrade.dto.GradingSheetDto
 import com.appdevelopement.passinggrade.models.Compentence
-import com.appdevelopement.passinggrade.models.Course
 import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.apache.poi.sl.draw.geom.Context
-import org.ktorm.dsl.plus
 import android.widget.ScrollView
 
 class GradingSheetFragment : Fragment() {
@@ -40,11 +35,10 @@ class GradingSheetFragment : Fragment() {
     private lateinit var createSheetBtn: Button
     private lateinit var mustPassToggle: ImageView
     private lateinit var competenceWeight: EditText
-    private var maxTotalCompetenceWeight: Int = 99
-    private val examsArray = ArrayList<Exam>()
+    private var maxTotalCompetenceWeight: Int = 100
+    private val examsList = mutableListOf<Exam>()
 
     private var teacherId: Int = -1
-    private var selectedCourseId: Int = -1
     private var selectedExamId: Int = -1
 
     private val competenceList = mutableListOf<Compentence>()
@@ -58,13 +52,17 @@ class GradingSheetFragment : Fragment() {
         teacherId = activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
             ?.getInt("idTeacher", -1) ?: -1
 
-        lifecycleScope.launch {
-            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
-        }
+//        lifecycleScope.launch {
+//            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
+//        }
+
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
         // DB connection
         db = AppDatabase.getDatabase(requireContext())
+
+        // Get the ScrollView from the layout
+        val scrollView: ScrollView = view.findViewById(R.id.scrollView)
 
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -79,42 +77,15 @@ class GradingSheetFragment : Fragment() {
         mustPassToggle = view.findViewById(R.id.ivMustPassToggle)
         competenceWeight = view.findViewById(R.id.etCriteriaWeight)
 
-        // Get the ScrollView from the layout
-        val scrollView: ScrollView = view.findViewById(R.id.scrollView)
 
-        // Call the utility function to adjust for keyboard visibility
+
+        // Call the utility function to adjust for keyboard visibility|| to put the view above teh keyboard
         gradingSheetItem.adjustForKeyboardGrading(scrollView)
         competenceWeight.adjustForKeyboardGrading(scrollView)
 
         lifecycleScope.launch {
-            val courses = getCoursesFromDb()
-
-            if (courses != null) {
-                // Initialize Spinner
-                val courseTitle = courses.map { it.dtTitle }
-
-                val filterAdapter = ArrayAdapter(
-                    requireContext(), R.layout.spinner_item, courseTitle
-                )
-
-                loadExamsForSelectedCourse(selectedCourseId)
-
-
-                createSheetBtn.setOnClickListener {
-                    lifecycleScope.launch {
-                        if (totalCompetenceWeight() > 0) {
-                            for (competence in competenceList) {
-                                insertCompetenceToDb(competence)
-                                Log.d("Competence: ", competence.toString())
-                            }
-                            removeAllCompetences()
-                            Log.d("Competences Size: " + competenceList.size, competenceList.toString())
-                        }
-                    }
-                }
-            }
+                loadExams()
         }
-
 
         mustPassToggle.setOnClickListener {
             mustPassIsToggled = !mustPassIsToggled
@@ -127,7 +98,7 @@ class GradingSheetFragment : Fragment() {
             val competenceW = competenceWeight.text.toString().toInt()
 
             if (canAddNewCompetence(competenceW)) {
-                if (text.isNotEmpty() && selectedCourseId != -1 && selectedExamId != -1) {
+                if (text.isNotEmpty() && selectedExamId != -1) {
                     val competenceRecord = Compentence(
                         idComptence = 0,
                         idExam = selectedExamId,
@@ -140,11 +111,72 @@ class GradingSheetFragment : Fragment() {
                     resetVars()
                 }
             } else {
-                Toast.makeText(requireContext(), "Error! Max competence weight " + totalCompetenceWeight() + " will be exceeded:", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error! Max total weight of criterias " + maxTotalCompetenceWeight + " will be exceeded", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        createSheetBtn.setOnClickListener {
+            lifecycleScope.launch {
+                if (totalCompetenceWeight() == 100 && selectedExamId != -1) {
+                    for (competence in competenceList) {
+                        insertCompetenceToDb(competence)
+                        Log.d("Competence: ", competence.toString())
+                    }
+                    removeAllCompetences()
+                    Log.d(
+                        "Competences Size: " + competenceList.size,
+                        competenceList.toString()
+                    )
+                    Toast.makeText(requireContext(), "Grading Sheet for selected exam created successfully!", Toast.LENGTH_SHORT).show()
+                }else{
+                     Toast.makeText(requireContext(), "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         return view
+    }
+
+    private fun loadExams() {
+        lifecycleScope.launch {
+
+            getCoursesForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
+            Log.d("UpdateExamList: ", "$examsList")
+
+//              Log.d("TeacherCourses", "Teacher ID: $teacherId")
+
+            if (examsList.isNotEmpty()) {
+                val examNames = examsList.map { it.examName }
+
+                val examFilterAdapter = ArrayAdapter(
+                    requireContext(), R.layout.spinner_item, examNames
+                )
+
+                val examSpinner: Spinner? = view?.findViewById(R.id.spnrFilterByExam)
+                examSpinner?.adapter = examFilterAdapter
+
+                examSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        selectedExamId = examsList[position].idExam
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        // Handle when nothing is selected
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun getCompetencesOfSelectedExam(): List<Compentence>?{
+        return withContext(Dispatchers.IO) {
+            db.compentenceDao().getCompetencesForExam(selectedExamId)
+        }
     }
 
     private fun updateImageViewState(mustPassToggle: ImageView?) {
@@ -155,9 +187,17 @@ class GradingSheetFragment : Fragment() {
         }
     }
 
-    private suspend fun getCoursesFromDb(): List<Course>? {
-        return withContext(Dispatchers.IO) {
-            db.courseDao().getAllCourses()
+//    private suspend fun getCoursesFromDb(): List<Course>? {
+//        return withContext(Dispatchers.IO) {
+//            db.courseDao().getAllCourses()
+//        }
+//    }
+
+    private fun addAllCompetences(newCompetenceList: List<Compentence>?){
+        competenceList.clear()
+        if(newCompetenceList != null){
+            competenceList.addAll(newCompetenceList)
+            gradingSheetAdapter.addAllCriteria(newCompetenceList)
         }
     }
 
@@ -194,45 +234,12 @@ class GradingSheetFragment : Fragment() {
         mustPassToggle.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
     }
 
-    private fun loadExamsForSelectedCourse(courseId: Int) {
-        lifecycleScope.launch {
-            examsArray.clear()
-            examsArray.addAll(getCoursesForTeacher(requireContext(), teacherId))
-
-            if (examsArray.isNotEmpty()) {
-                val examNames = examsArray.map { it.examName }
-
-                val examFilterAdapter = ArrayAdapter(
-                    requireContext(), R.layout.spinner_item, examNames
-                )
-
-                val examSpinner: Spinner? = view?.findViewById(R.id.spnrFilterByExam)
-                examSpinner?.adapter = examFilterAdapter
-
-                examSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        selectedExamId = examsArray[position].idExam
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        // Handle when nothing is selected
-                    }
-                }
-            }
-        }
-    }
-
     private suspend fun getExamsFromDb(courseId: Int): List<Exam>? {
         return withContext(Dispatchers.IO) {
             db.examDao().getExamsByCourseId(courseId)
         }
     }
-    private suspend fun getCoursesForTeacher(context: android.content.Context, teacherId: Int): List<Exam> {
+    private suspend fun getCoursesForTeacher(context: android.content.Context, teacherId: Int): List<Exam>? {
         Log.d("TeacherCourses", "Teacher ID: $teacherId")
         val dao = AppDatabase.getDatabase(context).examDao()
         return withContext(Dispatchers.IO) {

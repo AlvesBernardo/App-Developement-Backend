@@ -1,11 +1,10 @@
 package com.appdevelopement.passinggrade.adapters
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.models.Compentence
 
@@ -14,8 +13,8 @@ class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) 
 
     // Inflate the item layout and create the ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).
-        inflate(R.layout.grading_criteria_item, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.grading_criteria_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -23,13 +22,7 @@ class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currentItem = competenceList[position]
         viewHolder.tvGradingCriteriaName.text = currentItem.dtName
-        viewHolder.tvGradingCriteriaWeight.text  = currentItem.dtCompetenceWeight.toString()
-//        val imageDrawableResId =  R.drawable.baseline_close_24
-//        viewHolder.ivRemoveCriteria.setImageResource(imageDrawableResId)
-//
-//        viewHolder.ivRemoveCriteria.setOnClickListener{
-//            removeCriteria(position)
-//        }
+        viewHolder.tvGradingCriteriaWeight.text = currentItem.dtCompetenceWeight.toString()
     }
 
     // Return the size of the data list
@@ -40,11 +33,10 @@ class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) 
     // ViewHolder class to hold the view elements
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvGradingCriteriaName: TextView = itemView.findViewById(R.id.tvGradingCriteriaName)
-        val tvGradingCriteriaWeight: TextView   = itemView.findViewById(R.id.tvGradingCriteriaWeight)
-//        val ivRemoveCriteria: ImageView = itemView.findViewById(R.id.ivRemoveCriteria)
+        val tvGradingCriteriaWeight: TextView = itemView.findViewById(R.id.tvGradingCriteriaWeight)
     }
 
-    private fun removeCriteria(position: Int){
+    private fun removeCriteria(position: Int) {
         competenceList.removeAt(position)
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, competenceList.size)
@@ -56,11 +48,12 @@ class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) 
     }
 
     fun addAllCriteria(newCompetenceList: List<Compentence>) {
-        competenceList.clear() // Clear the current list if needed
+        competenceList.clear()
         competenceList.addAll(newCompetenceList)
-        notifyDataSetChanged() // Notify the adapter that the data set has changed
+        notifyDataSetChanged()
     }
-    fun removeAllCriterias(){
+
+    fun removeAllCriterias() {
         competenceList.clear()
         notifyDataSetChanged()
     }

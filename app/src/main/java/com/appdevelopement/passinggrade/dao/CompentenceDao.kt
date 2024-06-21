@@ -18,5 +18,4 @@ interface CompentenceDao {
     suspend fun getCompetencesForExam(idExam: Int): List<Compentence>
 
 
-
 }

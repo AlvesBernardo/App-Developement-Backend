@@ -5,7 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.SeekBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -33,7 +37,11 @@ class GradeStudentFragment : Fragment() {
     private lateinit var updateExamGradeUseCase: UpdateExamGradeUseCase
     private lateinit var gradingUseCase: GradingUseCase
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.grade_student, container, false)
     }
@@ -41,7 +49,8 @@ class GradeStudentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         db = AppDatabase.getDatabase(requireContext())
-        createCompetenceGradeUseCase = CreateCompetenceGradeUseCase(db.CompentenceGradeDao(), db.compentenceDao())
+        createCompetenceGradeUseCase =
+            CreateCompetenceGradeUseCase(db.CompentenceGradeDao(), db.compentenceDao())
         gradingUseCase = GradingUseCase(db)
         updateExamGradeUseCase = UpdateExamGradeUseCase(db.examDao())
 
@@ -77,7 +86,8 @@ class GradeStudentFragment : Fragment() {
 
                 gradingCriteria.forEach { criterion ->
                     val competence = criterias.find { it.dtName == criterion }
-                    val existingGrade = existingGrades.find { it.idComptence == competence?.idComptence }
+                    val existingGrade =
+                        existingGrades.find { it.idComptence == competence?.idComptence }
                     val progressValue = (existingGrade?.dtGrade ?: 0.0).toInt()
                     val commentValue = existingGrade?.dtComment ?: ""
 
@@ -126,9 +136,15 @@ class GradeStudentFragment : Fragment() {
                         layoutParams = LinearLayout.LayoutParams(0, heightInPixels, 1f)
 
                         setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                                val steps = arrayOf(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100)
-                                val closestStep = steps.minByOrNull { kotlin.math.abs(it - progress) } ?: 0
+                            override fun onProgressChanged(
+                                seekBar: SeekBar?,
+                                progress: Int,
+                                fromUser: Boolean
+                            ) {
+                                val steps =
+                                    arrayOf(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 75, 100)
+                                val closestStep =
+                                    steps.minByOrNull { kotlin.math.abs(it - progress) } ?: 0
                                 seekBar?.progress = closestStep
                                 record.progress = closestStep
                                 progressTextView.text = "$closestStep%"
@@ -158,7 +174,10 @@ class GradeStudentFragment : Fragment() {
                         )
                         val commentPopUpHandler = CommentPopUpHandler(context)
                         setOnClickListener {
-                            commentPopUpHandler.showCommentPopUp(criterion, record.comment) { newComment ->
+                            commentPopUpHandler.showCommentPopUp(
+                                criterion,
+                                record.comment
+                            ) { newComment ->
                                 record.comment = newComment
                                 commentDisplayTextView.text = newComment // Show comment in textView
                             }
@@ -172,8 +191,13 @@ class GradeStudentFragment : Fragment() {
             submitButton.setOnClickListener {
                 if (student != null) {
                     val MINIMUM_SCORE = 5.5
-                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout, criterias)
-                    val studentRecord = studentRecordCreator.getStudentRecord(student, totalGrade, gradingAreaLayout)
+                    val totalGrade =
+                        criterionCalculator.calculateTotalGrade(gradingAreaLayout, criterias)
+                    val studentRecord = studentRecordCreator.getStudentRecord(
+                        student,
+                        totalGrade,
+                        gradingAreaLayout
+                    )
 
                     val criterionRecords: List<CriterionRecord> = gradingAreaLayout.children
                         .filter { it is LinearLayout && it.tag is CriterionRecord }
@@ -190,13 +214,25 @@ class GradeStudentFragment : Fragment() {
                             totalGrade * 10, // totalGrade as Double
                             criterionRecords // List<CriterionRecord>
                         )
-                        createCompetenceGradeUseCase.execute(criterionRecords, student.studentNumber, examId)
+                        createCompetenceGradeUseCase.execute(
+                            criterionRecords,
+                            student.studentNumber,
+                            examId
+                        )
                         if (isPass) {
                             withContext(Dispatchers.IO) {
-                                updateExamGradeUseCase.execute(student.studentNumber, totalGrade * 10, isPass)
+                                updateExamGradeUseCase.execute(
+                                    student.studentNumber,
+                                    totalGrade * 10,
+                                    isPass
+                                )
                             }
                         }
-                         Toast.makeText(context, "Graded succefully check your files in downaload folder", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Graded succefully check your files in downaload folder",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
                     Toast.makeText(context, "Error: Student is null", Toast.LENGTH_SHORT).show()

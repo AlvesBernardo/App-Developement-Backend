@@ -1,6 +1,9 @@
 package com.appdevelopement.passinggrade.models
 
-import androidx.room.*
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
     indices = [Index("idExam")],

@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.models.Course
 
-class CoursesAdapter(private val courses: List<Course>) : RecyclerView.Adapter<CoursesAdapter.ViewHolder>() {
+class CoursesAdapter(private val courses: List<Course>) :
+    RecyclerView.Adapter<CoursesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val courseName: TextView = view.findViewById(R.id.course_name)

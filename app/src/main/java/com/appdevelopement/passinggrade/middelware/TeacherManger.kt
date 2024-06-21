@@ -1,16 +1,12 @@
 package com.appdevelopement.passinggrade.middelware
 
 import android.content.Context
-import android.util.Log
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Teacher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-object TeacherManger {
+object    TeacherManger {
     private val teacher1 = Teacher(
         idTeacher = 0,
         dtEmail = "jan@email.com",
@@ -26,9 +22,13 @@ object TeacherManger {
         return teacher1.copy(idTeacher = teacherId.toInt())
     }
 
-    suspend fun getTeacherByEmailAndPassword(context: Context, email: String, password: String): Teacher?{
+    suspend fun getTeacherByEmailAndPassword(
+        context: Context,
+        email: String,
+        password: String
+    ): Teacher? {
         val dao = AppDatabase.getDatabase(context).teacherDao()
-        return withContext(IO){
+        return withContext(IO) {
             dao.getTeacherByCredentials(email, password)
         }
     }

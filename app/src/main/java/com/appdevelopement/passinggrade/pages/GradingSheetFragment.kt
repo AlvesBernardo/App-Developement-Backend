@@ -7,7 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ScrollView
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +27,6 @@ import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.widget.ScrollView
 
 class GradingSheetFragment : Fragment() {
 
@@ -49,12 +55,10 @@ class GradingSheetFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        teacherId = activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
-            ?.getInt("idTeacher", -1) ?: -1
+        teacherId =
+            activity?.getSharedPreferences("Authentication", android.content.Context.MODE_PRIVATE)
+                ?.getInt("idTeacher", -1) ?: -1
 
-//        lifecycleScope.launch {
-//            val examsArray = getCoursesForTeacher(requireContext(), teacherId)
-//        }
 
         val view = inflater.inflate(R.layout.fragment_grading_sheet, container, false)
 
@@ -78,13 +82,12 @@ class GradingSheetFragment : Fragment() {
         competenceWeight = view.findViewById(R.id.etCriteriaWeight)
 
 
-
         // Call the utility function to adjust for keyboard visibility|| to put the view above teh keyboard
         gradingSheetItem.adjustForKeyboardGrading(scrollView)
         competenceWeight.adjustForKeyboardGrading(scrollView)
 
         lifecycleScope.launch {
-                loadExams()
+            loadExams()
         }
 
         mustPassToggle.setOnClickListener {
@@ -111,7 +114,11 @@ class GradingSheetFragment : Fragment() {
                     resetVars()
                 }
             } else {
-                Toast.makeText(requireContext(), "Error! Max total weight of criterias " + maxTotalCompetenceWeight + " will be exceeded", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Error! Max total weight of criterias " + maxTotalCompetenceWeight + " will be exceeded",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -127,9 +134,17 @@ class GradingSheetFragment : Fragment() {
                         "Competences Size: " + competenceList.size,
                         competenceList.toString()
                     )
-                    Toast.makeText(requireContext(), "Grading Sheet for selected exam created successfully!", Toast.LENGTH_SHORT).show()
-                }else{
-                     Toast.makeText(requireContext(), "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Grading Sheet for selected exam created successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -173,7 +188,7 @@ class GradingSheetFragment : Fragment() {
         }
     }
 
-    private suspend fun getCompetencesOfSelectedExam(): List<Compentence>?{
+    private suspend fun getCompetencesOfSelectedExam(): List<Compentence>? {
         return withContext(Dispatchers.IO) {
             db.compentenceDao().getCompetencesForExam(selectedExamId)
         }
@@ -187,15 +202,9 @@ class GradingSheetFragment : Fragment() {
         }
     }
 
-//    private suspend fun getCoursesFromDb(): List<Course>? {
-//        return withContext(Dispatchers.IO) {
-//            db.courseDao().getAllCourses()
-//        }
-//    }
-
-    private fun addAllCompetences(newCompetenceList: List<Compentence>?){
+    private fun addAllCompetences(newCompetenceList: List<Compentence>?) {
         competenceList.clear()
-        if(newCompetenceList != null){
+        if (newCompetenceList != null) {
             competenceList.addAll(newCompetenceList)
             gradingSheetAdapter.addAllCriteria(newCompetenceList)
         }
@@ -239,7 +248,11 @@ class GradingSheetFragment : Fragment() {
             db.examDao().getExamsByCourseId(courseId)
         }
     }
-    private suspend fun getCoursesForTeacher(context: android.content.Context, teacherId: Int): List<Exam>? {
+
+    private suspend fun getCoursesForTeacher(
+        context: android.content.Context,
+        teacherId: Int
+    ): List<Exam>? {
         Log.d("TeacherCourses", "Teacher ID: $teacherId")
         val dao = AppDatabase.getDatabase(context).examDao()
         return withContext(Dispatchers.IO) {

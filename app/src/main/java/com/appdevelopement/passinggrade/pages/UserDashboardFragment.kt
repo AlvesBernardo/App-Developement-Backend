@@ -35,7 +35,8 @@ class UserDashboardFragment : Fragment() {
         recyclerView.adapter = ExamAdapter(exams)
 
 
-        activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)?.getInt("idTeacher", -1)
+        activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+            ?.getInt("idTeacher", -1)
             ?.let { teacherId ->
                 lifecycleScope.launch {
                     val exams = getCoursesForTeacher(requireContext(), teacherId)
@@ -51,7 +52,8 @@ class UserDashboardFragment : Fragment() {
         RecyclerView.Adapter<ExamAdapter.ExamViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_course, parent, false)
+            val itemView =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_course, parent, false)
             return ExamViewHolder(itemView)
         }
 
@@ -81,7 +83,8 @@ class UserDashboardFragment : Fragment() {
     }
 
     private fun showExamDialog(exam: Exam) {
-        AlertDialog.Builder(requireContext()).setTitle(exam.examName).setMessage(exam.idExam.toString())
+        AlertDialog.Builder(requireContext()).setTitle(exam.examName)
+            .setMessage(exam.idExam.toString())
             .setPositiveButton("Close", null).show()
     }
 

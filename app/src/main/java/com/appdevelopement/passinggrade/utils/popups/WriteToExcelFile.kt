@@ -4,12 +4,12 @@ import android.content.Context
 import android.os.Environment
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
 import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.IndexedColors
 import org.apache.poi.xssf.usermodel.XSSFCell
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException // Add this import
+import java.io.IOException
 
 class WriteToExcelFile(private val context: Context) {
     private val excelColumns = arrayOf("Id", "Competence", "Grade", "Comment")
@@ -40,13 +40,15 @@ class WriteToExcelFile(private val context: Context) {
             val row = sheet.createRow(index + 1) // Avoiding the header row
 
             row.createCell(0, CellType.NUMERIC).setCellValue(index + 1.0) // Id column as numeric
-            row.createCell(1, CellType.STRING).setCellValue(record.name) // Competence column as string
+            row.createCell(1, CellType.STRING)
+                .setCellValue(record.name) // Competence column as string
 
             val gradeCell = row.createCell(2, CellType.NUMERIC)
             gradeCell.setCellValue(record.progress.toDouble() / 10.0) // Grade column as numeric
             applyGradeCellStyle(gradeCell, record.progress)
 
-            row.createCell(3, CellType.STRING).setCellValue(record.comment) // Comment column as string
+            row.createCell(3, CellType.STRING)
+                .setCellValue(record.comment) // Comment column as string
         }
 
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

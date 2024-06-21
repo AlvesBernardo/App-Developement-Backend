@@ -5,7 +5,10 @@ import com.appdevelopement.passinggrade.models.Compentence
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
 
 class CritertionCalculator {
-    fun calculateTotalGrade(gradingAreaLayout: LinearLayout, competences: List<Compentence>): Double {
+    fun calculateTotalGrade(
+        gradingAreaLayout: LinearLayout,
+        competences: List<Compentence>
+    ): Double {
         var weightedSum = 0.0
         var weightSum = 0
 
@@ -15,7 +18,7 @@ class CritertionCalculator {
             val competence = competences.find { it.dtName == record.name }
 
             if (competence != null) {
-                weightedSum += (record.progress.toDouble() * competence.dtCompetenceWeight ) // Use progress as a percentage
+                weightedSum += (record.progress.toDouble() * competence.dtCompetenceWeight) // Use progress as a percentage
                 weightSum += competence.dtCompetenceWeight
             }
         }

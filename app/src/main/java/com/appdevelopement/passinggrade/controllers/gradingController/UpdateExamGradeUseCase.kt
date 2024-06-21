@@ -5,7 +5,7 @@ import com.appdevelopement.passinggrade.dao.ExamDao
 import com.appdevelopement.passinggrade.models.Exam
 
 class UpdateExamGradeUseCase(private val examDao: ExamDao) {
-    suspend  fun execute(examId: Int, finalGrade: Double, pass: Boolean) {
+    suspend fun execute(examId: Int, finalGrade: Double, pass: Boolean) {
         try {
             val exam = examDao.getExam(examId)
             if (exam != null) {
@@ -19,7 +19,10 @@ class UpdateExamGradeUseCase(private val examDao: ExamDao) {
                 if (pass) {
                     examDao.updateExam(updatedExam)
                 } else {
-                    Log.i("UpdateExamGradeUseCase", "Grade did not pass for Exam ID: $examId with grade: $finalGrade")
+                    Log.i(
+                        "UpdateExamGradeUseCase",
+                        "Grade did not pass for Exam ID: $examId with grade: $finalGrade"
+                    )
                 }
             } else {
                 Log.e("UpdateExamGradeUseCase", "Exam not found with ID: $examId")

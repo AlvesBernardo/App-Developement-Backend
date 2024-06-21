@@ -50,18 +50,23 @@ class LoginFragment : Fragment() {
         val passwordInput = password.text.toString()
 
         if (emailInput.isEmpty() || passwordInput.isEmpty()) {
-            Toast.makeText(activity, "Username or password field can't be empty.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                activity,
+                "Username or password field can't be empty.",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
 
         lifecycleScope.launch(Dispatchers.IO) {
             val teacher = getTeacher(emailInput, passwordInput)
-            withContext (Dispatchers.Main) {
+            withContext(Dispatchers.Main) {
 
                 // Add a null check here before setting sharedPreferences
                 if (teacher != null) {
                     val currentTime = System.currentTimeMillis()
-                    val sharedPreferences = activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+                    val sharedPreferences =
+                        activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
                     sharedPreferences?.edit()?.putBoolean("loggedIn", true)
                         ?.putLong("loginTimestamp", currentTime)
                         ?.putInt("idTeacher", teacher.idTeacher)
@@ -71,7 +76,8 @@ class LoginFragment : Fragment() {
                     transaction.replace(R.id.fragment_container, UserDashboardFragment())
                     transaction.commit()
                 } else {
-                    Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }

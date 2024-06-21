@@ -6,12 +6,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Email
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -27,7 +29,7 @@ class ProfilePageFragment : Fragment() {
 
     private lateinit var profileImageView: ImageView
     private lateinit var db: AppDatabase
-    private lateinit var emailText : TextView
+    private lateinit var emailText: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -39,7 +41,8 @@ class ProfilePageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idTeacher =
-            activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)?.getInt("idTeacher", -1) ?: -1
+            activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+                ?.getInt("idTeacher", -1) ?: -1
         emailText = view.findViewById(R.id.tvProfileEmail)
         lifecycleScope.launch {
             getEmail(idTeacher)
@@ -74,11 +77,6 @@ class ProfilePageFragment : Fragment() {
         withContext(Dispatchers.IO) {
             val affectedRows = db.teacherDao().updateTeacherViaId(password, id)
             withContext(Dispatchers.Main) {
-//                if (affectedRows > 0) {
-//                    Toast.makeText(requireContext(), "Password updated successfully", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    Toast.makeText(requireContext(), "Failed to update password", Toast.LENGTH_SHORT).show()
-//                }
             }
         }
     }
@@ -90,7 +88,7 @@ class ProfilePageFragment : Fragment() {
 
     private suspend fun getEmail(id: Int) {
         var teacherEmail = ""
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             val teacherData = db.teacherDao().getTeacherById(id)
             teacherEmail = teacherData
         }
@@ -104,7 +102,10 @@ class ProfilePageFragment : Fragment() {
             if (result.resultCode == RESULT_OK && result.data != null) {
                 val imageUri: Uri? = result.data?.data
                 try {
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                        requireContext().contentResolver,
+                        imageUri
+                    )
                     profileImageView.setImageBitmap(bitmap)
 
                     //Then send store the content of profileImageView somewhere? or get a string representation, we have imageUri

@@ -1,8 +1,5 @@
 package com.appdevelopement.passinggrade.pages
 
-import android.annotation.SuppressLint
-
-//this is hakan code i was just not able to pull it
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,7 +40,8 @@ class SheetManagementFragment : androidx.fragment.app.Fragment() {
     }
 
     class SheetsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-        private val tabTitles = arrayOf("Create/Edit sheet", "Read Gradesheet", "Import file", "Assign course")
+        private val tabTitles =
+            arrayOf("Create/Edit sheet", "Read Gradesheet", "Import file", "Assign course")
 
         override fun getCount(): Int {
             return tabTitles.size

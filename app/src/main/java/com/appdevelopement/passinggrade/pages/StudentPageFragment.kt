@@ -7,10 +7,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.ScaleGestureDetector
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -27,7 +30,13 @@ import com.appdevelopement.passinggrade.dto.StudentDTO
 import com.appdevelopement.passinggrade.models.ExamStudentCrossRef
 import com.appdevelopement.passinggrade.models.Student
 import com.appdevelopement.passinggrade.utils.popups.ReadFromExcelFile
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class StudentPageFragment : Fragment() {
@@ -99,7 +108,7 @@ class StudentPageFragment : Fragment() {
             override fun onItemSelected(
                 parent: AdapterView<*>?, view: View?, position: Int, id: Long
             ) {
-               // filterStudentsByGradeStatus(filterItems[position])
+                // filterStudentsByGradeStatus(filterItems[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -152,7 +161,9 @@ class StudentPageFragment : Fragment() {
                     pickFile()
                 } else {
                     Toast.makeText(
-                        requireContext(), "Permission denied to read your External storage", Toast.LENGTH_SHORT
+                        requireContext(),
+                        "Permission denied to read your External storage",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             }
@@ -179,49 +190,55 @@ class StudentPageFragment : Fragment() {
         studentAdapter.updateData(tempList)
     }
 
-//    private fun filterStudentsByGradeStatus(filter: String) {
-//        val tempList: ArrayList<StudentDTO> = ArrayList(studentList).apply {
-//            when (filter) {
-//                "Graded" -> retainAll { it.isGraded }
-//                "UnGraded" -> retainAll { !it.isGraded }
-//            }
-//        }
-//        studentAdapter.updateData(tempList)
-//    }
-
     private fun importExcelData(uri: Uri) {
         val readFromExcelFile = ReadFromExcelFile(requireContext())
         val examId = arguments?.getInt("idExam") ?: -1
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                db.withTransaction { // Start of the transaction
-                    val existingExam = db.examDao().getExamsByCourseId(examId) // Check if exam exists
-                    if (existingExam != null) { // Exam exists
-                        val studentDTOList = readFromExcelFile.readFromExcel(uri) // Get students from Excel
-                        for (studentDTO in studentDTOList) { // Loop through each student
-                            val student = convertToStudentEntity(studentDTO) // Convert DTO to Entity
-                            val existingStudent = studentDao.findStudent(student.studentNumber) // Check if student is already in the Student Table
-                            if (existingStudent == null) { // If student does not exist, insert student
+                db.withTransaction { 
+                    val existingExam =
+                        db.examDao().getExamsByCourseId(examId) 
+                    if (existingExam != null) { 
+                        val studentDTOList =
+                            readFromExcelFile.readFromExcel(uri) 
+                        for (studentDTO in studentDTOList) { 
+                            val student =
+                                convertToStudentEntity(studentDTO) 
+                            val existingStudent =
+                                studentDao.findStudent(student.studentNumber) 
+                            if (existingStudent == null) { 
                                 studentDao.insertStudent(student)
                             }
-                            val existingCrossRef = examStudentCorssReferecne.getSpecificCrossRef(examId = examId, studentNumber = student.studentNumber) // Check if student has not already been added for this exam.
-                            if (existingCrossRef == null) { // Only insert new cross ref if it does not already exist.
+                            val existingCrossRef = examStudentCorssReferecne.getSpecificCrossRef(
+                                examId = examId,
+                                studentNumber = student.studentNumber
+                            ) 
+                            if (existingCrossRef == null) { 
                                 val crossRef = ExamStudentCrossRef(examId, student.studentNumber)
-                                examStudentCorssReferecne.insert(crossRef) // Insert into ExamStudentCrossRef for each student
+                                examStudentCorssReferecne.insert(crossRef) 
                             }
                         }
                     } else { // Exam does not exist, return
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), "Exam does not exist", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Exam does not exist",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 } // End of the transaction
 
-                val newStudentList = ArrayList(getStudentsRelatedToExam(examId).map { convertToStudentDto(it) })
+                val newStudentList =
+                    ArrayList(getStudentsRelatedToExam(examId).map { convertToStudentDto(it) })
                 withContext(Dispatchers.Main) {
                     studentList = newStudentList
                     studentAdapter.updateData(newStudentList)
-                    Toast.makeText(requireContext(), "Data Imported Successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Data Imported Successfully",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     fetchStudentsForExam(examId)
 
                 }
@@ -229,7 +246,8 @@ class StudentPageFragment : Fragment() {
             } catch (e: IOException) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error Importing Data", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error Importing Data", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -238,7 +256,6 @@ class StudentPageFragment : Fragment() {
 
 
     private fun getStudentsRelatedToExam(examId: Int): List<Student> {
-        // Fetch the students that are participating in the exam from your database
         val studentsInExamIds = runBlocking {
             examStudentCorssReferecne.getStudentNumbersForExam(examId)
         }
@@ -261,9 +278,9 @@ class StudentPageFragment : Fragment() {
         return Student(
             studentNumber = studentDto.studentNumber,
             studentName = studentDto.studentName,
-            //isGraded = studentDto.isGraded)
         )
     }
+
     private fun fetchStudentsForExam(examId: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             val students = studentDao.getStudentsForExam(examId).map { convertToStudentDto(it) }

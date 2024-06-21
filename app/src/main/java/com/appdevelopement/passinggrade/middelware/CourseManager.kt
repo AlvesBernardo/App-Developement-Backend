@@ -1,4 +1,5 @@
 package com.appdevelopement.passinggrade.middleware
+
 import android.content.Context
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Course

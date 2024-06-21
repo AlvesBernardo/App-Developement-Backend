@@ -2,13 +2,9 @@ package com.appdevelopement.passinggrade.middelware
 
 
 import android.content.Context
-import android.util.Log
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Student
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
@@ -16,13 +12,11 @@ object AddStudent {
     val student = Student(
         studentNumber = 0,
         studentName = "Bernardo Alves",
-//        isGraded = false
     )
 
     val student2 = Student(
         studentNumber = 0,
         studentName = "Mehdi Sadghi",
-//        isGraded = false
     )
 
 

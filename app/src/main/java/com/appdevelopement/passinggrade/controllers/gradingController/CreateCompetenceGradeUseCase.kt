@@ -6,7 +6,10 @@ import com.appdevelopement.passinggrade.dao.CompentenceGradeDao
 import com.appdevelopement.passinggrade.models.CompetenceGrade
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
 
-class CreateCompetenceGradeUseCase(private val competenceGradeDao: CompentenceGradeDao, private val competenceDao: CompentenceDao) {
+class CreateCompetenceGradeUseCase(
+    private val competenceGradeDao: CompentenceGradeDao,
+    private val competenceDao: CompentenceDao
+) {
 
     suspend fun execute(criterionRecord: List<CriterionRecord>, studentId: Int, examId: Int) {
         try {
@@ -22,7 +25,7 @@ class CreateCompetenceGradeUseCase(private val competenceGradeDao: CompentenceGr
                 );
                 competenceGradeDao.insertComptenceGrade(competenceGrade)
             }
-        }catch(e:Exception){
+        } catch (e: Exception) {
             Log.e("CreateCompetenceGradeUseCase", "Error inserting CompetenceGrade", e)
         }
     }

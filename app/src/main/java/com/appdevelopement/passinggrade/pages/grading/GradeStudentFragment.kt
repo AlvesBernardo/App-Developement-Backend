@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade.pages.grading
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,8 +52,9 @@ class GradeStudentFragment : Fragment() {
         val studentRecordCreator = StudentRecordCreator()
 
         lifecycleScope.launch {
-            val studentId = 14 // replace with actual studentId
-            val examId = 1 // replace with actual examId
+            val examId = arguments?.getInt("examId") ?: -1
+            val studentId = arguments?.getInt("studentId") ?: -1
+            Log.d("GradeStudentFragment", "Exam ID: $examId, Student ID: $studentId")
 
             val student = withContext(Dispatchers.IO) {
                 db.studentDao().findStudent(studentId)
@@ -170,7 +172,7 @@ class GradeStudentFragment : Fragment() {
             submitButton.setOnClickListener {
                 if (student != null) {
                     val MINIMUM_SCORE = 5.5
-                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout,criterias).toDouble() / 10.0
+                    val totalGrade = criterionCalculator.calculateTotalGrade(gradingAreaLayout, criterias)
                     val studentRecord = studentRecordCreator.getStudentRecord(student, totalGrade, gradingAreaLayout)
 
                     val criterionRecords: List<CriterionRecord> = gradingAreaLayout.children
@@ -181,14 +183,20 @@ class GradeStudentFragment : Fragment() {
                     lifecycleScope.launch {
                         val isPass =
                             gradingUseCase.hasPassedMandatoryCompetences(student.studentNumber) && totalGrade >= MINIMUM_SCORE
+                        val grades = criterionRecords.map { it.progress.toDouble() / 10.0 }
                         val excelWriter = WriteToExcelFile(requireContext())
-                        excelWriter.writeToExcel(student.studentNumber.toString(), listOf(studentRecord))
+                        excelWriter.writeToExcel(
+                            student.studentNumber.toString(), // fileName
+                            totalGrade * 10, // totalGrade as Double
+                            criterionRecords // List<CriterionRecord>
+                        )
                         createCompetenceGradeUseCase.execute(criterionRecords, student.studentNumber, examId)
                         if (isPass) {
                             withContext(Dispatchers.IO) {
-                                updateExamGradeUseCase.execute(student.studentNumber, totalGrade, isPass)
+                                updateExamGradeUseCase.execute(student.studentNumber, totalGrade * 10, isPass)
                             }
                         }
+                         Toast.makeText(context, "Graded succefully check your files in downaload folder", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     Toast.makeText(context, "Error: Student is null", Toast.LENGTH_SHORT).show()

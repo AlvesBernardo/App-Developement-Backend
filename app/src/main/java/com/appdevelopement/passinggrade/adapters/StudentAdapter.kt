@@ -1,5 +1,6 @@
 package com.appdevelopement.passinggrade.adapters
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +15,8 @@ import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 
 class StudentAdapter(
     private var studentArrayList: ArrayList<StudentDTO>,
-    private val fragmentManager: FragmentManager // Add fragment manager parameter
+    private val fragmentManager: FragmentManager,
+    private val examId : Int
 ) : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -37,10 +39,18 @@ class StudentAdapter(
 
         // Set OnClickListener for btnChangeGrade
         viewHolder.btnChangeGrade.setOnClickListener {
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, GradeStudentFragment()) // Adjust fragment_container ID as needed
-            transaction.addToBackStack(null)
-            transaction.commit()
+                val gradeStudentFragment = GradeStudentFragment()
+
+                // Pass the examId and studentId to the GradeStudentFragment
+                val args = Bundle()
+                args.putInt("examId", examId)
+                args.putInt("studentId", student.studentNumber)
+                gradeStudentFragment.arguments = args
+
+                val transaction = fragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, gradeStudentFragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
         }
     }
 

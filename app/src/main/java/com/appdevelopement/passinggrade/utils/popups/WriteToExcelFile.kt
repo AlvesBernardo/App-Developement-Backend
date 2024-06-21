@@ -2,8 +2,11 @@ package com.appdevelopement.passinggrade.utils.popups
 
 import android.content.Context
 import android.os.Environment
+import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
+import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.apache.poi.ss.usermodel.IndexedColors
+import org.apache.poi.xssf.usermodel.XSSFCell
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException // Add this import
@@ -11,7 +14,7 @@ import java.io.IOException // Add this import
 class WriteToExcelFile(private val context: Context) {
     private val excelColumns = arrayOf("Id", "Competence", "Grade", "Comment")
 
-    fun writeToExcel(fileName: String, records: List<Array<String>>) {
+    fun writeToExcel(fileName: String, totalGrade: Double, records: List<CriterionRecord>) {
         val excelWorkbook = XSSFWorkbook()
 
         val sheet = excelWorkbook.createSheet("Grades")
@@ -36,31 +39,15 @@ class WriteToExcelFile(private val context: Context) {
         for ((index, record) in records.withIndex()) {
             val row = sheet.createRow(index + 1) // Avoiding the header row
 
-            for ((j, fieldValue) in record.withIndex()) {
-                val cell = row.createCell(j)
-                cell.setCellValue(fieldValue)
+            row.createCell(0, CellType.NUMERIC).setCellValue(index + 1.0) // Id column as numeric
+            row.createCell(1, CellType.STRING).setCellValue(record.name) // Competence column as string
 
-                if (j == 2) { // Assuming grade is the third column
-                    val grade = fieldValue.toDoubleOrNull()
-                    if (grade != null) {
-                        val cellStyle = excelWorkbook.createCellStyle()
-                        val font = excelWorkbook.createFont()
+            val gradeCell = row.createCell(2, CellType.NUMERIC)
+            gradeCell.setCellValue(record.progress.toDouble() / 10.0) // Grade column as numeric
+            applyGradeCellStyle(gradeCell, record.progress)
 
-                        when {
-                            grade < 2 -> font.color = IndexedColors.DARK_RED.getIndex()
-                            grade < 4 -> font.color = IndexedColors.RED.getIndex()
-                            grade < 5.5 -> font.color = IndexedColors.ORANGE.getIndex()
-                            else -> font.color = IndexedColors.BRIGHT_GREEN.getIndex()
-                        }
-
-                        cellStyle.setFont(font)
-                        cell.cellStyle = cellStyle
-                    }
-                }
-            }
+            row.createCell(3, CellType.STRING).setCellValue(record.comment) // Comment column as string
         }
-
-
 
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         try {
@@ -72,5 +59,20 @@ class WriteToExcelFile(private val context: Context) {
         }
 
         excelWorkbook.close()
+    }
+
+    private fun applyGradeCellStyle(cell: XSSFCell, progress: Int) {
+        val cellStyle = cell.sheet.workbook.createCellStyle()
+        val font = cell.sheet.workbook.createFont()
+
+        when {
+            progress < 20 -> font.color = IndexedColors.DARK_RED.index
+            progress < 40 -> font.color = IndexedColors.RED.index
+            progress < 55 -> font.color = IndexedColors.ORANGE.index
+            else -> font.color = IndexedColors.BRIGHT_GREEN.index
+        }
+
+        cellStyle.setFont(font)
+        cell.cellStyle = cellStyle
     }
 }

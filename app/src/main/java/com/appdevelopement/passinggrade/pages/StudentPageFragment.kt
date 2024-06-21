@@ -63,7 +63,7 @@ class StudentPageFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
 
-        studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager)
+        studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId)
         recyclerView.adapter = studentAdapter
 
         toDisplayList.clear()

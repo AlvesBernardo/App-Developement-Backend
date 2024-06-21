@@ -1,6 +1,7 @@
 package com.appdevelopement.passinggrade.pages.grading
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,8 +52,9 @@ class GradeStudentFragment : Fragment() {
         val studentRecordCreator = StudentRecordCreator()
 
         lifecycleScope.launch {
-            val studentId = 14 // replace with actual studentId
-            val examId = 1 // replace with actual examId
+            val examId = arguments?.getInt("examId") ?: -1
+            val studentId = arguments?.getInt("studentId") ?: -1
+            Log.d("GradeStudentFragment", "Exam ID: $examId, Student ID: $studentId")
 
             val student = withContext(Dispatchers.IO) {
                 db.studentDao().findStudent(studentId)

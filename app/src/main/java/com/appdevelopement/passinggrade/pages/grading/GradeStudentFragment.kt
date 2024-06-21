@@ -52,7 +52,7 @@ class GradeStudentFragment : Fragment() {
 
         lifecycleScope.launch {
             val studentId = 14 // replace with actual studentId
-            val examId = 2 // replace with actual examId
+            val examId = 1 // replace with actual examId
 
             val student = withContext(Dispatchers.IO) {
                 db.studentDao().findStudent(studentId)

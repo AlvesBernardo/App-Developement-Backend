@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         initializeDatabase()
         // AddStudent.addStundent(this)
         // AddExam.addExam(this)
-        // CompetenceManager.addCompetences(this)
 
     }
 
@@ -120,7 +119,7 @@ class MainActivity : AppCompatActivity() {
             val examId = exam.idExam
 
 
-//            CompetenceManager.addCompetences(context, examId)
+//            CompetenceManager.addCompetences(context, 1)
 //                  TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
 //                    TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
         }

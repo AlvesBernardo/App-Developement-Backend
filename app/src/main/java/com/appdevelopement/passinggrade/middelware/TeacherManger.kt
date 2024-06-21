@@ -18,10 +18,18 @@ object TeacherManger {
         dtName = "Teacher 1"
     )
 
+    private val teacher2 = Teacher(
+        idTeacher = 0,
+        dtEmail = "martin@email.com",
+        dtPassword = "MarPaw",
+        dtName = "Teacher 1"
+    )
+
     suspend fun addTeacher(context: Context): Teacher {
         val dao = AppDatabase.getDatabase(context).teacherDao()
         val teacherId = withContext(IO) {
             dao.insertTeacher(teacher1)
+            dao.insertTeacher(teacher2)
         }
         return teacher1.copy(idTeacher = teacherId.toInt())
     }

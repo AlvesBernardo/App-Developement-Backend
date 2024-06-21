@@ -116,10 +116,16 @@ class MainActivity : AppCompatActivity() {
 //
             // Insert exam
             val exam = AddExam.addExam(context, 1, 2)
-            val examId = exam.idExam
+            val exam1 = AddExam.addExam(context, 2, 2)
+            val exam2 = AddExam.addExam(context, 1,3 )
+            val exam3 = AddExam.addExam(context, 2, 4)
 
 
-//            CompetenceManager.addCompetences(context, 1)
+
+            CompetenceManager.addCompetences(context, 1)
+            CompetenceManager.addCompetences(context, 2)
+            CompetenceManager.addCompetences(context, 3)
+            CompetenceManager.addCompetences(context, 4)
 //                  TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 11)
 //                    TeacherCourseManager.addTeacherCourse(context, teacherId = 43, courseId = 12)
         }

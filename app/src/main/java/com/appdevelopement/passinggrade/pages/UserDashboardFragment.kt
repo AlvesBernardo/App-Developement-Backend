@@ -14,20 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.database.AppDatabase
-import com.appdevelopement.passinggrade.models.Exam
+import com.appdevelopement.passinggrade.models.Course
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class UserDashboardFragment : Fragment() {
 
-    private var exams = mutableListOf<Exam>()
+    private var courses = mutableListOf<Course>()
     private lateinit var recyclerView: RecyclerView
-    private lateinit var examAdapter: ExamAdapter
+    private lateinit var courseAdapter: CourseAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -35,8 +34,8 @@ class UserDashboardFragment : Fragment() {
         recyclerView = view.findViewById(R.id.rv_courses)
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        examAdapter = ExamAdapter(exams)
-        recyclerView.adapter = examAdapter
+        courseAdapter = CourseAdapter(courses)
+        recyclerView.adapter = courseAdapter
 
         activity
             ?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
@@ -51,59 +50,51 @@ class UserDashboardFragment : Fragment() {
     }
 
     private suspend fun fetchCourses(teacherId: Int) {
-        val fetchedExams = getCoursesForTeacher(requireContext(), teacherId)
-        Log.d("UserDashboardFragment", "Fetched ${fetchedExams.size} exams for teacher ID: $teacherId")
-        exams.clear()
-        exams.addAll(fetchedExams)
-        examAdapter.notifyDataSetChanged()
+        val fetchedCourses = getCoursesForTeacher(requireContext(), teacherId)
+        Log.d("UserDashboardFragment", "Fetched ${fetchedCourses.size} courses for teacher ID: $teacherId")
+        courses.clear()
+        courses.addAll(fetchedCourses)
+        courseAdapter.notifyDataSetChanged()
     }
 
-    private inner class ExamAdapter(private val examList: List<Exam>) :
-        RecyclerView.Adapter<ExamAdapter.ExamViewHolder>() {
+    private inner class CourseAdapter(private val courseList: List<Course>) :
+        RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExamViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder {
             val itemView =
                 LayoutInflater.from(parent.context).inflate(R.layout.item_course, parent, false)
-            return ExamViewHolder(itemView)
+            return CourseViewHolder(itemView)
         }
 
-        override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
-            val exam = examList[position]
-            holder.examButton.text = exam.examName
-            Log.d("UserDashboardFragment", "Clicked on exam with id ${exam.idExam}")
-            holder.examButton.setOnClickListener {
-                val fragment =
-                    StudentPageFragment().apply {
-                        arguments = Bundle().apply { putInt("idExam", exam.idExam) }
-                    }
-                requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.fragment_container, fragment)
-                    addToBackStack(null)
-                    commit()
-                }
+        override fun onBindViewHolder(holder: CourseViewHolder, position: Int) {
+            val course = courseList[position]
+            holder.courseButton.text = course.dtTitle
+            Log.d("UserDashboardFragment", "Clicked on course with id ${course.idCourse}")
+            holder.courseButton.setOnClickListener {
+                showCourseDialog(course)
             }
         }
 
-        override fun getItemCount() = examList.size
+        override fun getItemCount() = courseList.size
 
-        inner class ExamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val examButton: Button = itemView.findViewById(R.id.btn_course)
+        inner class CourseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val courseButton: Button = itemView.findViewById(R.id.btn_course)
         }
     }
 
-    private fun showExamDialog(exam: Exam) {
+    private fun showCourseDialog(course: Course) {
         AlertDialog.Builder(requireContext())
-            .setTitle(exam.examName)
-            .setMessage(exam.idExam.toString())
+            .setTitle(course.dtTitle)
+            .setMessage(course.idCourse.toString())
             .setPositiveButton("Close", null)
             .show()
     }
 
-    private suspend fun getCoursesForTeacher(context: Context, teacherId: Int): List<Exam> {
+    private suspend fun getCoursesForTeacher(context: Context, teacherId: Int): List<Course> {
         Log.d("TeacherCourses", "Teacher ID: $teacherId")
-        val dao = AppDatabase.getDatabase(context).examDao()
+        val dao = AppDatabase.getDatabase(context).courseDao()
         return withContext(Dispatchers.IO) {
-            dao.getExamByTeacher(teacherId)
+            dao.getTeacherCourses(teacherId)
         }
     }
 }

@@ -63,7 +63,6 @@ class StudentPageFragment : Fragment() {
   ): View? {
     val view = inflater.inflate(R.layout.student_page, container, false)
     val examId = arguments?.getInt("idExam") ?: -1
-    fetchStudentsForExam(examId)
 
     db = AppDatabase.getDatabase(requireContext())
     studentDao = db.studentDao()
@@ -75,6 +74,8 @@ class StudentPageFragment : Fragment() {
 
     studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId)
     recyclerView.adapter = studentAdapter
+
+    fetchStudentsForExam(examId)
 
     toDisplayList.clear()
     runBlocking {

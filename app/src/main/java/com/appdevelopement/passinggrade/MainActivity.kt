@@ -3,6 +3,7 @@ package com.appdevelopement.passinggrade
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.database.AppDatabase
@@ -20,6 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
+  private lateinit var bottomNavigationItemView: BottomNavigationView
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -29,12 +32,16 @@ class MainActivity : AppCompatActivity() {
       replaceFragment(LoginFragment())
     }
 
+    bottomNavigationItemView = findViewById(R.id.bottom_navigation)
+
     val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
     val isLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
     val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
     val oneHourInMilliSeconds = 60 * 60 * 1000
     val isSessionValid =
-        isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
+      isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
+
+    updateBottomNavigationVisibility(isSessionValid)
 
     if (isSessionValid) {
       replaceFragment(UserDashboardFragment())
@@ -43,14 +50,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     val database = AppDatabase.getDatabase(this)
-    val bottomNavigationItemView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
     bottomNavigationItemView.setOnItemSelectedListener { item ->
       val currentIsLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
       val currentLoginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
       val currentIsSessionValid =
-          currentIsLoggedIn &&
-              ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
+        currentIsLoggedIn &&
+                ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
+      updateBottomNavigationVisibility(currentIsSessionValid)
       if (currentIsSessionValid) {
         when (item.itemId) {
           R.id.home -> {
@@ -78,6 +85,10 @@ class MainActivity : AppCompatActivity() {
       }
     }
     initializeDatabase()
+  }
+
+  private fun updateBottomNavigationVisibility(isVisible: Boolean) {
+    bottomNavigationItemView.visibility = if (isVisible) View.VISIBLE else View.GONE
   }
 
   private fun replaceFragment(fragment: Fragment) {

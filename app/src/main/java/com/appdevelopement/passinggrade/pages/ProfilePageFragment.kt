@@ -41,17 +41,14 @@ class ProfilePageFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    // DB connection
+    db = AppDatabase.getDatabase(requireContext())
     val idTeacher =
         activity
             ?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
             ?.getInt("idTeacher", -1) ?: -1
     emailText = view.findViewById(R.id.tvProfileEmail)
     lifecycleScope.launch { getEmail(idTeacher) }
-
-    // DB connection
-    db = AppDatabase.getDatabase(requireContext())
-
-    profileImageView = view.findViewById(R.id.ivProfilePicture)
 
     val submitPasswordBttn = view.findViewById<Button>(R.id.bttnSubmitPassword)
     val newPasswordEt = view.findViewById<EditText>(R.id.etNewPassword)

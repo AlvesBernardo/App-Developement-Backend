@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.database.AppDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 
@@ -26,7 +27,6 @@ class SignUpPageFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
     val emailEt = view.findViewById<EditText>(R.id.etEmail)
     val passwordEt = view.findViewById<EditText>(R.id.etPassword)
     val signUpBttn = view.findViewById<Button>(R.id.bttnSignUp)

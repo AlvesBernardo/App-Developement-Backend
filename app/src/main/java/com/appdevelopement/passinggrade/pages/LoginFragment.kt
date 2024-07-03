@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.Toast
+import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.MainActivity
@@ -46,7 +47,7 @@ class LoginFragment : Fragment() {
   }
 
   private fun loginUser() {
-    val emailInput = email.text.toString()
+    val emailInput = email.text.toString().lowercase()
     val passwordInput = password.text.toString()
 
     if (emailInput.isEmpty() || passwordInput.isEmpty()) {

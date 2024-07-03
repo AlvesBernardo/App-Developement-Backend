@@ -1,4 +1,4 @@
-package com.appdevelopement.passinggrade.middleware
+package com.appdevelopement.passinggrade.middelware
 
 import android.content.Context
 import com.appdevelopement.passinggrade.database.AppDatabase

@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.MainActivity
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.dao.TeacherDao
-import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.TeacherManger
 import com.appdevelopement.passinggrade.models.Teacher
 import kotlinx.coroutines.Dispatchers
@@ -28,8 +26,6 @@ class LoginFragment : Fragment() {
   private lateinit var email: EditText
   private lateinit var password: EditText
   private lateinit var loginButton: Button
-  private lateinit var db: AppDatabase
-  private lateinit var teacherDao: TeacherDao
 
   override fun onCreateView(
     inflater: LayoutInflater,

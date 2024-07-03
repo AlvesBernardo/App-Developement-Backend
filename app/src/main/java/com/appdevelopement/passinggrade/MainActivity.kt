@@ -10,7 +10,7 @@ import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.AddExam
 import com.appdevelopement.passinggrade.middelware.CompetenceManager
 import com.appdevelopement.passinggrade.middelware.TeacherManger
-import com.appdevelopement.passinggrade.middleware.CourseManager
+import com.appdevelopement.passinggrade.middelware.CourseManager
 import com.appdevelopement.passinggrade.middleware.TeacherCourseManager
 import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.LoginFragment

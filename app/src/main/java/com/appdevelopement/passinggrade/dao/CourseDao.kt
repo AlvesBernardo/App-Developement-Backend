@@ -21,7 +21,4 @@ interface CourseDao {
         WHERE TeacherCourse.idTeacher = :teacherId
         """)
   suspend fun getTeacherCourses(teacherId: Int): List<Course>
-  //
-  //    @Delete
-  //    fun delete(user: User)
 }

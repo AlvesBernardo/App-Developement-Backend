@@ -26,7 +26,6 @@ class SignUpPageFragment : Fragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
     val emailEt = view.findViewById<EditText>(R.id.etEmail)
     val passwordEt = view.findViewById<EditText>(R.id.etPassword)
     val signUpBttn = view.findViewById<Button>(R.id.bttnSignUp)

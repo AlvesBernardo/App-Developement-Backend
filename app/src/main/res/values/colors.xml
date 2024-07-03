@@ -9,5 +9,12 @@
     <color name="button_background_color">#16AAE4</color>
     <color name="darkGrey">#A9A9A9</color>
     <color name="lightGrey">#E1DFDF</color>
-    <color name="background">#337974</color>
+    <color name="background">#E5EDED</color>
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="dialog_text">#000000</color>
+    <color name="dialog_secondary_text">#808080</color>
+    <color name="dialog_button_background">#CCCCCC</color>
+    <color name="dialog_button_text">#000000</color>
+    <color name="material_dynamic_neutral_variant99">#FFFFFF</color>
+    <color name="material_dynamic_neutral100">#FFFFFF</color>
 </resources>

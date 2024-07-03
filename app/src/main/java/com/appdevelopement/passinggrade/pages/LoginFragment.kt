@@ -12,6 +12,7 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.appdevelopement.passinggrade.MainActivity
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.dao.TeacherDao
 import com.appdevelopement.passinggrade.database.AppDatabase
@@ -30,9 +31,9 @@ class LoginFragment : Fragment() {
   private lateinit var teacherDao: TeacherDao
 
   override fun onCreateView(
-      inflater: LayoutInflater,
-      container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     val view = inflater.inflate(R.layout.fragment_login, container, false)
 
@@ -50,7 +51,7 @@ class LoginFragment : Fragment() {
 
     if (emailInput.isEmpty() || passwordInput.isEmpty()) {
       Toast.makeText(activity, "Username or password field can't be empty.", Toast.LENGTH_SHORT)
-          .show()
+        .show()
       return
     }
 
@@ -62,17 +63,16 @@ class LoginFragment : Fragment() {
         if (teacher != null) {
           val currentTime = System.currentTimeMillis()
           val sharedPreferences =
-              activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+            activity?.getSharedPreferences("Authentication", Context.MODE_PRIVATE)
           sharedPreferences
-              ?.edit()
-              ?.putBoolean("loggedIn", true)
-              ?.putLong("loginTimestamp", currentTime)
-              ?.putInt("idTeacher", teacher.idTeacher)
-              ?.apply()
-          val fragmentManager = requireActivity().supportFragmentManager
-          val transaction = fragmentManager.beginTransaction()
-          transaction.replace(R.id.fragment_container, UserDashboardFragment())
-          transaction.commit()
+            ?.edit()
+            ?.putBoolean("loggedIn", true)
+            ?.putLong("loginTimestamp", currentTime)
+            ?.putInt("idTeacher", teacher.idTeacher)
+            ?.apply()
+
+          // Notify MainActivity about the login
+          (activity as? MainActivity)?.onUserLoggedIn()
         } else {
           Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
         }

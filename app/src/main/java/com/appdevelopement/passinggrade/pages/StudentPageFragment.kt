@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -51,6 +52,28 @@ class StudentPageFragment : Fragment() {
   private var examId: Int = -1
   private var toDisplayList = ArrayList<StudentDTO>()
 
+  private val importActivityResult =
+    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+      if (result.resultCode == Activity.RESULT_OK) {
+        result.data?.data?.also { uri ->
+          importExcelData(uri)
+        }
+      }
+    }
+
+  private val requestPermissionLauncher =
+    registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+      if (isGranted) {
+        pickFile()
+      } else {
+        Toast.makeText(
+          requireContext(),
+          "Permission denied to read your External storage",
+          Toast.LENGTH_SHORT
+        ).show()
+      }
+    }
+
   companion object {
     private const val PICK_FILE_REQUEST_CODE = 1
     private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 2
@@ -63,7 +86,6 @@ class StudentPageFragment : Fragment() {
   ): View? {
     val view = inflater.inflate(R.layout.student_page, container, false)
     val examId = arguments?.getInt("idExam") ?: -1
-    fetchStudentsForExam(examId)
 
     db = AppDatabase.getDatabase(requireContext())
     studentDao = db.studentDao()
@@ -75,6 +97,8 @@ class StudentPageFragment : Fragment() {
 
     studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId)
     recyclerView.adapter = studentAdapter
+
+    fetchStudentsForExam(examId)
 
     toDisplayList.clear()
     runBlocking {
@@ -149,36 +173,9 @@ class StudentPageFragment : Fragment() {
           addCategory(Intent.CATEGORY_OPENABLE)
           type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         }
-    startActivityForResult(intent, PICK_FILE_REQUEST_CODE)
+    importActivityResult.launch(intent)
   }
 
-  override fun onRequestPermissionsResult(
-      requestCode: Int,
-      permissions: Array<String>,
-      grantResults: IntArray
-  ) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    when (requestCode) {
-      READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
-        if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-          pickFile()
-        } else {
-          Toast.makeText(
-                  requireContext(),
-                  "Permission denied to read your External storage",
-                  Toast.LENGTH_SHORT)
-              .show()
-        }
-      }
-    }
-  }
-
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-      data?.data?.also { uri -> importExcelData(uri) }
-    }
-  }
 
   private fun filterStudentByNumber(query: String?) {
     val tempList =

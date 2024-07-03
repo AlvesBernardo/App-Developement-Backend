@@ -10,13 +10,11 @@ import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.AddExam
 import com.appdevelopement.passinggrade.middelware.CompetenceManager
 import com.appdevelopement.passinggrade.middelware.TeacherManger
-import com.appdevelopement.passinggrade.middleware.CourseManager
+import com.appdevelopement.passinggrade.middelware.CourseManager
 import com.appdevelopement.passinggrade.middleware.TeacherCourseManager
 import com.appdevelopement.passinggrade.pages.GradingSheetFragment
 import com.appdevelopement.passinggrade.pages.LoginFragment
 import com.appdevelopement.passinggrade.pages.ProfilePageFragment
-import com.appdevelopement.passinggrade.pages.SheetManagementFragment
-import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.pages.UserDashboardFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
@@ -103,7 +101,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
-            // Ensure that all middleware operations are completed in the correct sequence
 
             // Insert teacher
             val teacher = TeacherManger.addTeacher(context)
@@ -113,7 +110,6 @@ class MainActivity : AppCompatActivity() {
             val course = CourseManager.addCourse(context)
             val courseId = course.idCourse
 
-            // Insert exam
             // Insert exams with specified names
             AddExam.addExam(context, 1, 2, "OOP1")
             AddExam.addExam(context, 1, 2, "OOP2")
@@ -127,9 +123,6 @@ class MainActivity : AppCompatActivity() {
 
             TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 1)
             TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 2)
-
-            // Get teacher courses
-            val teacherCourses = TeacherCourseManager.getCoursesByTeacher(context, teacherId = 1)
 
             with(sharedPreferences.edit()) {
                 putBoolean("isFirstRun", false)

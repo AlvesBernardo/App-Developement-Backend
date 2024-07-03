@@ -7,42 +7,6 @@
         android:background="@color/background"
         tools:context=".pages.UserDashboardFragment">
 
-    <!--        &lt;!&ndash;  Guidelines  &ndash;&gt;-->
-    <!--        <androidx.constraintlayout.widget.Guideline-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:id="@+id/guideline2"-->
-    <!--                android:orientation="vertical"-->
-    <!--                app:layout_constraintGuide_percent="0.04" />-->
-
-    <!--        <androidx.constraintlayout.widget.Guideline-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:id="@+id/guideline3"-->
-    <!--                android:orientation="vertical"-->
-    <!--                app:layout_constraintGuide_percent="0.93" />-->
-
-    <!--        <androidx.constraintlayout.widget.Guideline-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:id="@+id/guideline4"-->
-    <!--                android:orientation="horizontal"-->
-    <!--                app:layout_constraintGuide_percent="0.02" />-->
-
-    <!--        <androidx.constraintlayout.widget.Guideline-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:id="@+id/guideline5"-->
-    <!--                android:orientation="horizontal"-->
-    <!--                app:layout_constraintGuide_percent="0.94" />-->
-
-    <!--        <androidx.constraintlayout.widget.Guideline-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:id="@+id/guideline7"-->
-    <!--                android:orientation="vertical"-->
-    <!--                app:layout_constraintGuide_percent="0.50364965" />-->
-    <!--        -->
     <TextView
             android:id="@+id/tv_courses_title"
             android:layout_width="wrap_content"

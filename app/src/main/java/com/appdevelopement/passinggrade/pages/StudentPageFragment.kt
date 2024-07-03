@@ -112,13 +112,8 @@ class StudentPageFragment : Fragment() {
               view: View?,
               position: Int,
               id: Long
-          ) {
-            // filterStudentsByGradeStatus(filterItems[position])
-          }
-
-          override fun onNothingSelected(parent: AdapterView<*>?) {
-            // Do nothing
-          }
+          ) {}
+          override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
     // Import Excel Button

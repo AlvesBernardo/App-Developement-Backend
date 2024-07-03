@@ -10,5 +10,10 @@
     <color name="darkGrey">#A9A9A9</color>
     <color name="lightGrey">#E1DFDF</color>
     <color name="background">#E5EDED</color>
+    <color name="dialog_background">#FFFFFF</color>
+    <color name="dialog_text">#000000</color>
+    <color name="dialog_secondary_text">#808080</color>
+    <color name="dialog_button_background">#CCCCCC</color>
+    <color name="dialog_button_text">#000000</color>
 </resources>
 <!--        #337974-->

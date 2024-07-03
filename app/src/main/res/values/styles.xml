@@ -38,4 +38,16 @@
         <item name="android:popupBackground">@color/black</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/dialog_background</item>
+        <item name="android:textColor">@color/dialog_text</item>
+        <item name="android:textColorSecondary">@color/dialog_secondary_text</item>
+        <item name="android:buttonBarButtonStyle">@style/MyDialogButtonStyle</item>
+    </style>
+
+    <style name="MyDialogButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:background">@color/dialog_button_background</item>
+        <item name="android:textColor">@color/dialog_button_text</item>
+    </style>
 </resources>

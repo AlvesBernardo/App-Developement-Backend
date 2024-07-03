@@ -151,6 +151,9 @@ You can use jan@email.com password JanPaw and martijn@email.con with MarPaw as t
 
 You may import students from the excel sheel like you provided us with. 
 
+# Code
+There is some static code like teacher courses etc, as these need to come from progress so we needed to simulate the envoirenment. 
+
 # License
 Kotlin is distributed under the terms of the Apache License (Version 2.0). See [license folder](license/README.md) for details.
 

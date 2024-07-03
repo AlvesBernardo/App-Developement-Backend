@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.database.AppDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 

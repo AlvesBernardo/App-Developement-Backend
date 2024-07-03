@@ -28,64 +28,61 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    // Load LoginFragment initially
-    if (savedInstanceState == null) {
-      replaceFragment(LoginFragment())
-    }
-
     bottomNavigationItemView = findViewById(R.id.bottom_navigation)
 
     val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
     val isLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
     val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
     val oneHourInMilliSeconds = 60 * 60 * 1000
-    val isSessionValid =
-        isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
+    val isSessionValid = isLoggedIn && ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
 
     updateBottomNavigationVisibility(isSessionValid)
 
-    if (isSessionValid) {
-      replaceFragment(UserDashboardFragment())
-    } else {
-      replaceFragment(LoginFragment())
-    }
-
-    val database = AppDatabase.getDatabase(this)
-
-    bottomNavigationItemView.setOnItemSelectedListener { item ->
-      val currentIsLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
-      val currentLoginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
-      val currentIsSessionValid =
-          currentIsLoggedIn &&
-              ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
-      updateBottomNavigationVisibility(currentIsSessionValid)
-      if (currentIsSessionValid) {
-        when (item.itemId) {
-          R.id.home -> {
-            replaceFragment(UserDashboardFragment())
-            true
-          }
-
-          R.id.profile -> {
-            replaceFragment((GradingSheetFragment()))
-            true
-          }
-
-          R.id.profilev2 -> {
-            replaceFragment(ProfilePageFragment())
-            true
-          }
-
-          else -> false
-        }
+    if (savedInstanceState == null) {
+      if (isSessionValid) {
+        replaceFragment(UserDashboardFragment())
       } else {
-        sharedPreferences.edit()?.remove("loggedIn")?.apply()
         replaceFragment(LoginFragment())
-        Log.d("error", "User not logged in")
-        true
       }
     }
+
+    bottomNavigationItemView.setOnItemSelectedListener { item ->
+      handleNavigationSelection(item.itemId)
+    }
+
     initializeDatabase()
+  }
+
+  private fun handleNavigationSelection(itemId: Int): Boolean {
+    val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+    val currentIsLoggedIn = sharedPreferences.getBoolean("loggedIn", false)
+    val currentLoginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+    val oneHourInMilliSeconds = 60 * 60 * 1000
+    val currentIsSessionValid = currentIsLoggedIn &&
+            ((System.currentTimeMillis() - currentLoginTimeStamp) <= oneHourInMilliSeconds)
+    updateBottomNavigationVisibility(currentIsSessionValid)
+    if (currentIsSessionValid) {
+      when (itemId) {
+        R.id.home -> {
+          replaceFragment(UserDashboardFragment())
+          return true
+        }
+        R.id.profile -> {
+          replaceFragment(GradingSheetFragment())
+          return true
+        }
+        R.id.profilev2 -> {
+          replaceFragment(ProfilePageFragment())
+          return true
+        }
+        else -> return false
+      }
+    } else {
+      sharedPreferences.edit()?.remove("loggedIn")?.apply()
+      replaceFragment(LoginFragment())
+      Log.d("error", "User not logged in")
+      return true
+    }
   }
 
   private fun updateBottomNavigationVisibility(isVisible: Boolean) {
@@ -95,7 +92,6 @@ class MainActivity : AppCompatActivity() {
   private fun replaceFragment(fragment: Fragment) {
     supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit()
   }
-
   private fun initializeDatabase() {
     val context = this
     val sharedPreferences = getSharedPreferences("ApplicationPrefs", Context.MODE_PRIVATE)
@@ -137,4 +133,18 @@ class MainActivity : AppCompatActivity() {
       }
     }
   }
+
+  fun onUserLoggedIn() {
+    val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)
+    val loginTimeStamp = sharedPreferences.getLong("loginTimestamp", 0)
+    val oneHourInMilliSeconds = 60 * 60 * 1000
+    val isSessionValid = ((System.currentTimeMillis() - loginTimeStamp) <= oneHourInMilliSeconds)
+
+    updateBottomNavigationVisibility(isSessionValid)
+
+    if (isSessionValid) {
+      replaceFragment(UserDashboardFragment())
+    }
+  }
+
 }

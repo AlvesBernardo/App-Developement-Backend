@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 class WriteToExcelFile(private val context: Context) {
   private val excelColumns = arrayOf("Id", "Competence", "Grade", "Comment")
 
-  fun writeToExcel(fileName: String, totalGrade: Double, records: List<CriterionRecord>) {
+  fun writeToExcel(fileName: String, totalGrade: Double, records: List<CriterionRecord>, comments: List<String>) {
     val excelWorkbook = XSSFWorkbook()
 
     val sheet = excelWorkbook.createSheet("Grades")
@@ -45,7 +45,7 @@ class WriteToExcelFile(private val context: Context) {
       gradeCell.setCellValue(record.progress.toDouble() / 10.0) // Grade column as numeric
       applyGradeCellStyle(gradeCell, record.progress)
 
-      row.createCell(3, CellType.STRING).setCellValue(record.comment) // Comment column as string
+      row.createCell(3, CellType.STRING).setCellValue(comments[index]) // Comment column as string
     }
 
     val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

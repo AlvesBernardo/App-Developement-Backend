@@ -196,8 +196,9 @@ class GradeStudentFragment : Fragment() {
                   .filter { it is LinearLayout && it.tag is CriterionRecord }
                   .map { it.tag as CriterionRecord }
                   .toList()
+            val comments: List<String> = criterionRecords.map { it.comment }  // Extract comments
 
-          lifecycleScope.launch {
+            lifecycleScope.launch {
             val isPass =
                 gradingUseCase.hasPassedMandatoryCompetences(student.studentNumber) &&
                     totalGrade >= MINIMUM_SCORE
@@ -206,12 +207,13 @@ class GradeStudentFragment : Fragment() {
             excelWriter.writeToExcel(
                 student.studentNumber.toString(), // fileName
                 totalGrade * 10, // totalGrade as Double
-                criterionRecords // List<CriterionRecord>
+                criterionRecords,
+                comments // List<CriterionRecord>
                 )
             createCompetenceGradeUseCase.execute(criterionRecords, student.studentNumber, examId)
             if (isPass) {
               withContext(Dispatchers.IO) {
-                updateExamGradeUseCase.execute(student.studentNumber, totalGrade * 10, isPass)
+                updateExamGradeUseCase.execute(examId, totalGrade * 10, isPass)
               }
             }
             Toast.makeText(

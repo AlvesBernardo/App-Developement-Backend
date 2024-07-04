@@ -4,14 +4,39 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-18T16:01:07.242266200Z">
+<<<<<<< HEAD
+        <DropdownSelection timestamp="2024-07-03T18:53:00.371806800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=R58NA4QCH3T" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\Pixel_3a_XL_API_34.avd" />
+=======
+        <DropdownSelection timestamp="2024-07-03T21:00:47.899085900Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\chris\.android\avd\Pixel_3a_XL_API_34.avd" />
+>>>>>>> 0d9a07e09cf1a3ab2e842f0a9e110c9019947e84
             </handle>
           </Target>
         </DropdownSelection>
-        <DialogSelection />
+        <DialogSelection>
+          <targets>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\Pixel_Tablet_API_30.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\Medium_Phone_API_30.avd" />
+              </handle>
+            </Target>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\hakan\.android\avd\Pixel_8_Pro_API_34.avd" />
+              </handle>
+            </Target>
+          </targets>
+        </DialogSelection>
       </SelectionState>
     </selectionStates>
   </component>

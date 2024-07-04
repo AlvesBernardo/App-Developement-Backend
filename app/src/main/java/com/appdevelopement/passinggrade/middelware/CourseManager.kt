@@ -1,4 +1,5 @@
-package com.appdevelopement.passinggrade.middleware
+package com.appdevelopement.passinggrade.middelware
+
 import android.content.Context
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.models.Course
@@ -6,27 +7,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 object CourseManager {
-  private val course = Course(
-    idCourse = 0,
-    dtTitle = "OOP2",
-    dtDescription = "Object-Oriented Programming"
-  )
-  private val course2 = Course(
-    idCourse = 0,
-    dtTitle = "AppDev",
-    dtDescription = "Native programming"
-  )
+  private val course =
+      Course(idCourse = 0, dtTitle = "OOP2", dtDescription = "Object-Oriented Programming")
+  private val course2 =
+      Course(idCourse = 0, dtTitle = "AppDev", dtDescription = "Native programming")
 
-  private val course3 = Course(
-    idCourse = 0,
-    dtTitle = "DT",
-    dtDescription = "Data processing"
-  )
-  private val course4 = Course(
-    idCourse = 0,
-    dtTitle = "Database",
-    dtDescription = "Data base eng test 1"
-  )
+  private val course3 = Course(idCourse = 0, dtTitle = "DT", dtDescription = "Data processing")
+  private val course4 =
+      Course(idCourse = 0, dtTitle = "Database", dtDescription = "Data base eng test 1")
 
   suspend fun addCourse(context: Context): Course {
     val dao = AppDatabase.getDatabase(context).courseDao()

@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.appdevelopement.passinggrade.models.ExamStudentCrossRef
 
 @Dao
-interface ExamStudentCorssReferecne {
+interface ExamStudentCrossReferenceDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(examStudentCrossRef: ExamStudentCrossRef)
 

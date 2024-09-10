@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/guideline2"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.04" />
+                    app:layout_constraintGuide_begin="15dp" />
 
             <androidx.constraintlayout.widget.Guideline
                     android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="25sp"
+                    android:textSize="@dimen/TextFont1"
                     android:id="@+id/tvCourseName"
                     app:layout_constraintStart_toStartOf="@+id/guideline2"
                     app:layout_constraintTop_toTopOf="@+id/guideline4" />

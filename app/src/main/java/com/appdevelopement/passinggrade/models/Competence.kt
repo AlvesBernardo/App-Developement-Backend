@@ -14,8 +14,8 @@ import androidx.room.PrimaryKey
                 parentColumns = arrayOf("idExam"),
                 childColumns = arrayOf("idExam"),
                 onDelete = ForeignKey.CASCADE)])
-data class Compentence(
-    @PrimaryKey(autoGenerate = true) val idComptence: Int,
+data class Competence(
+    @PrimaryKey(autoGenerate = true) val idCompetence: Int,
     val idExam: Int,
     val dtName: String,
     val dtCompetenceWeight: Int,

@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
-import com.appdevelopement.passinggrade.models.Compentence
+import com.appdevelopement.passinggrade.models.Competence
 
-class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) :
+class GradingSheetAdapter(private var competenceList: MutableList<Competence>) :
     RecyclerView.Adapter<GradingSheetAdapter.ViewHolder>() {
 
   // Inflate the item layout and create the ViewHolder
@@ -42,12 +42,12 @@ class GradingSheetAdapter(private var competenceList: MutableList<Compentence>) 
     notifyItemRangeChanged(position, competenceList.size)
   }
 
-  fun addCriteria(competence: Compentence) {
+  fun addCriteria(competence: Competence) {
     competenceList.add(competence)
     notifyItemInserted(competenceList.size - 1)
   }
 
-  fun addAllCriteria(newCompetenceList: List<Compentence>) {
+  fun addAllCriteria(newCompetenceList: List<Competence>) {
     competenceList.clear()
     competenceList.addAll(newCompetenceList)
     notifyDataSetChanged()

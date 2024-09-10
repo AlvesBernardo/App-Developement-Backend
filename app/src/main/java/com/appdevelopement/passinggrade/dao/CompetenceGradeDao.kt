@@ -7,15 +7,16 @@ import androidx.room.Query
 import com.appdevelopement.passinggrade.models.CompetenceGrade
 
 @Dao
-interface CompentenceGradeDao {
+interface CompetenceGradeDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insertComptenceGrade(compentenceGrade: CompetenceGrade)
+  suspend fun insertCompetenceGrade(competenceGrade: CompetenceGrade)
 
   @Query("SELECT * FROM CompetenceGrade WHERE studentNumber = :studentId")
   suspend fun getStudentCompetenceGrades(studentId: Int): List<CompetenceGrade>
 
   @Query(
-      "SELECT * FROM CompetenceGrade WHERE studentNumber = :studentId AND (SELECT idComptence FROM Compentence WHERE idExam = :idExam) ORDER BY idCompetenceGradeId DESC LIMIT (SELECT COUNT(idExam) FROM Compentence WHERE idExam = :idExam)")
+    "SELECT * FROM CompetenceGrade WHERE studentNumber = :studentId AND (SELECT idCompetence FROM Competence WHERE idExam = :idExam) ORDER BY idCompetenceGradeId DESC LIMIT (SELECT COUNT(idExam) FROM Competence WHERE idExam = :idExam)"
+  )
   suspend fun getGradesForStudentAndExam(studentId: Int, idExam: Int): List<CompetenceGrade>
 }

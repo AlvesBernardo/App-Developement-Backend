@@ -1,11 +1,11 @@
 package com.appdevelopement.passinggrade.utils.popups.calculators
 
 import android.widget.LinearLayout
-import com.appdevelopement.passinggrade.models.Compentence
+import com.appdevelopement.passinggrade.models.Competence
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
 
 class CritertionCalculator {
-  fun calculateTotalGrade(gradingAreaLayout: LinearLayout, competences: List<Compentence>): Double {
+  fun calculateTotalGrade(gradingAreaLayout: LinearLayout, competences: List<Competence>): Double {
     var weightedSum = 0.0
     var weightSum = 0
 

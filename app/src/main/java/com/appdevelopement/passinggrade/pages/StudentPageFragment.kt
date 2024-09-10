@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.room.withTransaction
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.StudentAdapter
-import com.appdevelopement.passinggrade.dao.ExamStudentCorssReferecne
+import com.appdevelopement.passinggrade.dao.ExamStudentCrossReferenceDao
 import com.appdevelopement.passinggrade.dao.StudentDao
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.dto.StudentDTO
@@ -46,7 +46,7 @@ class StudentPageFragment : Fragment() {
   private lateinit var studentAdapter: StudentAdapter
   private lateinit var searchView: SearchView
   private lateinit var studentDao: StudentDao
-  private lateinit var examStudentCorssReferecne: ExamStudentCorssReferecne
+  private lateinit var examStudentCrossReferenceDao: ExamStudentCrossReferenceDao
   private var studentList = ArrayList<StudentDTO>()
   private lateinit var db: AppDatabase
   private var examId: Int = -1
@@ -89,7 +89,7 @@ class StudentPageFragment : Fragment() {
 
     db = AppDatabase.getDatabase(requireContext())
     studentDao = db.studentDao()
-    examStudentCorssReferecne = db.examStudentCrossReference()
+    examStudentCrossReferenceDao = db.examStudentCrossReferenceDao()
 
     recyclerView = view.findViewById(R.id.recyclerView)
     recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -198,11 +198,11 @@ class StudentPageFragment : Fragment() {
                 studentDao.insertStudent(student)
               }
               val existingCrossRef =
-                  examStudentCorssReferecne.getSpecificCrossRef(
+                  examStudentCrossReferenceDao.getSpecificCrossRef(
                       examId = examId, studentNumber = student.studentNumber)
               if (existingCrossRef == null) {
                 val crossRef = ExamStudentCrossRef(examId, student.studentNumber)
-                examStudentCorssReferecne.insert(crossRef)
+                examStudentCrossReferenceDao.insert(crossRef)
               }
             }
           } else { // Exam does not exist, return
@@ -231,7 +231,7 @@ class StudentPageFragment : Fragment() {
 
   private fun getStudentsRelatedToExam(examId: Int): List<Student> {
     val studentsInExamIds = runBlocking {
-      examStudentCorssReferecne.getStudentNumbersForExam(examId)
+      examStudentCrossReferenceDao.getStudentNumbersForExam(examId)
     }
 
     return runBlocking {

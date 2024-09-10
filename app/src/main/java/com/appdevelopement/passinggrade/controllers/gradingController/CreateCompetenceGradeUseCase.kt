@@ -1,14 +1,14 @@
 package com.appdevelopement.passinggrade.controllers.gradingController
 
 import android.util.Log
-import com.appdevelopement.passinggrade.dao.CompentenceDao
-import com.appdevelopement.passinggrade.dao.CompentenceGradeDao
+import com.appdevelopement.passinggrade.dao.CompetenceDao
+import com.appdevelopement.passinggrade.dao.CompetenceGradeDao
 import com.appdevelopement.passinggrade.models.CompetenceGrade
 import com.appdevelopement.passinggrade.pages.grading.CriterionRecord
 
 class CreateCompetenceGradeUseCase(
-    private val competenceGradeDao: CompentenceGradeDao,
-    private val competenceDao: CompentenceDao
+    private val competenceGradeDao: CompetenceGradeDao,
+    private val competenceDao: CompetenceDao
 ) {
 
   suspend fun execute(criterionRecord: List<CriterionRecord>, studentId: Int, examId: Int) {
@@ -20,10 +20,10 @@ class CreateCompetenceGradeUseCase(
                 idCompetenceGradeId = 0,
                 idTeacher = 1,
                 studentNumber = studentId,
-                idComptence = record.idComptence, // use this instead
+                idCompetence = record.idCompetence, // use this instead
                 dtGrade = criterionRecord[index].progress.toDouble(),
                 dtComment = criterionRecord[index].comment)
-        competenceGradeDao.insertComptenceGrade(competenceGrade)
+        competenceGradeDao.insertCompetenceGrade(competenceGrade)
       }
     } catch (e: Exception) {
       Log.e("CreateCompetenceGradeUseCase", "Error inserting CompetenceGrade", e)

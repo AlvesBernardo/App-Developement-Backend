@@ -20,7 +20,7 @@
                 android:layout_column="0"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:textSize="@dimen/TextFont5"
+                android:textSize="@dimen/TextFont6"
                 android:text="Student Name"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content" />
@@ -34,7 +34,7 @@
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:layout_gravity="center"
-                android:textSize="8sp"
+                android:textSize="@dimen/TextFont6"
                 android:text="Student Number"
                 android:layout_height="wrap_content" />
 
@@ -44,19 +44,17 @@
                 android:layout_width="24dp"
                 android:layout_weight="1"
                 android:background="@color/white"
-
-                android:textAlignment="textStart"
-                android:textSize="8sp"
+                android:scaleType="fitStart"
                 android:src="@drawable/baseline_check_box_outline_blank_24"
                 android:layout_height="match_parent" />
 
         <Button
-                android:text="Add or Change grade"
-                android:layout_width="wrap_content"
+                android:text="Grade"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/btnChangeGrade"
                 android:layout_weight="1"
-                android:textSize="@dimen/TextFont5"
+                android:textSize="@dimen/TextFont6"
                 android:backgroundTint="#028577"
                 android:textColor="#FFFFFF" />
     </LinearLayout>

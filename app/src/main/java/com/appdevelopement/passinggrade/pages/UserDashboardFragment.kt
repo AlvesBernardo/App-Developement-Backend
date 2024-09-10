@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +41,7 @@ class UserDashboardFragment : Fragment() {
         ?.getInt("idTeacher", -1)
         ?.let { teacherId ->
           lifecycleScope.launch {
-            val exams = getCoursesForTeacher(requireContext(), teacherId)
+            val exams = getExamsForTeacher(requireContext(), teacherId)
             recyclerView.adapter = ExamAdapter(exams)
           }
         }
@@ -60,6 +61,11 @@ class UserDashboardFragment : Fragment() {
     override fun onBindViewHolder(holder: ExamViewHolder, position: Int) {
       val exam = examList[position]
       holder.examButton.text = exam.examName
+        lifecycleScope.launch{
+            holder.courseDescription.text = getCourseDescriptionByCourseId(requireContext(), exam.idCourse)
+        }
+
+        Log.d("UserDashboardFragment", "exam ${exam.idCourse}")
       Log.d("UserDashboardFragment", "Clicked on exam with id ${exam.idExam}")
       holder.examButton.setOnClickListener {
         val fragment =
@@ -78,6 +84,7 @@ class UserDashboardFragment : Fragment() {
 
     inner class ExamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
       val examButton: Button = itemView.findViewById(R.id.btn_course)
+        val courseDescription: TextView = itemView.findViewById(R.id.tv_course_description)
     }
   }
 
@@ -89,9 +96,15 @@ class UserDashboardFragment : Fragment() {
         .show()
   }
 
-  private suspend fun getCoursesForTeacher(context: Context, teacherId: Int): List<Exam> {
+  private suspend fun getExamsForTeacher(context: Context, teacherId: Int): List<Exam> {
     Log.d("TeacherCourses", "Teacher ID: $teacherId")
     val dao = AppDatabase.getDatabase(context).examDao()
     return withContext(Dispatchers.IO) { dao.getExamByTeacher(teacherId) }
   }
+
+    private suspend fun getCourseDescriptionByCourseId(context: Context, courseId: Int): String{
+        Log.d("CourseId", "Course ID: $courseId")
+        val dao = AppDatabase.getDatabase(context).courseDao()
+        return withContext(Dispatchers.IO) { dao.getCourseDescription(courseId) }
+    }
 }

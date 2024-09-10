@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 20,
-    "identityHash": "2cf7d28ed6d420a6d65e8d8ae00f0635",
+    "version": 21,
+    "identityHash": "964f4b9015868ebc4482d572da09732e",
     "entities": [
       {
         "tableName": "Teacher",
@@ -251,11 +251,11 @@
       },
       {
         "tableName": "Competence",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idComptence` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idExam` INTEGER NOT NULL, `dtName` TEXT NOT NULL, `dtCompetenceWeight` INTEGER NOT NULL, `dtMustPass` INTEGER NOT NULL, FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCompetence` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idExam` INTEGER NOT NULL, `dtName` TEXT NOT NULL, `dtCompetenceWeight` INTEGER NOT NULL, `dtMustPass` INTEGER NOT NULL, FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "idComptence",
-            "columnName": "idComptence",
+            "fieldPath": "idCompetence",
+            "columnName": "idCompetence",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -287,7 +287,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "idComptence"
+            "idCompetence"
           ]
         },
         "indices": [
@@ -317,7 +317,7 @@
       },
       {
         "tableName": "CompetenceGrade",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCompetenceGradeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idTeacher` INTEGER NOT NULL, `studentNumber` INTEGER NOT NULL, `idComptence` INTEGER NOT NULL, `dtGrade` REAL NOT NULL, `dtComment` TEXT, FOREIGN KEY(`idTeacher`) REFERENCES `Teacher`(`idTeacher`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`studentNumber`) REFERENCES `Student`(`studentNumber`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`idComptence`) REFERENCES `Competence`(`idComptence`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idCompetenceGradeId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idTeacher` INTEGER NOT NULL, `studentNumber` INTEGER NOT NULL, `idCompetence` INTEGER NOT NULL, `dtGrade` REAL NOT NULL, `dtComment` TEXT, FOREIGN KEY(`idTeacher`) REFERENCES `Teacher`(`idTeacher`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`studentNumber`) REFERENCES `Student`(`studentNumber`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`idCompetence`) REFERENCES `Competence`(`idCompetence`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idCompetenceGradeId",
@@ -338,8 +338,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "idComptence",
-            "columnName": "idComptence",
+            "fieldPath": "idCompetence",
+            "columnName": "idCompetence",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -373,13 +373,13 @@
             "createSql": "CREATE INDEX IF NOT EXISTS `index_CompetenceGrade_idTeacher` ON `${TABLE_NAME}` (`idTeacher`)"
           },
           {
-            "name": "index_CompetenceGrade_idComptence",
+            "name": "index_CompetenceGrade_idCompetence",
             "unique": false,
             "columnNames": [
-              "idComptence"
+              "idCompetence"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_CompetenceGrade_idComptence` ON `${TABLE_NAME}` (`idComptence`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_CompetenceGrade_idCompetence` ON `${TABLE_NAME}` (`idCompetence`)"
           },
           {
             "name": "index_CompetenceGrade_studentNumber",
@@ -419,10 +419,10 @@
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "idComptence"
+              "idCompetence"
             ],
             "referencedColumns": [
-              "idComptence"
+              "idCompetence"
             ]
           }
         ]
@@ -506,7 +506,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2cf7d28ed6d420a6d65e8d8ae00f0635')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '964f4b9015868ebc4482d572da09732e')"
     ]
   }
 }

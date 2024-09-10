@@ -21,4 +21,8 @@ interface CourseDao {
         WHERE TeacherCourse.idTeacher = :teacherId
         """)
   suspend fun getTeacherCourses(teacherId: Int): List<Course>
+
+  @Query("SELECT Course.dtDescription FROM Course" +
+          " WHERE Course.idCourse= :courseId")
+  suspend fun getCourseDescription(courseId: Int):String
 }

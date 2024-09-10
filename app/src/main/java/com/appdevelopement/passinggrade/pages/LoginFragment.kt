@@ -15,9 +15,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.MainActivity
 import com.appdevelopement.passinggrade.R
+import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.middelware.TeacherManger
 import com.appdevelopement.passinggrade.models.Teacher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -53,7 +55,12 @@ class LoginFragment : Fragment() {
     }
 
     lifecycleScope.launch(Dispatchers.IO) {
+      val getTeachers = getAllTeachers(requireContext())
+
+      Toast.makeText(activity, "Invalid username or password. $getTeachers", Toast.LENGTH_SHORT).show()
+
       val teacher = getTeacher(emailInput, passwordInput)
+
       withContext(Dispatchers.Main) {
 
         // Add a null check here before setting sharedPreferences
@@ -96,5 +103,10 @@ class LoginFragment : Fragment() {
 
   suspend fun getTeacher(email: String, password: String): Teacher? {
     return TeacherManger.getTeacherByEmailAndPassword(requireContext(), email, password)
+  }
+
+  suspend fun getAllTeachers(context: Context): List<Teacher> {
+    val dao = AppDatabase.getDatabase(context).teacherDao()
+    return withContext(IO) { dao.getAll() }
   }
 }

@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.adapters.GradingSheetAdapter
 import com.appdevelopement.passinggrade.database.AppDatabase
-import com.appdevelopement.passinggrade.models.Compentence
+import com.appdevelopement.passinggrade.models.Competence
 import com.appdevelopement.passinggrade.models.Exam
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -46,7 +46,7 @@ class GradingSheetFragment : Fragment() {
   private var teacherId: Int = -1
   private var selectedExamId: Int = -1
 
-  private val competenceList = mutableListOf<Compentence>()
+  private val competenceList = mutableListOf<Competence>()
 
   @SuppressLint("MissingInflatedId")
   override fun onCreateView(
@@ -101,8 +101,8 @@ class GradingSheetFragment : Fragment() {
       if (canAddNewCompetence(competenceW)) {
         if (text.isNotEmpty() && selectedExamId != -1) {
           val competenceRecord =
-              Compentence(
-                  idComptence = 0,
+              Competence(
+                  idCompetence = 0,
                   idExam = selectedExamId,
                   dtName = text,
                   dtCompetenceWeight = competenceW,
@@ -183,8 +183,8 @@ class GradingSheetFragment : Fragment() {
     }
   }
 
-  private suspend fun getCompetencesOfSelectedExam(): List<Compentence>? {
-    return withContext(Dispatchers.IO) { db.compentenceDao().getCompetencesForExam(selectedExamId) }
+  private suspend fun getCompetencesOfSelectedExam(): List<Competence>? {
+    return withContext(Dispatchers.IO) { db.competenceDao().getCompetencesForExam(selectedExamId) }
   }
 
   private fun updateImageViewState(mustPassToggle: ImageView?) {
@@ -195,7 +195,7 @@ class GradingSheetFragment : Fragment() {
     }
   }
 
-  private fun addAllCompetences(newCompetenceList: List<Compentence>?) {
+  private fun addAllCompetences(newCompetenceList: List<Competence>?) {
     competenceList.clear()
     if (newCompetenceList != null) {
       competenceList.addAll(newCompetenceList)
@@ -208,8 +208,8 @@ class GradingSheetFragment : Fragment() {
     gradingSheetAdapter.removeAllCriterias()
   }
 
-  private suspend fun insertCompetenceToDb(competence: Compentence) {
-    withContext(Dispatchers.IO) { db.compentenceDao().insert(competence) }
+  private suspend fun insertCompetenceToDb(competence: Competence) {
+    withContext(Dispatchers.IO) { db.competenceDao().insert(competence) }
   }
 
   private fun totalCompetenceWeight(): Int {

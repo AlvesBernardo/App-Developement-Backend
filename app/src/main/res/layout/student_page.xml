@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="15dp"
+        android:background="@color/background"
         tools:context=".pages.StudentPageFragment">
 
     <!--  Guidelines  -->
@@ -14,7 +15,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/guideline2"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.04" />
+            app:layout_constraintGuide_begin="30dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
@@ -28,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/guideline4"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.02" />
+            app:layout_constraintGuide_begin="30dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="@dimen/TextFont1"
             android:id="@+id/tvCourseName"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
@@ -170,7 +171,7 @@
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="340dp"
-            android:layout_height="300dp"
+            android:layout_height="380dp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/spnrFilterBy"

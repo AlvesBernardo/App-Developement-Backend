@@ -50,7 +50,7 @@ class GradeStudentFragment : Fragment() {
     super.onViewCreated(view, savedInstanceState)
     db = AppDatabase.getDatabase(requireContext())
     createCompetenceGradeUseCase =
-        CreateCompetenceGradeUseCase(db.CompentenceGradeDao(), db.compentenceDao())
+        CreateCompetenceGradeUseCase(db.competenceGradeDao(), db.competenceDao())
     gradingUseCase = GradingUseCase(db)
     updateExamGradeUseCase = UpdateExamGradeUseCase(db.examDao())
 
@@ -68,11 +68,11 @@ class GradeStudentFragment : Fragment() {
       val student = withContext(Dispatchers.IO) { db.studentDao().findStudent(studentId) }
 
       val criterias =
-          withContext(Dispatchers.IO) { db.compentenceDao().getCompetencesForExam(examId) }
+          withContext(Dispatchers.IO) { db.competenceDao().getCompetencesForExam(examId) }
 
       val existingGrades =
           withContext(Dispatchers.IO) {
-            db.CompentenceGradeDao().getGradesForStudentAndExam(studentId, examId)
+            db.competenceGradeDao().getGradesForStudentAndExam(studentId, examId)
           }
 
       val gradingCriteria = criterias.map { it.dtName }
@@ -84,7 +84,7 @@ class GradeStudentFragment : Fragment() {
 
         gradingCriteria.forEach { criterion ->
           val competence = criterias.find { it.dtName == criterion }
-          val existingGrade = existingGrades.find { it.idComptence == competence?.idComptence }
+          val existingGrade = existingGrades.find { it.idCompetence == competence?.idCompetence }
           val progressValue = (existingGrade?.dtGrade ?: 0.0).toInt()
           val commentValue = existingGrade?.dtComment ?: ""
 

@@ -34,7 +34,7 @@ import com.appdevelopement.passinggrade.models.TeacherCourse
         CompetenceGrade::class,
         ExamStudentCrossRef::class
     ],
-    version = 21
+    version = 22
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -59,22 +59,24 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile private var INSTANCE: AppDatabase? = null
 
         // Define migration from version 1 to 2
-//        val MIGRATION_20_21 = object : Migration(20, 21) {
-//            override fun migrate(database: SupportSQLiteDatabase) {
-//                // Add the new 'isGraded' column, default to false for existing rows
-//                database.execSQL("ALTER TABLE ExamStudentCrossRef ADD COLUMN isGraded INTEGER NOT NULL DEFAULT 0")
-////                database.execSQL("""
-////                CREATE TABLE IF NOT EXISTS `Competence` (
-////                    `idCompetence` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-////                    `idExam` INTEGER NOT NULL,
-////                    `dtName` TEXT NOT NULL,
-////                    `dtCompetenceWeight` INTEGER NOT NULL,
-////                    `dtMustPass` INTEGER NOT NULL,
-////                    FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON DELETE CASCADE
-////                    )
-////                """)
-//            }
-//        }
+        val MIGRATION_21_22 = object : Migration(21, 22) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Add the new 'isGraded' column, default to false for existing rows
+//                db.execSQL("ALTER TABLE ExamStudentCrossRef ADD COLUMN isGraded INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("DROP TABLE IF EXISTS Comptence")
+                db.execSQL("""
+                CREATE TABLE IF NOT EXISTS `Competence` (
+                    `idCompetence` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                    `idExam` INTEGER NOT NULL,
+                    `dtName` TEXT NOT NULL,
+                    `dtCompetenceWeight` INTEGER NOT NULL,
+                    `dtMustPass` INTEGER NOT NULL,
+                    FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON DELETE CASCADE
+                    )
+                """)
+
+            }
+        }
 
         // Get the database instance
         fun getDatabase(context: Context): AppDatabase {
@@ -83,7 +85,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app-dev"
-                )
+                ).addMigrations(MIGRATION_21_22)
                     .fallbackToDestructiveMigration() // Keep this if you want destructive migration
                     .build()
                 INSTANCE = instance

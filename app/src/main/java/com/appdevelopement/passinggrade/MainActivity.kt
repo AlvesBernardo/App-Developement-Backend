@@ -95,44 +95,58 @@ class MainActivity : AppCompatActivity() {
   private fun initializeDatabase() {
     val context = this
     val sharedPreferences = getSharedPreferences("ApplicationPrefs", Context.MODE_PRIVATE)
+
     if (!sharedPreferences.getBoolean("isFirstRun", true)) {
+      Log.d("DatabaseInit", "Database already initialized")
       return
     }
+
     CoroutineScope(Dispatchers.IO).launch {
-      // Ensure that all middleware operations are completed in the correct sequence
+      try {
+        // Insert teacher
+        val teacher = TeacherManger.addTeacher(context)
+        val teacherId = teacher.idTeacher
+        Log.d("DatabaseInit", "Inserted teacher with ID: $teacherId")
 
-      // Insert teacher
-      val teacher = TeacherManger.addTeacher(context)
-      val teacherId = teacher.idTeacher
+        // Insert course
+        val course = CourseManager.addCourse(context)
+        val courseId = course.idCourse
+        Log.d("DatabaseInit", "Inserted course with ID: $courseId")
 
-      // Insert course
-      val course = CourseManager.addCourse(context)
-      val courseId = course.idCourse
+        // Insert exams
+        AddExam.addExam(context, 1, 2, "OOP1")
+        AddExam.addExam(context, 1, 1, "OOP2")
+        AddExam.addExam(context, 2, 3, "SoftwareQuality")
+        AddExam.addExam(context, 2, 4, "Scrum")
+        Log.d("DatabaseInit", "Inserted exams")
 
-      // Insert exam
-      // Insert exams with specified names
-      AddExam.addExam(context, 1, 2, "OOP1")
-      AddExam.addExam(context, 1, 2, "OOP2")
-      AddExam.addExam(context, 2, 2, "SoftwareQuality")
-      AddExam.addExam(context, 2, 2, "Scrum")
+        // Add competences
+        CompetenceManager.addCompetences(context, 1)
+        CompetenceManager.addCompetences(context, 2)
+        CompetenceManager.addCompetences(context, 3)
+        CompetenceManager.addCompetences(context, 4)
+        Log.d("DatabaseInit", "Inserted competences")
 
-      CompetenceManager.addCompetences(context, 1)
-      CompetenceManager.addCompetences(context, 2)
-      CompetenceManager.addCompetences(context, 3)
-      CompetenceManager.addCompetences(context, 4)
+        // Add teacher-course relationships
+        TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 1)
+        TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 2)
+        Log.d("DatabaseInit", "Inserted teacher-course relationships")
 
-      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 1)
-      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 2)
+        // Get teacher courses (for debugging)
+        val teacherCourses = TeacherCourseManager.getCoursesByTeacher(context, teacherId = 1)
+        Log.d("DatabaseInit", "Fetched teacher courses: $teacherCourses")
 
-      // Get teacher courses
-      val teacherCourses = TeacherCourseManager.getCoursesByTeacher(context, teacherId = 1)
-
-      with(sharedPreferences.edit()) {
-        putBoolean("isFirstRun", false)
-        apply()
+        with(sharedPreferences.edit()) {
+          putBoolean("isFirstRun", false)
+          apply()
+        }
+        Log.d("DatabaseInit", "Database initialization completed")
+      } catch (e: Exception) {
+        Log.e("DatabaseInit", "Error initializing database", e)
       }
     }
   }
+
 
   fun onUserLoggedIn() {
     val sharedPreferences = getSharedPreferences("Authentication", Context.MODE_PRIVATE)

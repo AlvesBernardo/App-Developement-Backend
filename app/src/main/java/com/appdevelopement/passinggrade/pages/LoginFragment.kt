@@ -1,8 +1,10 @@
 package com.appdevelopement.passinggrade.pages
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +59,8 @@ class LoginFragment : Fragment() {
     lifecycleScope.launch(Dispatchers.IO) {
       val getTeachers = getAllTeachers(requireContext())
 
-      Toast.makeText(activity, "Invalid username or password. $getTeachers", Toast.LENGTH_SHORT).show()
+      Log.d("All Teachers: ", "${getTeachers}")
+//      Toast.makeText(activity, "Invalid username or password. $getTeachers", Toast.LENGTH_SHORT).show()
 
       val teacher = getTeacher(emailInput, passwordInput)
 

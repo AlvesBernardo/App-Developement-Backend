@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "68a4afcc3ab0c237cf9d43e550012c3d",
+    "identityHash": "c4a34f48316f0828a7babcd5423065c3",
     "entities": [
       {
         "tableName": "Teacher",
@@ -429,7 +429,7 @@
       },
       {
         "tableName": "ExamStudentCrossRef",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idExam` INTEGER NOT NULL, `studentNumber` INTEGER NOT NULL, PRIMARY KEY(`studentNumber`, `idExam`), FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`studentNumber`) REFERENCES `Student`(`studentNumber`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idExam` INTEGER NOT NULL, `studentNumber` INTEGER NOT NULL, `isGraded` INTEGER NOT NULL, PRIMARY KEY(`studentNumber`, `idExam`), FOREIGN KEY(`idExam`) REFERENCES `Exam`(`idExam`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`studentNumber`) REFERENCES `Student`(`studentNumber`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "idExam",
@@ -440,6 +440,12 @@
           {
             "fieldPath": "studentNumber",
             "columnName": "studentNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isGraded",
+            "columnName": "isGraded",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -500,7 +506,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '68a4afcc3ab0c237cf9d43e550012c3d')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c4a34f48316f0828a7babcd5423065c3')"
     ]
   }
 }

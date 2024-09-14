@@ -7,11 +7,12 @@
     <dimen name="_30sdp">30dp</dimen>
     <dimen name="_14ssp">14sp</dimen>
     <!--    Text Styles-->
-    <dimen name="TextFont1">22sp</dimen> <!-- Title text -->
+    <dimen name="TextFont1">25sp</dimen> <!-- Title text -->
     <dimen name="TextFont2">17sp</dimen> <!-- Subtitle text -->
     <dimen name="TextFont3">14sp</dimen> <!-- Normal text font -->
     <dimen name="TextFont4">12sp</dimen> <!-- Small text font -->
     <dimen name="TextFont5">8sp</dimen> <!-- Small text font -->
+    <dimen name="TextFont6">10sp</dimen> <!-- Small text font -->
 
     <!--    Toggle & Buttons-->
     <dimen name="ToggleDimension">28dp</dimen>

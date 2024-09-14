@@ -14,11 +14,15 @@ interface CourseDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE) fun insertCourses(course: Course): Long
 
-  @Query(
-      """
-        SELECT * FROM Course
-        JOIN TeacherCourse ON Course.idCourse = TeacherCourse.idCourse
-        WHERE TeacherCourse.idTeacher = :teacherId
-        """)
-  suspend fun getTeacherCourses(teacherId: Int): List<Course>
+//  @Query(
+//    """
+//        SELECT * FROM Course
+//        JOIN TeacherCourse ON Course.idCourse = TeacherCourse.idCourse
+//        WHERE TeacherCourse.idTeacher = :teacherId
+//        """)
+//  suspend fun getTeacherCourses(teacherId: Int): List<Course>
+
+  @Query("SELECT Course.dtDescription FROM Course" +
+          " WHERE Course.idCourse= :courseId")
+  suspend fun getCourseDescription(courseId: Int):String
 }

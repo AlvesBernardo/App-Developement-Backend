@@ -1,12 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
         android:background="@color/background"
         tools:context=".pages.UserDashboardFragment">
+
+    <!--  Guidelines  -->
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline2"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="31dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline3"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="29dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline4"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="30dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline5"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.94" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline7"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.50364965" />
+
 
     <TextView
             android:id="@+id/tv_courses_title"
@@ -15,13 +51,18 @@
             android:textSize="@dimen/TextFont1"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:text="My Courses" />
+            android:text="My Courses"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_courses"
-            android:layout_width="match_parent"
+            android:layout_width="350dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="16dp" />
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_courses_title"
+            android:layout_marginTop="20dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

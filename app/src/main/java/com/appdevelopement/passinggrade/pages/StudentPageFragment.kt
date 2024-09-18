@@ -47,7 +47,6 @@ class StudentPageFragment : Fragment() {
   private lateinit var searchView: SearchView
   private lateinit var studentDao: StudentDao
   private lateinit var examStudentCorssReferecne: ExamStudentCorssReferecne
-  private var studentList = ArrayList<StudentDTO>()
   private lateinit var db: AppDatabase
   private var examId: Int = -1
   private var toDisplayList = ArrayList<StudentDTO>()
@@ -85,68 +84,92 @@ class StudentPageFragment : Fragment() {
       savedInstanceState: Bundle?
   ): View? {
     val view = inflater.inflate(R.layout.student_page, container, false)
-    val examId = arguments?.getInt("idExam") ?: -1
+    return view
+  }
+  override fun onResume() {
+    super.onResume()
 
+    // Fetch the updated student list when fragment is resumed
+    val examId = arguments?.getInt("idExam") ?: -1
+    Log.d("Exam clicked on: ", "Clicked on exam with id $examId")
+    
     db = AppDatabase.getDatabase(requireContext())
     studentDao = db.studentDao()
     examStudentCorssReferecne = db.examStudentCrossReference()
-
-    recyclerView = view.findViewById(R.id.recyclerView)
+    
+    recyclerView = requireView().findViewById(R.id.recyclerView)
     recyclerView.layoutManager = LinearLayoutManager(requireContext())
     recyclerView.setHasFixedSize(true)
-
-    studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId)
+    
+    Log.d("Exam passed to adapter: ", "exam passed to student Adapter $examId")
+    studentAdapter = StudentAdapter(toDisplayList, parentFragmentManager, examId, requireContext(), viewLifecycleOwner)
     recyclerView.adapter = studentAdapter
-
+    
     fetchStudentsForExam(examId)
-
+    
     toDisplayList.clear()
+    Log.d("StudentPageFragment cleared", "Updated toDisplayList: ${toDisplayList.size} students")
+    
     runBlocking {
       println("array has $toDisplayList")
       toDisplayList.addAll(getStudentsRelatedToExam(examId).map { convertToStudentDto(it) })
     }
+    Log.d("StudentPageFragment populated", "Updated toDisplayList: ${toDisplayList.size} students")
+    
     studentAdapter.notifyDataSetChanged()
-
-    searchView = view.findViewById(R.id.searchView)
-
+    
+    
+    searchView = requireView().findViewById(R.id.searchView)
+    
     searchView.setOnQueryTextListener(
-        object : SearchView.OnQueryTextListener {
-          override fun onQueryTextSubmit(query: String?): Boolean {
-            return false
-          }
-
-          override fun onQueryTextChange(newText: String?): Boolean {
-            filterStudentByNumber(newText)
-            return true
-          }
-        })
-
+      object : SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String?): Boolean {
+          return false
+        }
+        
+        override fun onQueryTextChange(newText: String?): Boolean {
+          filterStudentByNumber(newText)
+          return true
+        }
+      })
+    
     // Spinner for filter options
     val filterItems = arrayOf("All", "Graded", "UnGraded")
     val filterAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, filterItems)
-
-    val spinner: Spinner = view.findViewById(R.id.spnrFilterBy)
+    
+    val spinner: Spinner = requireView().findViewById(R.id.spnrFilterBy)
     spinner.adapter = filterAdapter
-
+    
     spinner.onItemSelectedListener =
-        object : AdapterView.OnItemSelectedListener {
-          override fun onItemSelected(
-              parent: AdapterView<*>?,
-              view: View?,
-              position: Int,
-              id: Long
-          ) {}
-          override fun onNothingSelected(parent: AdapterView<*>?) {}
+      object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+          parent: AdapterView<*>?,
+          view: View?,
+          position: Int,
+          id: Long
+        ) {
+          when (position) {
+            0 -> { // "All" selected
+              showAllStudents()
+            }
+            1 -> { // "Graded" selected
+              showGradedStudents()
+            }
+            2 -> { // "UnGraded" selected
+              showUnGradedStudents()
+            }
+          }
         }
-
+        override fun onNothingSelected(parent: AdapterView<*>?) {}
+      }
+    
     // Import Excel Button
-    val importButton: Button = view.findViewById(R.id.btnImportSheet)
+    val importButton: Button = requireView().findViewById(R.id.btnImportSheet)
     importButton.setOnClickListener {
       Log.d("Debug", "importButton clicked")
       pickFile()
     }
-
-    return view
+    
   }
 
   private fun checkPermissionAndPickFile() {
@@ -175,9 +198,9 @@ class StudentPageFragment : Fragment() {
   private fun filterStudentByNumber(query: String?) {
     val tempList =
         if (query.isNullOrBlank()) {
-          ArrayList(studentList)
+          ArrayList(toDisplayList)
         } else {
-          ArrayList(studentList.filter { it.studentNumber.toString().startsWith(query.toString()) })
+          ArrayList(toDisplayList.filter { it.studentNumber.toString().startsWith(query.toString()) })
         }
     studentAdapter.updateData(tempList)
   }
@@ -214,11 +237,12 @@ class StudentPageFragment : Fragment() {
 
         val newStudentList =
             ArrayList(getStudentsRelatedToExam(examId).map { convertToStudentDto(it) })
+        Log.d("getStudentsRelatedToExam studentList", "Imported students: $newStudentList")
         withContext(Dispatchers.Main) {
-          studentList = newStudentList
+          toDisplayList = newStudentList
           studentAdapter.updateData(newStudentList)
-          Toast.makeText(requireContext(), "Data Imported Successfully", Toast.LENGTH_SHORT).show()
           fetchStudentsForExam(examId)
+          Toast.makeText(requireContext(), "Data Imported Successfully", Toast.LENGTH_SHORT).show()
         }
       } catch (e: IOException) {
         e.printStackTrace()
@@ -233,7 +257,9 @@ class StudentPageFragment : Fragment() {
     val studentsInExamIds = runBlocking {
       examStudentCorssReferecne.getStudentNumbersForExam(examId)
     }
-
+    Log.d("getStudentsRelatedToExam", "Fetching students for examId: $examId")
+    Log.d("studentsInExamIds", "Fetched students: $studentsInExamIds")
+    
     return runBlocking {
       studentsInExamIds
           .mapNotNull { studentNumber ->
@@ -257,7 +283,28 @@ class StudentPageFragment : Fragment() {
         studentName = studentDto.studentName,
     )
   }
-
+  
+  // Method to show all students
+  private fun showAllStudents() {
+    // Display all students
+    studentAdapter.updateData(ArrayList(toDisplayList.map { it.student }))
+  }
+  
+  // Method to show only graded students
+  private fun showGradedStudents() {
+    // Filter the list to show only graded students
+    val gradedStudents = toDisplayList.filter { it.isGraded }.map { it.student }
+    studentAdapter.updateData(ArrayList(gradedStudents))
+  }
+  
+  // Method to show only ungraded students
+  private fun showUnGradedStudents() {
+    // Filter the list to show only ungraded students
+    val ungradedStudents = toDisplayList.filter { !it.isGraded }.map { it.student }
+    studentAdapter.updateData(ArrayList(ungradedStudents))
+  }
+  
+  
   private fun fetchStudentsForExam(examId: Int) {
     GlobalScope.launch(Dispatchers.IO) {
       val students = studentDao.getStudentsForExam(examId).map { convertToStudentDto(it) }

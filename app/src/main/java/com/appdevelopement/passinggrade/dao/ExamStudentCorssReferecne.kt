@@ -11,7 +11,7 @@ interface ExamStudentCorssReferecne {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(examStudentCrossRef: ExamStudentCrossRef)
 
-  @Query("SELECT studentNumber FROM ExamStudentCrossRef WHERE studentNumber = :examId")
+  @Query("SELECT studentNumber FROM ExamStudentCrossRef WHERE ExamStudentCrossRef.idExam = :examId")
   suspend fun getStudentNumbersForExam(examId: Int): List<Int>
 
   @Query(
@@ -21,4 +21,10 @@ interface ExamStudentCorssReferecne {
   @Query(
       "SELECT * FROM ExamStudentCrossRef WHERE idExam = :examId AND studentNumber = :studentNumber")
   fun getSpecificCrossRef(examId: Int, studentNumber: Int): ExamStudentCrossRef?
+    
+  @Query("UPDATE ExamStudentCrossRef SET isGraded = :isGraded WHERE studentNumber = :studentNumber AND idExam = :examId")
+  fun updateIsGraded(studentNumber: Int, examId: Int, isGraded: Boolean)
+  
+  @Query("SELECT ExamStudentCrossRef.isGraded FROM ExamStudentCrossRef WHERE studentNumber = :studentNumber AND idExam = :examId")
+  fun getIsGradedByStudentNumber(studentNumber: Int, examId: Int): Boolean
 }

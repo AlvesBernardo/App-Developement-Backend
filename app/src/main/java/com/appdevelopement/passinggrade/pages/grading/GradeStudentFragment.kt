@@ -1,28 +1,34 @@
 package com.appdevelopement.passinggrade.pages.grading
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.lifecycleScope
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.controllers.gradingController.CreateCompetenceGradeUseCase
 import com.appdevelopement.passinggrade.controllers.gradingController.GradingUseCase
 import com.appdevelopement.passinggrade.controllers.gradingController.UpdateExamGradeUseCase
 import com.appdevelopement.passinggrade.database.AppDatabase
+import com.appdevelopement.passinggrade.models.Teacher
+import com.appdevelopement.passinggrade.pages.StudentPageFragment
 import com.appdevelopement.passinggrade.utils.popups.CommentPopUpHandler
 import com.appdevelopement.passinggrade.utils.popups.StudentRecordCreator
 import com.appdevelopement.passinggrade.utils.popups.WriteToExcelFile
 import com.appdevelopement.passinggrade.utils.popups.calculators.CritertionCalculator
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -36,6 +42,7 @@ class GradeStudentFragment : Fragment() {
   private lateinit var createCompetenceGradeUseCase: CreateCompetenceGradeUseCase
   private lateinit var updateExamGradeUseCase: UpdateExamGradeUseCase
   private lateinit var gradingUseCase: GradingUseCase
+  private lateinit var fragmentManager: FragmentManager
 
   override fun onCreateView(
       inflater: LayoutInflater,
@@ -53,12 +60,15 @@ class GradeStudentFragment : Fragment() {
         CreateCompetenceGradeUseCase(db.CompentenceGradeDao(), db.compentenceDao())
     gradingUseCase = GradingUseCase(db)
     updateExamGradeUseCase = UpdateExamGradeUseCase(db.examDao())
-
+      fragmentManager = parentFragmentManager
+      
     val studentNameBox = view.findViewById<TextView>(R.id.StudentName)
     val gradingAreaLayout = view.findViewById<LinearLayout>(R.id.competencyContainer)
     val submitButton = view.findViewById<Button>(R.id.button)
     val criterionCalculator = CritertionCalculator()
     val studentRecordCreator = StudentRecordCreator()
+    val ivBackButton = view.findViewById<ImageView>(R.id.ivBackButton)
+
 
     lifecycleScope.launch {
       val examId = arguments?.getInt("examId") ?: -1
@@ -74,6 +84,20 @@ class GradeStudentFragment : Fragment() {
           withContext(Dispatchers.IO) {
             db.CompentenceGradeDao().getGradesForStudentAndExam(studentId, examId)
           }
+      
+        ivBackButton.setOnClickListener {
+            val studentPageFragment = StudentPageFragment()
+            
+            // Pass the examId and studentId to the GradeStudentFragment
+            val args = Bundle()
+            args.putInt("idExam", examId)
+            studentPageFragment.arguments = args
+            
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, studentPageFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
 
       val gradingCriteria = criterias.map { it.dtName }
 
@@ -216,9 +240,11 @@ class GradeStudentFragment : Fragment() {
                 updateExamGradeUseCase.execute(examId, totalGrade * 10, isPass)
               }
             }
+           studentHasBeenGraded(requireContext(), studentId, examId, true);
+            
             Toast.makeText(
                     context,
-                    "Graded succefully check your files in downaload folder",
+                    "Graded successfully check your files in download folder",
                     Toast.LENGTH_SHORT)
                 .show()
           }
@@ -228,4 +254,9 @@ class GradeStudentFragment : Fragment() {
       }
     }
   }
+    private suspend fun studentHasBeenGraded(context: Context, studentNumber: Int, examId: Int, graded: Boolean = true ) {
+        
+        val dao = AppDatabase.getDatabase(context).examStudentCrossReference()
+        return withContext(IO) { dao.updateIsGraded(studentNumber,  examId, graded) }
+    }
 }

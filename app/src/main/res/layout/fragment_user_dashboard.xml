@@ -51,7 +51,7 @@
             android:textSize="@dimen/TextFont1"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:text="My Courses"
+            android:text="My Exams"
             app:layout_constraintTop_toTopOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline2" />
 

@@ -71,6 +71,8 @@ class UserDashboardFragment : Fragment() {
                 val fragment =
                     StudentPageFragment().apply {
                         arguments = Bundle().apply { putInt("idExam", exam.idExam) }
+                        Log.d("Exam clicked on: ", "Clicked on exam with id ${exam.idExam}")
+                        Log.d("Arguments sent: ", "Arguments include: $arguments")
                     }
                 requireActivity().supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragment_container, fragment)

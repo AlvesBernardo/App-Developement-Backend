@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appdevelopement.passinggrade.R
 import com.appdevelopement.passinggrade.database.AppDatabase
 import com.appdevelopement.passinggrade.dto.StudentDTO
+import com.appdevelopement.passinggrade.dto.StudentWithGradedStatusDTO
 import com.appdevelopement.passinggrade.pages.grading.GradeStudentFragment
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -22,11 +23,11 @@ import kotlinx.coroutines.withContext
 
 
 class StudentAdapter(
-    private var studentArrayList: ArrayList<StudentDTO>,
-    private val fragmentManager: FragmentManager,
-    private val examId: Int,
-    private val context: Context,
-    private val lifecycleOwner: LifecycleOwner
+  private var studentArrayList: ArrayList<StudentWithGradedStatusDTO>,
+  private val fragmentManager: FragmentManager,
+  private val examId: Int,
+  private val context: Context,
+  private val lifecycleOwner: LifecycleOwner
 ) : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
   override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -36,13 +37,13 @@ class StudentAdapter(
   }
 
   override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-    val student = studentArrayList[position]
-    viewHolder.tvStudentName.text = student.studentName
-    viewHolder.tvStudentNumber.text = student.studentNumber.toString()
+    val studentObject = studentArrayList[position]
+    viewHolder.tvStudentName.text = studentObject.student.studentName
+    viewHolder.tvStudentNumber.text = studentObject.student.studentNumber.toString()
     
     
     lifecycleOwner.lifecycleScope.launch {
-      val isGraded = getIsGradedByStudentNumber(context, student.studentNumber, examId)
+      val isGraded = getIsGradedByStudentNumber(context, studentObject.student.studentNumber, examId)
       updateGradedImage(viewHolder.ivGraded, isGraded)
     }
     // Set OnClickListener for btnChangeGrade
@@ -52,7 +53,7 @@ class StudentAdapter(
       // Pass the examId and studentId to the GradeStudentFragment
       val args = Bundle()
       args.putInt("examId", examId)
-      args.putInt("studentId", student.studentNumber)
+      args.putInt("studentId", studentObject.student.studentNumber)
       gradeStudentFragment.arguments = args
 
       val transaction = fragmentManager.beginTransaction()
@@ -66,7 +67,8 @@ class StudentAdapter(
     return studentArrayList.size
   }
 
-  fun updateData(newStudentList: List<StudentDTO>) {
+  fun updateData(newStudentList: List<StudentWithGradedStatusDTO>) {
+    
     studentArrayList = ArrayList(newStudentList)
     notifyDataSetChanged()
   }

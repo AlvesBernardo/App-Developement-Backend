@@ -14,21 +14,21 @@
             android:layout_height="wrap_content"
             android:id="@+id/guideline2"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.04" />
+            app:layout_constraintGuide_begin="30dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/guideline3"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.93" />
+            app:layout_constraintGuide_end="29dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/guideline4"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.02" />
+            app:layout_constraintGuide_begin="30dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="25sp"
+            android:textSize="@dimen/TextFont1"
             android:id="@+id/tvCourseName"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="@+id/guideline4" />
@@ -98,7 +98,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout"
-            android:layout_width="338dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             app:endIconMode="password_toggle"
             app:layout_constraintStart_toStartOf="parent"
@@ -110,9 +110,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:id="@+id/etNewPassword"
-                android:padding="16dp"
+                android:padding="5dp"
+                android:hint="Password"
                 android:background="@color/material_dynamic_neutral100"
                 android:textColor="@android:color/black"
+                android:importantForAutofill="no"
                 app:layout_constraintStart_toStartOf="@+id/guideline2" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,8 +128,8 @@
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
-            android:layout_marginTop="25dp" />
+            app:layout_constraintHorizontal_bias="0.447"
+            android:layout_marginTop="28dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

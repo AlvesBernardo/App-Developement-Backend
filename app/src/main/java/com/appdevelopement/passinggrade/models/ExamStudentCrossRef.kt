@@ -19,4 +19,4 @@ import androidx.room.Index
                 childColumns = ["studentNumber"],
                 onDelete = ForeignKey.CASCADE)],
     indices = [Index(value = ["idExam"]), Index(value = ["studentNumber"])])
-data class ExamStudentCrossRef(val idExam: Int, val studentNumber: Int)
+data class ExamStudentCrossRef(val idExam: Int, val studentNumber: Int, val isGraded: Boolean = false)

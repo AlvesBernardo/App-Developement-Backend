@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:title="My Courses"
+            android:title="My Exams"
             android:id="@+id/home"
             android:icon="@drawable/book" />
     <item

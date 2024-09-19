@@ -1,4 +1,4 @@
-package com.appdevelopement.passinggrade.pages
+package com.appdevelopement.passinggrade.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +12,7 @@ class CoursesAdapter(private val courses: List<Course>) :
     RecyclerView.Adapter<CoursesAdapter.ViewHolder>() {
 
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val courseName: TextView = view.findViewById(R.id.course_name)
+    val courseName: TextView = view.findViewById(R.id.tv_course_description)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

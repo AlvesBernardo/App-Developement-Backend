@@ -30,7 +30,7 @@
                 style="@style/TableRowStyle"
 
                 android:layout_width="45dp"
-                android:layout_column="1"
+                android:layout_column="0"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:layout_gravity="center"
@@ -46,7 +46,7 @@
                 android:background="@color/white"
                 android:scaleType="fitStart"
                 android:src="@drawable/baseline_check_box_outline_blank_24"
-                android:layout_height="match_parent" />
+                android:layout_height="45dp" />
 
         <Button
                 android:text="Grade"

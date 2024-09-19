@@ -147,7 +147,7 @@ class StudentPageFragment : Fragment() {
   
   private fun setupSpinner() {
     val filterItems = arrayOf("All", "Graded", "UnGraded")
-    val filterAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, filterItems)
+    val filterAdapter = ArrayAdapter(requireContext(), R.layout.student_grading_spinner_item, filterItems)
     
     val spinner: Spinner = requireView().findViewById(R.id.spnrFilterBy)
     spinner.adapter = filterAdapter

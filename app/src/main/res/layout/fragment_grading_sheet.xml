@@ -58,7 +58,7 @@
             <!-- CourseName -->
 
             <TextView
-                    android:text="Make GradeSheet"
+                    android:text="Make Exam GradeSheet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -68,14 +68,24 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline2"
                     app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
-            <Spinner
+            <TextView
+                    android:text="Select Exam: "
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/TextFont3"
+                    android:id="@+id/tvCourseNam"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/spnrFilterByExam" />
+
+            <Spinner
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:id="@+id/spnrFilterByExam"
-                    android:textAlignment="textEnd"
-                    android:layout_marginTop="50dp"
+                    android:textAlignment="textStart"
+                    app:layout_constraintStart_toEndOf="@+id/tvCourseNam"
                     app:layout_constraintTop_toBottomOf="@+id/tvCourseName"
-                    app:layout_constraintStart_toStartOf="@+id/guideline2" />
+                    android:layout_marginTop="30dp" />
 
             <Button
                     android:text="Create Sheet"

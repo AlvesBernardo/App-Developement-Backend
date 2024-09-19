@@ -151,7 +151,7 @@ class GradingSheetFragment : Fragment() {
 
   private fun loadExams() {
     lifecycleScope.launch {
-      getCoursesForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
+      getExamsForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
       Log.d("UpdateExamList: ", "$examsList")
 
       //              Log.d("TeacherCourses", "Teacher ID: $teacherId")
@@ -226,6 +226,7 @@ class GradingSheetFragment : Fragment() {
 
     val newTotalCompetenceWeight = totalCompetenceWeight() + competenceWeight
     return newTotalCompetenceWeight <= maxTotalCompetenceWeight
+    
   }
 
   private fun resetVars() {
@@ -238,7 +239,7 @@ class GradingSheetFragment : Fragment() {
     return withContext(Dispatchers.IO) { db.examDao().getExamsByCourseId(courseId) }
   }
 
-  private suspend fun getCoursesForTeacher(
+  private suspend fun getExamsForTeacher(
       context: android.content.Context,
       teacherId: Int
   ): List<Exam>? {

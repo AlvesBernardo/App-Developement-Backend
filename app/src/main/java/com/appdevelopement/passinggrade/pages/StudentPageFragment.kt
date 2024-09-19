@@ -51,7 +51,7 @@ class StudentPageFragment : Fragment() {
   private lateinit var db: AppDatabase
   private var toDisplayList= ArrayList<StudentWithGradedStatusDTO>()
   private var examId: Int = -1
-//  private var toDisplayList = ArrayList<StudentDTO>()
+
 
   
   

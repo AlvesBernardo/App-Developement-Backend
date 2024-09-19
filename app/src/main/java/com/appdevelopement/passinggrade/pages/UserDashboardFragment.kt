@@ -1,6 +1,5 @@
 package com.appdevelopement.passinggrade.pages
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -89,15 +88,7 @@ class UserDashboardFragment : Fragment() {
             val courseDescription: TextView = itemView.findViewById(R.id.tv_course_description)
         }
     }
-
-    private fun showExamDialog(exam: Exam) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(exam.examName)
-            .setMessage(exam.idExam.toString())
-            .setPositiveButton("Close", null)
-            .show()
-    }
-
+    
     private suspend fun getExamsForTeacher(context: Context, teacherId: Int): List<Exam> {
         Log.d("TeacherCourses", "Teacher ID: $teacherId")
         val dao = AppDatabase.getDatabase(context).examDao()

@@ -27,4 +27,8 @@ interface ExamStudentCorssReferecne {
   
   @Query("SELECT ExamStudentCrossRef.isGraded FROM ExamStudentCrossRef WHERE studentNumber = :studentNumber AND idExam = :examId")
   fun getIsGradedByStudentNumber(studentNumber: Int, examId: Int): Boolean
+  
+  @Query("UPDATE ExamStudentCrossRef SET isGraded = 0 WHERE idExam = :examId")
+  fun resetAllGradedStatusforExam(examId: Int)
+  
 }

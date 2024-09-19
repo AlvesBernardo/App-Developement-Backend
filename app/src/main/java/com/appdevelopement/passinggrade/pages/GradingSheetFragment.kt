@@ -29,8 +29,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class GradingSheetFragment : Fragment() {
-
-  // Fields
+  
   private lateinit var db: AppDatabase
   private var mustPassIsToggled: Boolean = false
   private lateinit var recyclerView: RecyclerView
@@ -42,10 +41,8 @@ class GradingSheetFragment : Fragment() {
   private lateinit var competenceWeight: EditText
   private var maxTotalCompetenceWeight: Int = 100
   private val examsList = mutableListOf<Exam>()
-
   private var teacherId: Int = -1
   private var selectedExamId: Int = -1
-
   private val competenceList = mutableListOf<Compentence>()
 
   @SuppressLint("MissingInflatedId")
@@ -64,8 +61,7 @@ class GradingSheetFragment : Fragment() {
 
     // DB connection
     db = AppDatabase.getDatabase(requireContext())
-
-    // Get the ScrollView from the layout
+    
     val scrollView: ScrollView = view.findViewById(R.id.scrollView)
 
     recyclerView = view.findViewById(R.id.recyclerView)
@@ -82,8 +78,7 @@ class GradingSheetFragment : Fragment() {
     competenceWeight = view.findViewById(R.id.etCriteriaWeight)
     
 
-    // Call the utility function to adjust for keyboard visibility|| to put the view above teh
-    // keyboard
+    // Call the utility function to adjust for keyboard visibility|| to put the view above the keyboard
     gradingSheetItem.adjustForKeyboardGrading(scrollView)
     competenceWeight.adjustForKeyboardGrading(scrollView)
 
@@ -117,28 +112,6 @@ class GradingSheetFragment : Fragment() {
       } else {
         Toast.makeText(requireContext(), "Please enter valid competence and weight.", Toast.LENGTH_SHORT).show()
       }
-//      if (canAddNewCompetence(competenceW)) {
-//        if (text.isNotEmpty() && selectedExamId != -1) {
-//          val competenceRecord =
-//              Compentence(
-//                  idComptence = 0,
-//                  idExam = selectedExamId,
-//                  dtName = text,
-//                  dtCompetenceWeight = competenceW,
-//                  dtMustPass = mustPassIsToggled)
-//          Log.d("CompetenceRecord", competenceRecord.toString())
-//          gradingSheetAdapter.addCriteria(competenceRecord)
-//          resetVars()
-//        }
-//      } else {
-//        Toast.makeText(
-//                requireContext(),
-//                "Error! Max total weight of criterias " +
-//                    maxTotalCompetenceWeight +
-//                    " will be exceeded",
-//                Toast.LENGTH_SHORT)
-//            .show()
-//      }
     }
 
     createSheetBtn.setOnClickListener {
@@ -146,7 +119,10 @@ class GradingSheetFragment : Fragment() {
       lifecycleScope.launch {
         if (totalCompetenceWeight() == 100 && selectedExamId != -1) {
           withContext(Dispatchers.IO) {
-            db.compentenceDao().deleteCompetencesByExamId(selectedExamId) // Delete existing competences
+            db.examStudentCrossReference().resetAllGradedStatusforExam(selectedExamId)
+            
+            db.compentenceDao().deleteCompetencesByExamId(selectedExamId) // Deletes existing competences by examId
+            
             competenceList.forEach { competence ->
               db.compentenceDao().insert(competence)
             }
@@ -157,27 +133,6 @@ class GradingSheetFragment : Fragment() {
           Toast.makeText(requireContext(), "Error! Total weight must equal 100%", Toast.LENGTH_SHORT).show()
         }
       }
-//      lifecycleScope.launch {
-//        if (totalCompetenceWeight() == 100 && selectedExamId != -1) {
-//          for (competence in competenceList) {
-//            insertCompetenceToDb(competence)
-//            Log.d("Competence: ", competence.toString())
-//          }
-//          removeAllCompetences()
-//          Log.d("Competences Size: " + competenceList.size, competenceList.toString())
-//          Toast.makeText(
-//                  requireContext(),
-//                  "Grading Sheet for selected exam created successfully!",
-//                  Toast.LENGTH_SHORT)
-//              .show()
-//        } else {
-//          Toast.makeText(
-//                  requireContext(),
-//                  "Error! Total weight of criterias must be equals to" + maxTotalCompetenceWeight,
-//                  Toast.LENGTH_SHORT)
-//              .show()
-//        }
-//      }
     }
 
     return view
@@ -187,8 +142,6 @@ class GradingSheetFragment : Fragment() {
     lifecycleScope.launch {
       getExamsForTeacher(requireContext(), teacherId)?.let { examsList.addAll(it) }
       Log.d("UpdateExamList: ", "$examsList")
-
-      //              Log.d("TeacherCourses", "Teacher ID: $teacherId")
 
       if (examsList.isNotEmpty()) {
         val examNames = examsList.map { it.examName }
@@ -213,10 +166,7 @@ class GradingSheetFragment : Fragment() {
                   addAllCompetences(competences)
                 }
               }
-
-              override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle when nothing is selected
-              }
+              override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
       }
     }

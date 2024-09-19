@@ -111,6 +111,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/etNewPassword"
                 android:padding="5dp"
+                android:hint="Password"
                 android:background="@color/material_dynamic_neutral100"
                 android:textColor="@android:color/black"
                 android:importantForAutofill="no"

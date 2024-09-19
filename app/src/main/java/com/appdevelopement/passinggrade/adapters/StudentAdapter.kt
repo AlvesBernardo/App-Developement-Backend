@@ -46,11 +46,11 @@ class StudentAdapter(
       val isGraded = getIsGradedByStudentNumber(context, studentObject.student.studentNumber, examId)
       updateGradedImage(viewHolder.ivGraded, isGraded)
     }
-    // Set OnClickListener for btnChangeGrade
+    
     viewHolder.btnChangeGrade.setOnClickListener {
       val gradeStudentFragment = GradeStudentFragment()
 
-      // Pass the examId and studentId to the GradeStudentFragment
+      // Passes the examId and studentId to the GradeStudentFragment
       val args = Bundle()
       args.putInt("examId", examId)
       args.putInt("studentId", studentObject.student.studentNumber)
@@ -81,11 +81,11 @@ class StudentAdapter(
   }
   
   private fun updateGradedImage(imageView: ImageView, isGraded: Boolean) {
-    // Update the image based on the grading status
+    // Updates the image based on the grading status
     if (isGraded) {
-      imageView.setImageResource(R.drawable.baseline_check_box_24) // Replace with your graded image resource
+      imageView.setImageResource(R.drawable.baseline_check_box_24)
     } else {
-      imageView.setImageResource(R.drawable.baseline_check_box_outline_blank_24) // Replace with your not-graded image resource
+      imageView.setImageResource(R.drawable.baseline_check_box_outline_blank_24)
     }
   }
   

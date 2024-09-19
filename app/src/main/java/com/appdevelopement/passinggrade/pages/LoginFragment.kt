@@ -59,7 +59,7 @@ class LoginFragment : Fragment() {
     lifecycleScope.launch(Dispatchers.IO) {
       val getTeachers = getAllTeachers(requireContext())
 
-      Log.d("All Teachers: ", "${getTeachers}")
+      Log.d("All Teachers: ", "$getTeachers")
 //      Toast.makeText(activity, "Invalid username or password. $getTeachers", Toast.LENGTH_SHORT).show()
 
       val teacher = getTeacher(emailInput, passwordInput)
@@ -78,7 +78,7 @@ class LoginFragment : Fragment() {
             ?.putInt("idTeacher", teacher.idTeacher)
             ?.apply()
 
-          // Notify MainActivity about the login
+          // Notifies MainActivity about the login
           (activity as? MainActivity)?.onUserLoggedIn()
         } else {
           Toast.makeText(activity, "Invalid username or password.", Toast.LENGTH_SHORT).show()
@@ -104,11 +104,11 @@ class LoginFragment : Fragment() {
     }
   }
 
-  suspend fun getTeacher(email: String, password: String): Teacher? {
+  private suspend fun getTeacher(email: String, password: String): Teacher? {
     return TeacherManger.getTeacherByEmailAndPassword(requireContext(), email, password)
   }
 
-  suspend fun getAllTeachers(context: Context): List<Teacher> {
+  private suspend fun getAllTeachers(context: Context): List<Teacher> {
     val dao = AppDatabase.getDatabase(context).teacherDao()
     return withContext(IO) { dao.getAll() }
   }

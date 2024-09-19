@@ -1,4 +1,4 @@
-package com.appdevelopement.passinggrade.pages
+package com.appdevelopement.passinggrade.adapters
 
 import android.view.LayoutInflater
 import android.view.View

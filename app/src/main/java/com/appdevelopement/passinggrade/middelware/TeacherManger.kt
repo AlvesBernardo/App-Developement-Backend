@@ -8,11 +8,11 @@ import kotlinx.coroutines.withContext
 
 object TeacherManger {
   private val teacher1 =
-      Teacher(idTeacher = 0, dtEmail = "jan@email.com", dtPassword = "JanPaw", dtName = "Teacher 1")
+      Teacher(idTeacher = 0, dtEmail = "jan@email.com", dtPassword = "JanPaw", dtName = "Jan")
 
   private val teacher2 =
       Teacher(
-          idTeacher = 0, dtEmail = "martin@email.com", dtPassword = "MarPaw", dtName = "Teacher 1")
+          idTeacher = 0, dtEmail = "martijn@email.com", dtPassword = "MarPaw", dtName = "Martijn")
     
     suspend fun addTeacher(context: Context) {
         val dao = AppDatabase.getDatabase(context).teacherDao()

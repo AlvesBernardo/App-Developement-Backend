@@ -8,13 +8,13 @@ import kotlinx.coroutines.withContext
 
 object CourseManager {
   private val course =
-      Course(idCourse = 0, dtTitle = "OOP2", dtDescription = "Object-Oriented Programming")
+      Course(idCourse = 0, dtTitle = "OOP2", dtDescription = "Object-Oriented Programming 2")
   private val course2 =
-      Course(idCourse = 0, dtTitle = "AppDev", dtDescription = "Native programming")
+      Course(idCourse = 0, dtTitle = "AppDev", dtDescription = "Native Programming")
 
-  private val course3 = Course(idCourse = 0, dtTitle = "DT", dtDescription = "Data processing")
+  private val course3 = Course(idCourse = 0, dtTitle = "DataProcess", dtDescription = "Data Processing")
   private val course4 =
-      Course(idCourse = 0, dtTitle = "Database", dtDescription = "Data base eng test 1")
+      Course(idCourse = 0, dtTitle = "DataEng", dtDescription = "Database Engineering")
 
   suspend fun addCourse(context: Context): Course {
     val dao = AppDatabase.getDatabase(context).courseDao()

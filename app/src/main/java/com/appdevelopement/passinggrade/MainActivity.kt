@@ -108,24 +108,25 @@ class MainActivity : AppCompatActivity() {
       // Insert course
       val course = CourseManager.addCourse(context)
       val courseId = course.idCourse
-
-      // Insert exam
+      
       // Insert exams with specified names
-      AddExam.addExam(context, 1, 2, "OOP1")
-      AddExam.addExam(context, 1, 2, "OOP2")
-      AddExam.addExam(context, 2, 2, "SoftwareQuality")
-      AddExam.addExam(context, 2, 2, "Scrum")
-
+      AddExam.addExam(context, 1, 1, "OOP2")
+      AddExam.addExam(context, 1, 1, "OOP2 resit")
+      AddExam.addExam(context, 1, 4, "DataEng")
+      AddExam.addExam(context, 2, 3, "DataProcess")
+      AddExam.addExam(context, 2, 2, "AppDev")
+      
+      //Inserts competences for specified exams
       CompetenceManager.addCompetences(context, 1)
       CompetenceManager.addCompetences(context, 2)
       CompetenceManager.addCompetences(context, 3)
       CompetenceManager.addCompetences(context, 4)
 
-      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 1)
-      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 2)
+//      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 1)
+//      TeacherCourseManager.addTeacherCourse(context, teacherId = 1, courseId = 2)
 
       // Get teacher courses
-      val teacherCourses = TeacherCourseManager.getCoursesByTeacher(context, teacherId = 1)
+//      val teacherCourses = TeacherCourseManager.getCoursesByTeacher(context, teacherId = 1)
 
       with(sharedPreferences.edit()) {
         putBoolean("isFirstRun", false)
